@@ -1,0 +1,27 @@
+{
+  "name": "typoteka",
+  "version": "1.0.0",
+  "description": "Проект «Типотека»",
+  "main": "./src/service/service.js",
+  "scripts": {
+    "start": "node ./src/service/service.js",
+    "test": "npm run eslint",
+    "eslint": "eslint --ext .js src/",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreadwood/typoteka.git"
+  },
+  "author": "srg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dreadwood/typoteka/issues"
+  },
+  "homepage": "https://github.com/dreadwood/typoteka#readme",
+  "devDependencies": {
+    "eslint": "8.14.0",
+    "eslint-config-htmlacademy": "0.6.0",
+    "husky": "7.0.4"
+  }
+}
