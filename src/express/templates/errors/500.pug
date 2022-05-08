@@ -1,0 +1,16 @@
+-
+  var error = {
+    type: 500,
+    title: "Что-то пошло не так",
+    message: "Причин может быть много: сервер не выдержал нагрузку или в коде ошибка. Попробуйте повторить попытку позже.",
+  }
+
+doctype html
+include ../partials/head.pug
+body
+  .wrapper-color
+    include ../partials/header.pug
+    include ../partials/error.pug
+    include ../partials/footer.pug
+
+  include partials/script.pug
