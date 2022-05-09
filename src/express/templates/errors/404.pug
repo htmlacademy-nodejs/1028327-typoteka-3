@@ -1,0 +1,16 @@
+-
+  var error = {
+    type: 404,
+    title: "Похоже ошиблись адресом",
+    message: null,
+  }
+
+doctype html
+include ../partials/head.pug
+body
+  .wrapper-color
+    include ../partials/header.pug
+    include ../partials/error.pug
+    include ../partials/footer.pug
+
+  include ../partials/script.pug
