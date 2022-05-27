@@ -3,10 +3,12 @@
 const {Router} = require(`express`);
 const {HttpCode} = require(`../../constants`);
 const articleValidator = require(`../middlewares/article-validator`);
+const commentValidator = require(`../middlewares/comment-validator`);
+const articleExist = require(`../middlewares/article-exist`);
 
 const route = new Router();
 
-module.exports = (app, articleService) => {
+module.exports = (app, articleService, commentService) => {
   app.use(`/articles`, route);
 
   route.get(`/`, (req, res) => {
@@ -60,4 +62,45 @@ module.exports = (app, articleService) => {
 
     res.status(HttpCode.OK).json(article);
   });
+
+  route.get(
+      `/:articleId/comments`,
+      articleExist(articleService),
+      (req, res) => {
+        const {article} = res.locals;
+        const comments = commentService.findAll(article);
+
+        res.status(HttpCode.OK).json(comments);
+      },
+  );
+
+  route.delete(
+      `/:articleId/comments/:commentId`,
+      articleExist(articleService),
+      (req, res) => {
+        const {article} = res.locals;
+        const {commentId} = req.params;
+
+        const comment = commentService.drop(article, commentId);
+
+        if (!comment) {
+          res.status(HttpCode.NOT_FOUND)
+            .send(`Not found comment with id ${commentId}`);
+          return;
+        }
+
+        res.status(HttpCode.OK).json(comment);
+      },
+  );
+
+  route.post(
+      `/:articleId/comments`,
+      [articleExist(articleService), commentValidator],
+      (req, res) => {
+        const {article} = res.locals;
+        const comment = commentService.create(article, req.body);
+
+        res.status(HttpCode.CREATED).json(comment);
+      },
+  );
 };

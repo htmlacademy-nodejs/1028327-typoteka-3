@@ -62,9 +62,12 @@ const generatePublication = (titles, categories, sentences, commentsList) => {
   const title = titles[getRandomInt(0, titles.length - 1)];
   const createdDate = getFormattedDate(createRandomDate(MONTHS_COUNT));
   const sentencesInAnnounce = getRandomInt(1, MAX_SENTENCES_IN_ANNOUNCE);
-  const sentencesInFullText = getRandomInt(MAX_SENTENCES_IN_ANNOUNCE + 1, MAX_SENTENCES_IN_FULL_TEXT);
+  const sentencesInFullText =
+    getRandomInt(MAX_SENTENCES_IN_ANNOUNCE + 1, MAX_SENTENCES_IN_FULL_TEXT);
   const announce = shuffle(sentences).slice(0, sentencesInAnnounce).join(` `);
-  const fullText = shuffle(sentences).slice(sentencesInAnnounce, sentencesInFullText).join(` `);
+  const fullText = shuffle(sentences)
+    .slice(sentencesInAnnounce, sentencesInFullText)
+    .join(` `);
   const сategory = shuffle(categories).slice(0, MAX_CATEGORIES);
   const commentsCount = getRandomInt(0, MAX_COMMENTS);
   const comments = generateComments(commentsCount, commentsList);
@@ -80,8 +83,14 @@ const generatePublication = (titles, categories, sentences, commentsList) => {
   };
 };
 
-const generatePublications = (count, titles, categories, sentences, comments) =>
-  Array(count).fill({}).map(() => generatePublication(titles, categories, sentences, comments));
+const generatePublications = (
+    count,
+    titles,
+    categories,
+    sentences,
+    comments
+) => Array(count).fill({})
+  .map(() => generatePublication(titles, categories, sentences, comments));
 
 module.exports = {
   name: `--generate`,
@@ -99,7 +108,13 @@ module.exports = {
       process.exit(ExitCode.error);
     }
 
-    const content = JSON.stringify(generatePublications(countPublication, titles, categories, sentences, comments));
+    const content = JSON.stringify(generatePublications(
+        countPublication,
+        titles,
+        categories,
+        sentences,
+        comments
+    ));
 
     try {
       await fs.writeFile(MOCK_FILENAME, content);
