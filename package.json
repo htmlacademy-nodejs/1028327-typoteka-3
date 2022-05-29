@@ -7,7 +7,8 @@
     "start": "nodemon ./src/service/service.js",
     "cli": "node ./src/service/service.js",
     "start-front-server": "node ./src/express/express.js",
-    "test": "npm run eslint",
+    "test": "npm run eslint && npm run jest",
+    "jest": "jest",
     "eslint": "eslint --ext .js src/",
     "prepare": "husky install"
   },
@@ -25,7 +26,9 @@
     "eslint": "8.14.0",
     "eslint-config-htmlacademy": "0.6.0",
     "husky": "7.0.4",
-    "nodemon": "2.0.16"
+    "jest": "28.1.0",
+    "nodemon": "2.0.16",
+    "supertest": "6.2.3"
   },
   "dependencies": {
     "chalk": "4.1.2",
