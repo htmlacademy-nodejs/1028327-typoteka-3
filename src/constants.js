@@ -5,6 +5,7 @@ module.exports.USER_ARGV_INDEX = 2;
 module.exports.MAX_ID_LENGTH = 6;
 module.exports.MOCK_FILENAME = `mocks.json`;
 module.exports.API_PREFIX = `/api`;
+module.exports.DEFAULT_PORT = 3000;
 
 module.exports.ExitCode = {
   error: 1,
@@ -19,4 +20,9 @@ module.exports.HttpCode = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+};
+
+module.exports.Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`,
 };

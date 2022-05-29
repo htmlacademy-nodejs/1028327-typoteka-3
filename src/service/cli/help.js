@@ -17,5 +17,5 @@ module.exports = {
   name: `--help`,
   run() {
     console.log(chalk.gray(text));
-  }
+  },
 };

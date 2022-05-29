@@ -88,7 +88,7 @@ const generatePublications = (
     titles,
     categories,
     sentences,
-    comments
+    comments,
 ) => Array(count).fill({})
   .map(() => generatePublication(titles, categories, sentences, comments));
 
@@ -113,7 +113,7 @@ module.exports = {
         titles,
         categories,
         sentences,
-        comments
+        comments,
     ));
 
     try {
@@ -123,5 +123,5 @@ module.exports = {
       console.error(chalk.red(`Can't write data to file...`));
       process.exit(ExitCode.error);
     }
-  }
+  },
 };
