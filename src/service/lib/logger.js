@@ -1,14 +1,20 @@
 'use strict';
 
 const pino = require(`pino`);
+const {Env} = require(`../../constants`);
 
-const logger = pino({
-  name: `base-logger`,
-  level: `info`,
-  transport: {
-    target: `pino-pretty`,
-  },
-});
+const LOG_FILE = `./logs/api.log`;
+const isDevMode = process.env.NODE_ENV === Env.DEVELOPMENT;
+const defaultLogLevel = isDevMode ? `info` : `error`;
+
+const logger = pino(
+    {
+      name: `base-logger`,
+      level: process.env.LOG_LEVEL || defaultLogLevel,
+      transport: isDevMode ? {target: `pino-pretty`} : null,
+    },
+    isDevMode ? process.stdout : pino.destination(LOG_FILE),
+);
 
 module.exports = {
   logger,
