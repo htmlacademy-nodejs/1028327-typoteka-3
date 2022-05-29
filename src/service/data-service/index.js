@@ -9,5 +9,5 @@ module.exports = {
   CategoryService,
   SearchService,
   ArticleService,
-  CommentService
+  CommentService,
 };

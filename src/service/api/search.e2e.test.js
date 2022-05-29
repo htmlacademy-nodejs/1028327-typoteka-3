@@ -15,28 +15,22 @@ const mockData = [{
   сategory: [
     `За жизнь`,
     `Разное`,
-    `Железо`
+    `Железо`,
   ],
-  comments: [
-    {
-      id: `rVn2CG`,
-      text: `Согласен с автором!`
-    },
-    {
-      id: `l4E3Uw`,
-      text: `Это где ж такие красоты? Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Мне кажется или я уже читал это где-то?`
-    },
-    {
-      id: `7fDS6M`,
-      text: `Согласен с автором!`
-    },
-    {
-      id: `W4hHiZ`,
-      text: `Совсем немного... Согласен с автором! Мне кажется или я уже читал это где-то?`
-    }
-  ]
-},
-{
+  comments: [{
+    id: `rVn2CG`,
+    text: `Согласен с автором!`,
+  }, {
+    id: `l4E3Uw`,
+    text: `Это где ж такие красоты? Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Мне кажется или я уже читал это где-то?`,
+  }, {
+    id: `7fDS6M`,
+    text: `Согласен с автором!`,
+  }, {
+    id: `W4hHiZ`,
+    text: `Совсем немного... Согласен с автором! Мне кажется или я уже читал это где-то?`,
+  }],
+}, {
   id: `1myCs8`,
   title: `Борьба с прокрастинацией`,
   createdDate: `2022-04-20 21:51:01`,
@@ -45,11 +39,10 @@ const mockData = [{
   сategory: [
     `Программирование`,
     `Кино`,
-    `За жизнь`
+    `За жизнь`,
   ],
-  comments: []
-},
-{
+  comments: [],
+}, {
   id: `BCeeyA`,
   title: `Лучшие рок-музыканты 20-века`,
   createdDate: `2022-03-03 05:02:49`,
@@ -58,16 +51,13 @@ const mockData = [{
   сategory: [
     `Искусство`,
     `Без рамки`,
-    `Релокация`
+    `Релокация`,
   ],
-  comments: [
-    {
-      id: `M18LIE`,
-      text: `Плюсую, но слишком много буквы!`
-    }
-  ]
-},
-{
+  comments: [{
+    id: `M18LIE`,
+    text: `Плюсую, но слишком много буквы!`,
+  }],
+}, {
   id: `S5i32d`,
   title: `Эмиграция из России в свободный Мир`,
   createdDate: `2022-03-16 22:51:31`,
@@ -76,24 +66,19 @@ const mockData = [{
   сategory: [
     `За жизнь`,
     `Разное`,
-    `Программирование`
+    `Программирование`,
   ],
-  comments: [
-    {
-      id: `VqdDkQ`,
-      text: `Согласен с автором! Мне кажется или я уже читал это где-то? Планируете записать видосик на эту тему?`
-    },
-    {
-      id: `VpudZt`,
-      text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.`
-    },
-    {
-      id: `cf-mEe`,
-      text: `Плюсую, но слишком много буквы! Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Мне кажется или я уже читал это где-то?`
-    }
-  ]
-},
-{
+  comments: [{
+    id: `VqdDkQ`,
+    text: `Согласен с автором! Мне кажется или я уже читал это где-то? Планируете записать видосик на эту тему?`,
+  }, {
+    id: `VpudZt`,
+    text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.`,
+  }, {
+    id: `cf-mEe`,
+    text: `Плюсую, но слишком много буквы! Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Мне кажется или я уже читал это где-то?`,
+  }],
+}, {
   id: `W_CDWD`,
   title: `NFT и крипто-арт: что, где, когда и почему так дорого`,
   createdDate: `2022-05-26 22:37:52`,
@@ -102,14 +87,12 @@ const mockData = [{
   сategory: [
     `Железо`,
     `Релокация`,
-    `За жизнь`
+    `За жизнь`,
   ],
-  comments: [
-    {
-      id: `-wzFge`,
-      text: `Планируете записать видосик на эту тему?`
-    }
-  ]
+  comments: [{
+    id: `-wzFge`,
+    text: `Планируете записать видосик на эту тему?`,
+  }],
 }];
 
 const app = express();
@@ -117,29 +100,27 @@ app.use(express.json());
 search(app, new SearchService(mockData));
 
 describe(`API returns article based on search query`, () => {
-  let response;
+  let res;
 
   beforeAll(async () => {
-    response = await request(app).get(`/search`).query({
+    res = await request(app).get(`/search`).query({
       query: `NFT и крипто-арт`,
     });
   });
 
-  test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
-  test(`1 article found`, () => expect(response.body.length).toBe(1));
+  test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`1 article found`, () => expect(res.body.length).toBe(1));
   test(`article has correct id`, () =>
-    expect(response.body[0].id).toBe(`W_CDWD`));
+    expect(res.body[0].id).toBe(`W_CDWD`));
 });
 
 test(`API returns code 404 if nothing is found`, () =>
   request(app)
     .get(`/search`)
     .query({query: `Продам свою душу`})
-    .expect(HttpCode.NOT_FOUND)
-);
+    .expect(HttpCode.NOT_FOUND));
 
 test(`API returns 400 when query string is absent`, () =>
   request(app)
     .get(`/search`)
-    .expect(HttpCode.BAD_REQUEST)
-);
+    .expect(HttpCode.BAD_REQUEST));

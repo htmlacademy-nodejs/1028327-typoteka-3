@@ -30,5 +30,5 @@ module.exports = {
       }
       return console.info(chalk.green(`Ожидаю соединений на ${port}`));
     });
-  }
+  },
 };

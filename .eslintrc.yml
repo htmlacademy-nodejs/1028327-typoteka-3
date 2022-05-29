@@ -7,3 +7,6 @@ env:
   jest: true
 
 extends: 'htmlacademy/node'
+
+rules:
+  comma-dangle: ['error', 'always-multiline']
