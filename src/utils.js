@@ -22,3 +22,5 @@ module.exports.shuffle = (someArray) => {
  */
 module.exports.getFormattedDate = (date) =>
   date.toISOString().replace(/T/, ` `).replace(/\.[\s\S]*/g, ``);
+
+module.exports.ensureArray = (value) => Array.isArray(value) ? value : [];

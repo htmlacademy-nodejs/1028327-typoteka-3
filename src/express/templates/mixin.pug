@@ -1,0 +1,20 @@
+mixin retinaImage(img, alt=null, width=null, height=null)
+  - var path = img.split("@").shift();
+  - var format = img.split(".").pop();
+  img(src=`${path}@1x.${format}` srcset=`${path}@2x.${format} 2x` alt=alt width=width height=height)
+
+mixin console(data)
+  script
+    if data
+      | var data = !{JSON.stringify(data)};
+      | console.log(data);
+    else
+      | console.log('data is empty');
+
+mixin timeLabel(dateStr, className=null)
+  - var date = new Date(dateStr)
+  //- YYYY-MM-DDTHH:mm:ss.sssZ
+  - var datetime = date.toISOString()
+  //- DD.MM.YYYY, HH:mm
+  - var dateValue = date.toLocaleString("ru-RU", {year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute:"2-digit"})
+  time(class=className datetime=datetime)=dateValue

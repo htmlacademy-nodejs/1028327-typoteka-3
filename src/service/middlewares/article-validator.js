@@ -7,8 +7,6 @@ const articleKeys = [
   `createdDate`,
   `сategory`,
   `announce`,
-  `fullText`,
-  `comments`,
 ];
 
 

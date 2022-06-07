@@ -2,12 +2,22 @@ extends layout.pug
 
 block content
   main
-    //- TODO: inset title
     section.search-page
+      - var noResults = (articles && articles.length === 0)
       .search-page__wrapper
         h1 Поиск
-        .search.search-page__form
+        .search.search-page__form(class=(noResults && "search-page__wrapper--empty"))
           form(action="#" method="get")
             label
-              input(type="text" name="query" placeholder="Что ищем?")
+              input(type="text" name="query" placeholder="Что ищем?" value=query)
             button.search__button.button.button--transparent(type="submit") Найти
+
+          if (articles && !noResults)
+            each article in articles
+              .search__result
+                +timeLabel(article.createdDate, "search__date")
+                - var title = article.title.split(query).join(`<b>${query}</b>`)
+                a.search__link(href=`/articles/${article.id}`) !{title}
+
+        if noResults
+          p.search-page__empty Ничего не нашлось
