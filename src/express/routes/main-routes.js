@@ -23,6 +23,21 @@ mainRoutes.get(`/`, async (req, res) => {
 
 mainRoutes.get(`/register`, (req, res) => res.render(`sign-up`));
 mainRoutes.get(`/login`, (req, res) => res.render(`login`));
-mainRoutes.get(`/search`, (req, res) => res.render(`search`));
+
+mainRoutes.get(`/search`, async (req, res) => {
+  const {query} = req.query;
+
+  if (!query) {
+    res.render(`search`);
+    return;
+  }
+
+  try {
+    const articles = await api.search(query);
+    res.render(`search`, {query, articles});
+  } catch (error) {
+    res.render(`search`, {query, articles: []});
+  }
+});
 
 module.exports = mainRoutes;
