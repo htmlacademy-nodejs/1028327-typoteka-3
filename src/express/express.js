@@ -9,7 +9,8 @@ const mainRoutes = require(`./routes/main-routes`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
-const FAVICON = `public/favicon`;
+const UPLOAD_DIR = `upload`;
+const FAVICON_DIR = `public/favicon`;
 
 const app = express();
 
@@ -18,7 +19,8 @@ app.use(`/my`, myRoutes);
 app.use(`/`, mainRoutes);
 
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
-app.use(express.static(path.resolve(__dirname, FAVICON)));
+app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
+app.use(express.static(path.resolve(__dirname, FAVICON_DIR)));
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);
 

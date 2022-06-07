@@ -13,6 +13,8 @@ mixin console(data)
 
 mixin timeLabel(dateStr, className=null)
   - var date = new Date(dateStr)
+  //- YYYY-MM-DDTHH:mm:ss.sssZ
   - var datetime = date.toISOString()
-  - var dateValue = date.toLocaleDateString("ru-RU", {year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute:"2-digit"})
+  //- DD.MM.YYYY, HH:mm
+  - var dateValue = date.toLocaleString("ru-RU", {year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute:"2-digit"})
   time(class=className datetime=datetime)=dateValue

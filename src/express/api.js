@@ -28,12 +28,12 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  async getCategories() {
-    return await this._load(`/categories`);
+  getCategories() {
+    return this._load(`/categories`);
   }
 
-  async createArticle(data) {
-    return await this._load(`/articles`, {
+  createArticle(data) {
+    return this._load(`/articles`, {
       method: `POST`,
       data,
     });
