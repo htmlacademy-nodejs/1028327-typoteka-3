@@ -10,7 +10,8 @@ const text = `
   --version:            выводит номер версии
   --help:               печатает этот текст
   --generate <count>    формирует файл mocks.json
-  --server <count>      запуск сервера на указаном порту или 3000
+  --server <port>       запуск сервера на указаном порту или 3000
+  --fill <count>        формирует файл fill-db.sql для заполнения базы данных
 `;
 
 module.exports = {
