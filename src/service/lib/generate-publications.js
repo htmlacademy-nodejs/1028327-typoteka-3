@@ -13,6 +13,7 @@ const {
 const {
   MockParams,
   articlePictures,
+  CategoryRestrict,
   users,
 } = require(`../cli/data`);
 
@@ -44,7 +45,8 @@ const generatePublication = (titles, categories, sentences, commentsList) => {
   const fullText = shuffle(sentences)
       .slice(0, MockParams.MAX_SENTENCES_TEXT)
       .join(` `);
-  const category = shuffle(categories).slice(0, MockParams.MAX_CATEGORIES);
+  const categoryCount = getRandomInt(CategoryRestrict.MIN, CategoryRestrict.MAX);
+  const category = shuffle(categories).slice(0, categoryCount);
   const comments = shuffle(generateComments(users.length, commentsList));
   const picture = getRandomValue(articlePictures);
 
