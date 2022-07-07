@@ -38,7 +38,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
     createdDate: body.date,
     сategory: ensureArray(body.categories),
     announce: body.announcement,
-    fullText: body[`full-text`],
+    text: body[`full-text`],
   };
 
   try {

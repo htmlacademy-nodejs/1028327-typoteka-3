@@ -43,4 +43,4 @@ block content
                     textarea(rows="5" name="announcement" minlength="30" maxlength="250" placeholder="Анонс публикации" required)=(article && article.announce)
                 .form__field.form__field--publication-text
                   label
-                    textarea(rows="10" name="full-text" maxlength="1000" placeholder="Полный текст публикации")=(article && article.fullText)
+                    textarea(rows="10" name="full-text" maxlength="1000" placeholder="Полный текст публикации")=(article && article.text)

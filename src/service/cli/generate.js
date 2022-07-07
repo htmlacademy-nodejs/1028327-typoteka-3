@@ -3,7 +3,7 @@
 const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
 const readContent = require(`../lib/read-content`);
-const generatePublications = require(`../lib/generate-publications`);
+const generateArticles = require(`../lib/generate-articles`);
 
 const {
   MOCK_FILENAME,
@@ -24,16 +24,16 @@ module.exports = {
     const comments = await readContent(FilePath.COMMENTS);
 
     const [count] = args;
-    const countPublication =
+    const articleCount =
       Number.parseInt(count, 10) || MockParams.DEFAULT_COUNT;
 
-    if (countPublication > MockParams.MAX_COUNT) {
+    if (articleCount > MockParams.MAX_COUNT) {
       console.error(chalk.red(`Не больше 1000 публикаций`));
       process.exit(ExitCode.error);
     }
 
-    const content = JSON.stringify(generatePublications(
-        countPublication,
+    const content = JSON.stringify(generateArticles(
+        articleCount,
         titles,
         categories,
         sentences,
