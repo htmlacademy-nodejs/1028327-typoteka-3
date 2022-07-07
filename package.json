@@ -4,8 +4,8 @@
   "description": "Проект «Типотека»",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production nodemon ./src/service/service.js",
-    "start::debug": "cross-env NODE_ENV=development nodemon ./src/service/service.js",
+    "start": "cross-env NODE_ENV=production node -r dotenv/config ./src/service/service.js",
+    "start::debug": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js",
     "cli": "node ./src/service/service.js",
     "start-front-server": "nodemon ./src/express/express.js",
     "test": "npm run eslint && npm run jest",
@@ -36,10 +36,13 @@
     "axios": "0.27.2",
     "chalk": "4.1.2",
     "cross-env": "7.0.3",
+    "dotenv": "16.0.1",
     "express": "4.18.1",
     "multer": "1.4.5-lts.1",
     "nanoid": "3.3.4",
+    "pg": "8.7.3",
     "pino": "7.11.0",
-    "pug": "3.0.2"
+    "pug": "3.0.2",
+    "sequelize": "6.21.2"
   }
 }
