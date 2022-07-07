@@ -11,10 +11,14 @@ const MockParams = {
   DEFAULT_COUNT: 1,
   MAX_COUNT: 1000,
   MAX_SENTENCES_TEXT: 6,
-  MAX_CATEGORIES: 3,
   MONTHS_COUNT: 3,
   MAX_COMMENTS: 4,
   MAX_COMMENT_LENGTH: 3,
+};
+
+const CategoryRestrict = {
+  MIN: 1,
+  MAX: 3,
 };
 
 const articlePictures = [
@@ -48,7 +52,8 @@ const users = [
   {
     email: `markov@example.com`,
     passwordHash: `5f4dcc3b5aa765d61d8327deb882cf99`,
-    firstName: `Александр `,
+    firstName: `Александр`,
+
     lastName: `Марков`,
     avatar: `avatar-4.png`,
   },
@@ -57,6 +62,7 @@ const users = [
 module.exports = {
   FilePath,
   MockParams,
+  CategoryRestrict,
   articlePictures,
   users,
 };
