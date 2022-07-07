@@ -4,8 +4,8 @@
   "description": "Проект «Типотека»",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production nodemon ./src/service/service.js",
-    "start::debug": "cross-env NODE_ENV=development nodemon ./src/service/service.js",
+    "start": "cross-env NODE_ENV=production node -r dotenv/config ./src/service/service.js",
+    "start::debug": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js",
     "cli": "node ./src/service/service.js",
     "start-front-server": "nodemon ./src/express/express.js",
     "test": "npm run eslint && npm run jest",
