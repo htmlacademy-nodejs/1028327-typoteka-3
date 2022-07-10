@@ -11,8 +11,14 @@ module.exports = (app, articleService, commentService) => {
   app.use(`/articles`, route);
 
   route.get(`/`, async (req, res) => {
-    const {comments} = req.query;
-    const articles = await articleService.findAll(comments);
+    const articles = await articleService.findAll();
+    res.status(HttpCode.OK).json(articles);
+  });
+
+
+  route.get(`/discussed`, async (req, res) => {
+    const {count} = req.query;
+    const articles = await articleService.findDiscussed(count);
     res.status(HttpCode.OK).json(articles);
   });
 
@@ -106,5 +112,13 @@ module.exports = (app, articleService, commentService) => {
 
         res.status(HttpCode.OK).send(`Deleted`);
       },
+  );
+
+  app.get(`/comments`, async (req, res) => {
+    const {count} = req.query;
+    const comments = await commentService.findLatest(count);
+
+    res.status(HttpCode.OK).json(comments);
+  },
   );
 };
