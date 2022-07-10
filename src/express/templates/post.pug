@@ -2,45 +2,44 @@ extends layout.pug
 
 block content
   main
-    section
-      .popup.popup--new-publication.popup--anti
-        .new-publication
-          form(action="/articles/add" method="POST" enctype="multipart/form-data")
-            if article
-              input(type="hidden" name="id" value=article.id)
-            .new-publication__header
-              h1=(article ? article.title : "Новая публикация")
-              .new-publication__date-form
-                h3 Дата публикации
-                .new-publication__date-form-division
-                  .new-publication__date-block
-                    - var date = new Date(article ? article.createdDate : Date.now()).toLocaleDateString("en-CA")
-                    label(for="new-publication-date" aria-label="Календарь")
-                    input#new-publication-date(type="text" name="date" placeholder=date value=date)
-              button.new-publication__button.button.button--colored(type="submit") Опубликовать
-            a.popup__button.button.button--popup-close(aria-label="Закрыть окно") Закрыть окно
-            .new-publication__form.form
-              .form__wrapper.form__wrapper--intro
-                .form__field
-                  label
-                    input(type="text" name="title" minlength="30" maxlength="250" placeholder="Заголовок" value=(article && article.title) required)
-                .form__field.form__field--post-image
-                  label
-                    input#image-name-field(type="text" name="photo" placeholder="Фотография" value=(article && article.picture) readonly)
-                  .form__image-loader.form__image-loader--publication
-                    label
-                      input.visually-hidden(type="file" name="upload" accept="image/png, image/jpeg")
-                      | Обзор
-                .new-publication__category-wrapper
-                  each category, i in categories
-                    .new-publication__checkbox
-                      input(type="checkbox" name="categories" value=category id=`checkbox-${category}` checked=(article && article.сategory.includes(category)))
-                      label(for=`checkbox-${category}`)=category
-                  a.new-publication__form-link.button.button--transparent(href="#") Добавить категорию
-              .form__wrapper.form__wrapper--text
-                .form__field.form__field--publication-text
-                  label
-                    textarea(rows="5" name="announcement" minlength="30" maxlength="250" placeholder="Анонс публикации" required)=(article && article.announce)
-                .form__field.form__field--publication-text
-                  label
-                    textarea(rows="10" name="full-text" maxlength="1000" placeholder="Полный текст публикации")=(article && article.text)
+    section.post
+      h1.visually-hidden Пост
+      section.post__content
+        h2.visually-hidden Основное содержание
+        .post__wrapper
+          .post__head
+            a.post__backwards.button.button--backwards(href="/") Назад
+            +timeLabel(article.createdAt, "post__date")
+            h2.post__title.title.title--main=article.title
+
+            .post__themes
+              include partials/categories.pug
+
+          if article.picture
+            .post__picture
+              img(src=`/img/${article.picture}` width="940" heigth="490" alt="пейзаж море, скалы, пляж")
+          .post__text
+            h3=article.announce
+            p=article.text
+
+      .post__wrapper.post__wrapper--comments
+        section.post__comments.comments
+          h2.comments__title.title.title--middle Комментарии
+          ul.comments__list
+            each comment in article.comments
+              li.comments__comment
+                .comments__avatar.avatar
+                  img(src="/img/avatar-1.png" alt="аватар пользователя")
+                .comments__text
+                  .comments__head
+                    p Евгений Петров •
+                    +timeLabel(comment.createdAt, "comments__date")
+                  p.comments__message=comment.text
+
+          .comments__footer.comments__footer--user
+            form(action="#" method="POST")
+              .comments__avatar.avatar
+                img(src="/img/avatar-2.png" alt="аватар пользователя")
+              label
+                textarea(rows="1" name="message" placeholder="Присоединиться к обсуждению")
+              button.comments__button.button.button--colored(type="submit") Опубликовать
