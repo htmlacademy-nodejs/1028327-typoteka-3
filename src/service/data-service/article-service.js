@@ -1,5 +1,6 @@
 'use strict';
 
+const Sequelize = require(`sequelize`);
 const Aliase = require(`../models/aliase`);
 
 class ArticleService {
@@ -20,22 +21,90 @@ class ArticleService {
     return !!deletedRows;
   }
 
-  async findAll(needComments) {
-    const include = [Aliase.CATEGORIES];
-
-    if (needComments) {
-      include.push(Aliase.COMMENTS);
-    }
-
+  // TODO: для Дмитрия / есть ощущение, что конфигурация избыточная, но
+  // не могу понять как сделать её проще
+  async findAll() {
     const articles = await this._Article.findAll({
-      include,
+      attributes: {
+        include: [[
+          Sequelize.fn(`COUNT`, Sequelize.col(`comments.id`)),
+          `commentsCount`,
+        ]],
+      },
+      include: [
+        {
+          model: this._Category,
+          as: Aliase.CATEGORIES,
+          attributes: [
+            `id`,
+            `name`,
+          ],
+        },
+        {
+          model: this._Comment,
+          as: Aliase.COMMENTS,
+          attributes: [],
+        },
+      ],
       order: [[`createdAt`, `DESC`]],
+      group: [
+        `Article.id`,
+        `categories.id`,
+        `categories->ArticleCategory.created_at`,
+        `categories->ArticleCategory.updated_at`,
+        `categories->ArticleCategory.article_id`,
+        `categories->ArticleCategory.category_id`,
+      ],
     });
 
     return articles.map((article) => article.get());
   }
 
-  findOne(id, needComments) {
+  async findDiscussed(count) {
+    return await this._Article.findAll({
+      attributes: [
+        `announce`,
+        `id`,
+        [
+          Sequelize.fn(`COUNT`, Sequelize.col(`comments.id`)),
+          `comments`,
+        ],
+      ],
+      include: [
+        {
+          model: this._Comment,
+          as: Aliase.COMMENTS,
+          attributes: [],
+        },
+      ],
+      order: [
+        [Sequelize.literal(`comments`), `DESC`],
+        [`createdAt`, `DESC`],
+      ],
+      group: [
+        `Article.id`,
+      ],
+      limit: count,
+      subQuery: false,
+      raw: true,
+    });
+  }
+
+  // TODO: для Дмитрия / не могу сконфигурировать объект для получения
+  // в запросе данных статьи, категории с кол-вом статей в базе и комментариями
+  // Пример:
+  // {
+  //   id: 0,
+  //   title: "",
+  //   ...
+  //   categories: [{
+  //     id: 0,
+  //     name: "",
+  //     count: 0, <-- кол-во статей в категории
+  //   }]
+  //   comments: [{...}] <-- комментарии
+  // }
+  async findOne(id, needComments) {
     const include = [Aliase.CATEGORIES];
 
     if (needComments) {

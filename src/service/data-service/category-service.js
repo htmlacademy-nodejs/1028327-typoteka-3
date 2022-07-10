@@ -16,7 +16,7 @@ class CategoryService {
           `id`,
           `name`,
           [
-            Sequelize.fn(`COUNT`, `*`),
+            Sequelize.fn(`COUNT`, `categories.id`),
             `count`,
           ],
         ],

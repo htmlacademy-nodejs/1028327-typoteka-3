@@ -25,8 +25,20 @@ class CommentService {
     });
   }
 
-  findListAll() {
-    return this._Comment.findAll({raw: true});
+  // TODO: для Дмитрия / оставить здесь или это больше ArticleService?
+  findLatest(count) {
+    return this._Comment.findAll({
+      attributes: [
+        `text`,
+        `createdAt`,
+        `ArticleId`,
+      ],
+      order: [
+        [`createdAt`, `DESC`],
+      ],
+      limit: count,
+      raw: true,
+    });
   }
 }
 
