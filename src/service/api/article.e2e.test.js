@@ -362,3 +362,31 @@ test(`API refuses to delete a comment to non-existent article`, async () => {
     .delete(`/articles/NOEXST/comments/1`)
     .expect(HttpCode.NOT_FOUND);
 });
+
+// test case 17
+describe(`API returns a list of all comments`, () => {
+  let res;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    res = await request(app).get(`/comments`);
+  });
+
+  test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`Returns a list of 9 comments`, () =>
+    expect(res.body.length).toBe(9));
+});
+
+// test case 18
+describe(`API returns a list of 4 comments`, () => {
+  let res;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    res = await request(app).get(`/comments?count=4`);
+  });
+
+  test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`Returns a list of 4 comments`, () =>
+    expect(res.body.length).toBe(4));
+});

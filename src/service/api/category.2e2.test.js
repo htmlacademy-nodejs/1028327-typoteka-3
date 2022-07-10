@@ -103,7 +103,6 @@ describe(`API returns category list`, () => {
 
   beforeAll(async () => {
     res = await request(app).get(`/categories?count=true`);
-    console.log(res.body);
   });
 
   test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
