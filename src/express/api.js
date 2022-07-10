@@ -20,16 +20,24 @@ class API {
     return this._load(`/articles`);
   }
 
-  getArticle(id) {
-    return this._load(`/articles/${id}`);
+  getArticle(id, comments) {
+    return this._load(`/articles/${id}`, {params: {comments}});
+  }
+
+  getLatestComments(count) {
+    return this._load(`/comments`, {params: {count}});
+  }
+
+  getMostDiscussedArticles(count) {
+    return this._load(`/articles/discussed`, {params: {count}});
   }
 
   search(query) {
     return this._load(`/search`, {params: {query}});
   }
 
-  getCategories() {
-    return this._load(`/categories`);
+  getCategories(count) {
+    return this._load(`/categories`, {params: {count}});
   }
 
   createArticle(data) {
