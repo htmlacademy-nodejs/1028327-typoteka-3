@@ -25,7 +25,6 @@ class CommentService {
     });
   }
 
-  // TODO: для Дмитрия / оставить здесь или это больше ArticleService?
   findLatest(count) {
     return this._Comment.findAll({
       attributes: [

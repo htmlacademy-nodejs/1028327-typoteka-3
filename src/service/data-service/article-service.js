@@ -8,6 +8,7 @@ class ArticleService {
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
+    this._sequelize = sequelize;
   }
 
   async create(articleData) {
@@ -21,8 +22,6 @@ class ArticleService {
     return !!deletedRows;
   }
 
-  // TODO: для Дмитрия / есть ощущение, что конфигурация избыточная, но
-  // не могу понять как сделать её проще
   async findAll() {
     const articles = await this._Article.findAll({
       attributes: {
@@ -90,20 +89,6 @@ class ArticleService {
     });
   }
 
-  // TODO: для Дмитрия / не могу сконфигурировать объект для получения
-  // в запросе данных статьи, категории с кол-вом статей в базе и комментариями
-  // Пример:
-  // {
-  //   id: 0,
-  //   title: "",
-  //   ...
-  //   categories: [{
-  //     id: 0,
-  //     name: "",
-  //     count: 0, <-- кол-во статей в категории
-  //   }]
-  //   comments: [{...}] <-- комментарии
-  // }
   async findOne(id, needComments) {
     const include = [Aliase.CATEGORIES];
 
