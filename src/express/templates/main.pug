@@ -7,7 +7,7 @@ block content
     section.main-page__theme-list
       h2.visually-hidden Список тем
 
-      include partials/themes.pug
+      include partials/categories.pug
 
     .main-page__section-flex
       section.main-page__hot.hot
@@ -15,23 +15,22 @@ block content
           | Самое обсуждаемое
           span.hot__icon.hot__icon--fire
         ul.hot__list
-          each article, i in articles
-            if i < 4
-              li.hot__list-item
-                a.hot__list-link(href="/articles/EbBFXt")
-                  =article.title
-                  sup.hot__link-sup=((Math.random() * 100).toString().split(".").shift())
+          each article in mostDiscussedArticles
+            li.hot__list-item
+              a.hot__list-link(href=`/articles/${article.id}`)
+                =article.announce
+                sup.hot__link-sup=article.comments
 
       section.main-page__last.last
         h2.last__name
           | Последние комментарии
           span.last__icon.last__icon--cloud
         ul.last__list
-          each comment in comments
+          each comment in lastestComments
             li.last__list-item
               img.last__list-image(src="/img/avatar-small-2.png" width="20" height="20" alt="Аватар пользователя")
               b.last__list-name Анна Артамонова
-              a.last__list-link(href="/articles/EbBFXt#comments")=comment.text
+              a.last__list-link(href=`/articles/${comment.ArticleId}#comments`)=comment.text
 
     section.main-page__list.preview
       h2.visually-hidden Список превью статей
@@ -39,20 +38,20 @@ block content
         each article in articles
           li.preview__item
             ul.preview__breadcrumbs
-              each item in article.сategory
+              each category in article.categories
                 li.preview__breadcrumbs-item
-                  a.preview__breadcrumbs-link(href="#")=item
+                  a.preview__breadcrumbs-link(href=`#${category.id}`)=category.name
             .preview__background
               +retinaImage("/img/skyscraper@1x.jpg", "Фотография небоскреба", width=460, height=240)
-            +timeLabel(article.createdDate, "preview__time")
+            +timeLabel(article.createdAt, "preview__time")
             h3.preview__name
-              a.preview__name-link(href="/articles/EbBFXt")=article.title
+              a.preview__name-link(href=`/articles/${article.id}`)=article.title
             p.preview__text=article.announce
-            if article.comments.length > 0
-              a.preview__comment(href="/articles/EbBFXt#comments")
+            if article.commentsCount
+              a.preview__comment(href=`/articles/${article.id}#comments`)
                 | Комментарии
                 span.preview__cloud
-                b.preview__comment-count=article.comments.length
+                b.preview__comment-count=article.commentsCount
 
     .preview__toggle-wrapper
       ul.preview__pagination.pagination

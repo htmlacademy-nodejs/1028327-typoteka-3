@@ -3,7 +3,7 @@
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const readContent = require(`../lib/read-content`);
-const generatePublications = require(`../lib/generate-publications`);
+const generateArticles = require(`../lib/generate-articles`);
 const {getRandomInt} = require(`../../utils`);
 
 const {
@@ -32,8 +32,8 @@ const getContent = (
   ).join(`,\n`);
 
   const articleValues = articles.map(
-      ({title, picture, announce, fullText, userId}) =>
-        `('${title}', '${picture}', '${announce}', '${fullText}', ${userId})`,
+      ({title, picture, announce, text, userId}) =>
+        `('${title}', '${picture}', '${announce}', '${text}', ${userId})`,
   ).join(`,\n`);
 
   const commentValues = comments.map(
@@ -75,31 +75,38 @@ module.exports = {
     const titles = await readContent(FilePath.TITLES);
     const sentences = await readContent(FilePath.SENTENCES);
     const categories = await readContent(FilePath.CATEGORIES);
-    const commentSentences = await readContent(FilePath.COMMENTS);
+    const commentList = await readContent(FilePath.COMMENTS);
 
     const [count] = args;
-    const countPublication =
+    const articleCount =
       Number.parseInt(count, 10) || MockParams.DEFAULT_COUNT;
 
-    if (countPublication > MockParams.MAX_COUNT) {
+    if (articleCount > MockParams.MAX_COUNT) {
       console.error(chalk.red(`Не больше 1000 публикаций`));
       process.exit(ExitCode.error);
     }
 
-    const articles = generatePublications(
-        countPublication,
+    const articles = generateArticles(
+        articleCount,
         titles,
         categories,
         sentences,
-        commentSentences,
+        commentList,
     ).map((article) => ({...article, userId: getRandomInt(1, users.length)}));
 
-    const comments = articles.flatMap((article, index) =>
-      article.comments.map((comment) => ({...comment, articleId: index + 1})));
+    const comments = articles.flatMap(
+        (article, index) => article.comments.map((comment) => ({
+          ...comment,
+          articleId: index + 1,
+        })),
+    );
 
-    const articlesCategories = articles.flatMap((article, index) =>
-      article.category.map((item) =>
-        ({articleId: index + 1, categoryId: categories.indexOf(item) + 1})));
+    const articlesCategories = articles.flatMap(
+        (article, index) => article.categories.map((item) => ({
+          articleId: index + 1,
+          categoryId: categories.indexOf(item) + 1,
+        })),
+    );
 
     const content = getContent(
         categories,

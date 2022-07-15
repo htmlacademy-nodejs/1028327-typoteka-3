@@ -1,23 +1,32 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {shuffle} = require(`../../utils`);
 const api = require(`../api`).getAPI();
+const {
+  MAX_LAST_COMMENTS,
+  MAX_DISCUSSED_ARTICLES,
+} = require(`../../constants`);
 
 const mainRoutes = new Router();
 
 mainRoutes.get(`/`, async (req, res) => {
-  const articles = await api.getArticles();
-  const categories = await api.getCategories();
-  const comments = articles.reduce((acc, article) => {
-    acc = [...acc, ...article.comments];
-    return acc;
-  }, []);
+  const [
+    articles,
+    categories,
+    lastestComments,
+    mostDiscussedArticles,
+  ] = await Promise.all([
+    api.getArticles(),
+    api.getCategories(true),
+    api.getLatestComments(MAX_LAST_COMMENTS),
+    api.getMostDiscussedArticles(MAX_DISCUSSED_ARTICLES),
+  ]);
 
   res.render(`main`, {
     articles,
-    comments: shuffle(comments).slice(0, 3),
     categories,
+    lastestComments,
+    mostDiscussedArticles,
   });
 });
 

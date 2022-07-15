@@ -26,7 +26,7 @@ articlesRoutes.get(`/category/:id`, (req, res) => res.render(`all-categories`));
 
 articlesRoutes.get(`/add`, async (req, res) => {
   const categories = await api.getCategories();
-  res.render(`post`, {categories});
+  res.render(`post-edit`, {categories});
 });
 
 articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
@@ -38,7 +38,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
     createdDate: body.date,
     сategory: ensureArray(body.categories),
     announce: body.announcement,
-    fullText: body[`full-text`],
+    text: body[`full-text`],
   };
 
   try {
@@ -56,20 +56,28 @@ articlesRoutes.get(`/edit/:id`, async (req, res) => {
     api.getCategories(),
   ]);
 
-  res.render(`post`, {article, categories});
+  res.render(`post-edit`, {article, categories});
 });
 
 articlesRoutes.get(`/:id`, async (req, res) => {
   const {id} = req.params;
 
   try {
-    const article = await api.getArticle(id);
-    res.render(`post-detail`, {article, categories: article.сategory});
+    const [article, categories] = await Promise.all([
+      api.getArticle(id, true),
+      api.getCategories(true),
+    ]);
+
+    const articleCategories = categories.filter(
+        (category) => article.categories.some(
+            (articleCategory) => articleCategory.id === category.id,
+        ),
+    );
+
+    res.render(`post`, {article, categories: articleCategories});
   } catch (error) {
     res.status(error.response.status).render(`errors/404`);
   }
-
-  // res.render(`post-detail`, {article, categories: article.сategory});
 });
 
 module.exports = articlesRoutes;

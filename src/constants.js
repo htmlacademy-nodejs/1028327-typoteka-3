@@ -7,6 +7,8 @@ module.exports.MOCK_FILENAME = `mocks.json`;
 module.exports.DATA_DB_FILENAME = `fill-db.sql`;
 module.exports.API_PREFIX = `/api`;
 module.exports.DEFAULT_PORT = 3000;
+module.exports.MAX_LAST_COMMENTS = 4;
+module.exports.MAX_DISCUSSED_ARTICLES = 4;
 
 module.exports.ExitCode = {
   error: 1,

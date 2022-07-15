@@ -1,23 +1,31 @@
 'use strict';
 
-const chalk = require(`chalk`);
-const fs = require(`fs`).promises;
+const {getLogger} = require(`../lib/logger`);
 const readContent = require(`../lib/read-content`);
+const sequelize = require(`../lib/sequelize`);
+const initDatabase = require(`../lib/init-db`);
 const generateArticles = require(`../lib/generate-articles`);
-
-const {
-  MOCK_FILENAME,
-  ExitCode,
-} = require(`../../constants`);
+const {ExitCode} = require(`../../constants`);
 
 const {
   FilePath,
   MockParams,
 } = require(`./data`);
 
+const logger = getLogger({});
+
 module.exports = {
-  name: `--generate`,
+  name: `--filldb`,
   async run(args) {
+    try {
+      logger.info(`Trying to connect to database...`);
+      await sequelize.authenticate();
+    } catch (err) {
+      logger.error(`An error occurred: ${err.message}`);
+      process.exit(ExitCode.error);
+    }
+    await logger.info(`Connection to database established`);
+
     const titles = await readContent(FilePath.TITLES);
     const sentences = await readContent(FilePath.SENTENCES);
     const categories = await readContent(FilePath.CATEGORIES);
@@ -28,24 +36,19 @@ module.exports = {
       Number.parseInt(count, 10) || MockParams.DEFAULT_COUNT;
 
     if (articleCount > MockParams.MAX_COUNT) {
-      console.error(chalk.red(`Не больше 1000 публикаций`));
+      logger.error(`Не больше 1000 публикаций`);
       process.exit(ExitCode.error);
     }
 
-    const content = JSON.stringify(generateArticles(
+    const articles = generateArticles(
         articleCount,
         titles,
         categories,
         sentences,
         comments,
-    ));
+    );
 
-    try {
-      await fs.writeFile(MOCK_FILENAME, content);
-      console.info(chalk.green(`Operation success. File created.`));
-    } catch (err) {
-      console.error(chalk.red(`Can't write data to file...`));
-      process.exit(ExitCode.error);
-    }
+    await initDatabase(sequelize, {articles, categories});
+    sequelize.close();
   },
 };

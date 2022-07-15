@@ -26,7 +26,7 @@ const createRandomDate = (monthsCount) => {
 
 const generateComment = (userId, comments) => ({
   userId,
-  id: nanoid(MAX_ID_LENGTH),
+  commentId: nanoid(MAX_ID_LENGTH),
   text: shuffle(comments)
       .slice(0, getRandomInt(1, MockParams.MAX_COMMENT_LENGTH))
       .join(` `),
@@ -36,39 +36,39 @@ const generateComments = (userCount, comments) =>
   Array(userCount).fill({}).map((_, userIndex) =>
     generateComment(userIndex + 1, comments));
 
-const generatePublication = (titles, categories, sentences, commentsList) => {
-  const id = nanoid(MAX_ID_LENGTH);
+const generateArticle = (titles, categoryList, sentences, commentList) => {
+  const articleId = nanoid(MAX_ID_LENGTH);
   const title = getRandomValue(titles);
   const createdDate =
     getFormattedDate(createRandomDate(MockParams.MONTHS_COUNT));
   const announce = getRandomValue(sentences);
-  const fullText = shuffle(sentences)
+  const text = shuffle(sentences)
       .slice(0, MockParams.MAX_SENTENCES_TEXT)
       .join(` `);
   const categoryCount = getRandomInt(CategoryRestrict.MIN, CategoryRestrict.MAX);
-  const category = shuffle(categories).slice(0, categoryCount);
-  const comments = shuffle(generateComments(users.length, commentsList));
+  const categories = shuffle(categoryList).slice(0, categoryCount);
+  const comments = shuffle(generateComments(users.length, commentList));
   const picture = getRandomValue(articlePictures);
 
   return {
-    id,
+    articleId,
     title,
     createdDate,
     announce,
-    fullText,
-    category,
+    text,
+    categories,
     comments,
     picture,
   };
 };
 
-const generatePublications = (
+const generateArticles = (
     count,
     titles,
     categories,
     sentences,
     comments,
 ) => Array(count).fill({})
-  .map(() => generatePublication(titles, categories, sentences, comments));
+  .map(() => generateArticle(titles, categories, sentences, comments));
 
-module.exports = generatePublications;
+module.exports = generateArticles;

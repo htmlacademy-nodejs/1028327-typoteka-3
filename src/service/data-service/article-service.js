@@ -1,50 +1,110 @@
 'use strict';
 
-const {nanoid} = require(`nanoid`);
-const {MAX_ID_LENGTH} = require(`../../constants`);
+const Sequelize = require(`sequelize`);
+const Aliase = require(`../models/aliase`);
 
 class ArticleService {
-  constructor(articles) {
-    this._articles = articles;
+  constructor(sequelize) {
+    this._Article = sequelize.models.Article;
+    this._Comment = sequelize.models.Comment;
+    this._Category = sequelize.models.Category;
+    this._sequelize = sequelize;
   }
 
-  create(article) {
-    const newArticle = Object.assign(
+  async create(articleData) {
+    const article = await this._Article.create(articleData);
+    await article.addCategories(articleData.categories);
+    return article.get();
+  }
+
+  async drop(id) {
+    const deletedRows = await this._Article.destroy({where: {id}});
+    return !!deletedRows;
+  }
+
+  async findAll() {
+    const articles = await this._Article.findAll({
+      attributes: {
+        include: [[
+          Sequelize.fn(`COUNT`, Sequelize.col(`comments.id`)),
+          `commentsCount`,
+        ]],
+      },
+      include: [
         {
-          id: nanoid(MAX_ID_LENGTH),
-          comments: [],
+          model: this._Category,
+          as: Aliase.CATEGORIES,
+          attributes: [
+            `id`,
+            `name`,
+          ],
         },
-        article,
-    );
+        {
+          model: this._Comment,
+          as: Aliase.COMMENTS,
+          attributes: [],
+        },
+      ],
+      order: [[`createdAt`, `DESC`]],
+      group: [
+        `Article.id`,
+        `categories.id`,
+        `categories->ArticleCategory.created_at`,
+        `categories->ArticleCategory.updated_at`,
+        `categories->ArticleCategory.article_id`,
+        `categories->ArticleCategory.category_id`,
+      ],
+    });
 
-    this._articles.push(newArticle);
-    return newArticle;
+    return articles.map((article) => article.get());
   }
 
-  drop(id) {
-    const article = this._articles.find((item) => item.id === id);
+  async findDiscussed(count) {
+    return await this._Article.findAll({
+      attributes: [
+        `announce`,
+        `id`,
+        [
+          Sequelize.fn(`COUNT`, Sequelize.col(`comments.id`)),
+          `comments`,
+        ],
+      ],
+      include: [
+        {
+          model: this._Comment,
+          as: Aliase.COMMENTS,
+          attributes: [],
+        },
+      ],
+      order: [
+        [Sequelize.literal(`comments`), `DESC`],
+        [`createdAt`, `DESC`],
+      ],
+      group: [
+        `Article.id`,
+      ],
+      limit: count,
+      subQuery: false,
+      raw: true,
+    });
+  }
 
-    if (!article) {
-      return null;
+  async findOne(id, needComments) {
+    const include = [Aliase.CATEGORIES];
+
+    if (needComments) {
+      include.push(Aliase.COMMENTS);
     }
 
-    this._articles = this._articles.filter((item) => item.id !== id);
-    return article;
+    return this._Article.findByPk(id, {include});
   }
 
-  findAll() {
-    return this._articles;
-  }
-
-  findOne(id) {
-    return this._articles.find((item) => item.id === id);
-  }
-
-  update(id, article) {
-    const oldArticle = this._articles
-      .find((item) => item.id === id);
-
-    return Object.assign(oldArticle, article);
+  async update(id, article) {
+    const [affectedRows] = await this._Article.update(
+        article,
+        {where: {id}},
+    );
+    return !!affectedRows;
   }
 }
 

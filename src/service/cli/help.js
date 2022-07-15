@@ -12,6 +12,7 @@ const text = `
   --generate <count>    формирует файл mocks.json
   --server <port>       запуск сервера на указаном порту или 3000
   --fill <count>        формирует файл fill-db.sql для заполнения базы данных
+  --filldb <count>      создает базу данных и заполняет её моковыми данными
 `;
 
 module.exports = {
