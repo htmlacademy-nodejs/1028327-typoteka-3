@@ -106,6 +106,37 @@ class ArticleService {
     );
     return !!affectedRows;
   }
+
+  async findPage({limit, offset}) {
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        {
+          model: this._Category,
+          as: Aliase.CATEGORIES,
+          attributes: [
+            `id`,
+            `name`,
+          ],
+        },
+        {
+          model: this._Comment,
+          as: Aliase.COMMENTS,
+          attributes: [
+            `id`,
+            `text`,
+          ],
+        },
+      ],
+      order: [
+        [`createdAt`, `DESC`],
+      ],
+      distinct: true,
+    });
+
+    return {count, articles: rows};
+  }
 }
 
 module.exports = ArticleService;

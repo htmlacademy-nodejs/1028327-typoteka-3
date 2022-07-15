@@ -47,18 +47,13 @@ block content
             h3.preview__name
               a.preview__name-link(href=`/articles/${article.id}`)=article.title
             p.preview__text=article.announce
-            if article.commentsCount
+            if article.comments.length > 0
               a.preview__comment(href=`/articles/${article.id}#comments`)
                 | Комментарии
                 span.preview__cloud
-                b.preview__comment-count=article.commentsCount
+                b.preview__comment-count=article.comments.length
 
     .preview__toggle-wrapper
-      ul.preview__pagination.pagination
-        li
-          a.pagination__button.button.button--backwards.button--disabled(href="#" aria-label="Страница назад") Назад
-        each item, i in [1, 2, 3, 4, 5]
-          li.pagination__item(class=(item === 1 ? "pagination__item--active" : null))
-            a(href="#")=item
-        li
-          a.pagination__button.button.button--forward(href="#" aria-label="Страница вперед") Вперед
+      .preview__pagination
+        if totalPages > 1
+          +pagination(page, totalPages, 2, `?`)
