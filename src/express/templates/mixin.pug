@@ -3,6 +3,7 @@ mixin retinaImage(img, alt=null, width=null, height=null)
   - var format = img.split(".").pop();
   img(src=`${path}@1x.${format}` srcset=`${path}@2x.${format} 2x` alt=alt width=width height=height)
 
+
 mixin console(data)
   script
     if data
@@ -11,6 +12,7 @@ mixin console(data)
     else
       | console.log('data is empty');
 
+
 mixin timeLabel(dateStr, className=null)
   - var date = new Date(dateStr)
   //- YYYY-MM-DDTHH:mm:ss.sssZ
@@ -18,3 +20,32 @@ mixin timeLabel(dateStr, className=null)
   //- DD.MM.YYYY, HH:mm
   - var dateValue = date.toLocaleString("ru-RU", {year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute:"2-digit"})
   time(class=className datetime=datetime)=dateValue
+
+
+mixin pagination(page, totalPages, width, prefix)
+  -
+    var start = page - width;
+    var end = page + width;
+
+    if (start < 1) {
+      end += 1 - start;
+      start = 1;
+    }
+    if (end > totalPages) {
+      start -= end - totalPages;
+      end = totalPages;
+    }
+    if (start < 1) {
+      start = 1;
+    }
+
+    var i = start - 1
+
+  ul.pagination
+    li
+      a.pagination__button.button.button--backwards(class=(page === 1 && "button--disabled") href=(page !== 1 && `${prefix}page=${page - 1}`) aria-label="Страница назад") Назад
+    while i++ < end
+      li.pagination__item(class=(i === page && "pagination__item--active"))
+        a(href=`${prefix}page=${i}`)=i
+    li
+      a.pagination__button.button.button--forward(class=(page === totalPages && "button--disabled") href=(page !== totalPages && `${prefix}page=${page + 1}`) aria-label="Страница вперед") Вперед

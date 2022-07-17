@@ -16,8 +16,8 @@ class API {
     });
   }
 
-  getArticles() {
-    return this._load(`/articles`);
+  getArticles({offset, limit}) {
+    return this._load(`/articles`, {params: {offset, limit}});
   }
 
   getArticle(id, comments) {
