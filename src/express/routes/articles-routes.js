@@ -5,7 +5,10 @@ const api = require(`../api`).getAPI();
 const multer = require(`multer`);
 const {nanoid} = require(`nanoid`);
 const path = require(`path`);
-const {ensureArray} = require(`../../utils`);
+const {
+  ensureArray,
+  prepareErrors,
+} = require(`../../utils`);
 
 const UPLOAD_DIR = `../upload/img/`;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
@@ -22,6 +25,15 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 const articlesRoutes = new Router();
 
+const getAddArticleData = async (articleId) => { // TODO: 2022-07-18 / change
+  const [article, categories] = await Promise.all([
+    api.getOffer(articleId),
+    api.getCategories(),
+  ]);
+
+  return [article, categories];
+};
+
 articlesRoutes.get(`/category/:id`, (req, res) => res.render(`all-categories`));
 
 articlesRoutes.get(`/add`, async (req, res) => {
@@ -35,26 +47,28 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
   const articleData = {
     picture: file ? file.filename : ``,
     title: body.title,
-    createdDate: body.date,
-    сategory: ensureArray(body.categories),
+    // createdDate: body.date,
+    categories: ensureArray(body.categories),
     announce: body.announcement,
     text: body[`full-text`],
   };
 
   try {
     const article = await api.createArticle(articleData);
-    res.redirect(`/articles/${article.id}`);
-  } catch (error) {
-    res.redirect(`back`);
+    res.redirect(`/articles/${article.id}`); // TODO: 2022-07-18 / check
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const categories = await api.getCategories();
+    res.render(`post-edit`, {
+      categories,
+      validationMessages,
+    });
   }
 });
 
 articlesRoutes.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
-  const [article, categories] = await Promise.all([
-    api.getArticle(id),
-    api.getCategories(),
-  ]);
+  const [article, categories] = getAddArticleData(id);
 
   res.render(`post-edit`, {article, categories});
 });
