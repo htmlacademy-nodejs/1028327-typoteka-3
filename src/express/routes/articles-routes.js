@@ -25,21 +25,25 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 const articlesRoutes = new Router();
 
-const getAddArticleData = async (articleId) => { // TODO: 2022-07-18 / change
-  const [article, categories] = await Promise.all([
-    api.getArticle(articleId),
-    api.getCategories(),
-  ]);
+const getShortArticleData = async (articleId) => await Promise.all([
+  api.getArticle(articleId),
+  api.getCategories(),
+]);
 
-  return [article, categories];
-};
+
+const getFullArticleData = async (articleId) => await Promise.all([
+  api.getArticle(articleId, true),
+  api.getCategories(true),
+]);
 
 articlesRoutes.get(`/category/:id`, (req, res) => res.render(`all-categories`));
+
 
 articlesRoutes.get(`/add`, async (req, res) => {
   const categories = await api.getCategories();
   res.render(`post-edit`, {categories});
 });
+
 
 articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
   const {body, file} = req;
@@ -55,7 +59,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
 
   try {
     const article = await api.createArticle(articleData);
-    res.redirect(`/articles/${article.id}`); // TODO: 2022-07-18 / check
+    res.redirect(`/articles/${article.id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await api.getCategories();
@@ -67,9 +71,33 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
   }
 });
 
+
+articlesRoutes.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+
+  try {
+    const [article, categories] = await getFullArticleData(id);
+
+    const articleCategories = categories.filter(
+        (category) => article.categories.some(
+            (articleCategory) => articleCategory.id === category.id,
+        ),
+    );
+
+    res.render(`post`, {
+      id,
+      article,
+      categories: articleCategories,
+    });
+  } catch (error) {
+    res.status(error.response.status).render(`errors/404`);
+  }
+});
+
+
 articlesRoutes.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
-  const [article, categories] = await getAddArticleData(id);
+  const [article, categories] = await getShortArticleData(id);
 
   res.render(`post-edit`, {
     id,
@@ -77,6 +105,7 @@ articlesRoutes.get(`/edit/:id`, async (req, res) => {
     categories,
   });
 });
+
 
 articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   const {body, file} = req;
@@ -96,7 +125,7 @@ articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
     res.redirect(`/articles/${id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    const [article, categories] = await getAddArticleData(id);
+    const [article, categories] = await getShortArticleData(id);
 
     res.render(`post-edit`, {
       id,
@@ -107,27 +136,24 @@ articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   }
 });
 
-articlesRoutes.get(`/:id`, async (req, res) => {
+
+articlesRoutes.post(`/:id/comments`, upload.none(), async (req, res) => {
   const {id} = req.params;
+  const {comment} = req.body;
 
   try {
-    const [article, categories] = await Promise.all([
-      api.getArticle(id, true),
-      api.getCategories(true),
-    ]);
-
-    const articleCategories = categories.filter(
-        (category) => article.categories.some(
-            (articleCategory) => articleCategory.id === category.id,
-        ),
-    );
+    await api.createComment(id, {text: comment});
+    res.redirect(`/articles/${id}`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const [article, categories] = await getFullArticleData(id);
 
     res.render(`post`, {
+      id,
       article,
-      categories: articleCategories,
+      categories,
+      validationMessages,
     });
-  } catch (error) {
-    res.status(error.response.status).render(`errors/404`);
   }
 });
 

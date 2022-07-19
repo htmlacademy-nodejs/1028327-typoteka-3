@@ -54,6 +54,13 @@ class API {
     });
   }
 
+  createComment(id, data) {
+    return this._load(`/articles/${id}/comments`, {
+      method: `POST`,
+      data,
+    });
+  }
+
   async _load(url, options) {
     const respose = await this._http.request({url, ...options});
     return respose.data;
