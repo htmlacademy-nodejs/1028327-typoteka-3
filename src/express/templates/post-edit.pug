@@ -12,7 +12,7 @@ block content
                 h3 Дата публикации
                 .new-publication__date-form-division
                   .new-publication__date-block
-                    - var date = new Date(id ? article.createdAt : Date.now()).toLocaleDateString("en-CA")
+                    - var date = new Date(id ? article.date : Date.now()).toLocaleDateString("en-CA")
                     label(for="new-publication-date" aria-label="Календарь")
                     input#new-publication-date(type="text" name="date" placeholder=date value=date)
               button.new-publication__button.button.button--colored(type="submit") Опубликовать

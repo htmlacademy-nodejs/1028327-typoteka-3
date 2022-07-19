@@ -51,7 +51,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
   const articleData = {
     picture: file ? file.filename : ``,
     title: body.title,
-    // createdDate: body.date,
+    date: body.date,
     categories: ensureArray(body.categories),
     announce: body.announcement,
     text: body.text,
@@ -114,7 +114,7 @@ articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   const articleData = {
     picture: file ? file.filename : body.photo,
     title: body.title,
-    // createdDate: body.date,
+    date: body.date,
     categories: ensureArray(body.categories),
     announce: body.announcement,
     text: body.text,

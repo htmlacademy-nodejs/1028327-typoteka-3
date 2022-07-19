@@ -21,6 +21,7 @@ const schema = Joi.object({
   ).min(1).required().messages({
     'array.min': ErrorOfferMessage.CATEGORIES_MIN,
   }),
+  date: Joi.date().iso().required(),
   title: Joi.string().min(30).max(250).required().messages({
     'string.min': ErrorOfferMessage.TITLE_MIN,
     'string.max': ErrorOfferMessage.TITLE_MAX,
