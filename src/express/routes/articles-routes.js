@@ -27,7 +27,7 @@ const articlesRoutes = new Router();
 
 const getAddArticleData = async (articleId) => { // TODO: 2022-07-18 / change
   const [article, categories] = await Promise.all([
-    api.getOffer(articleId),
+    api.getArticle(articleId),
     api.getCategories(),
   ]);
 
@@ -50,7 +50,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
     // createdDate: body.date,
     categories: ensureArray(body.categories),
     announce: body.announcement,
-    text: body[`full-text`],
+    text: body.text,
   };
 
   try {
@@ -59,6 +59,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await api.getCategories();
+
     res.render(`post-edit`, {
       categories,
       validationMessages,
@@ -68,9 +69,42 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
 
 articlesRoutes.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
-  const [article, categories] = getAddArticleData(id);
+  const [article, categories] = await getAddArticleData(id);
 
-  res.render(`post-edit`, {article, categories});
+  res.render(`post-edit`, {
+    id,
+    article,
+    categories,
+  });
+});
+
+articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
+  const {body, file} = req;
+  const {id} = req.params;
+
+  const articleData = {
+    picture: file ? file.filename : body.photo,
+    title: body.title,
+    // createdDate: body.date,
+    categories: ensureArray(body.categories),
+    announce: body.announcement,
+    text: body.text,
+  };
+
+  try {
+    await api.editArticle(id, articleData);
+    res.redirect(`/articles/${id}`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const [article, categories] = await getAddArticleData(id);
+
+    res.render(`post-edit`, {
+      id,
+      article,
+      categories,
+      validationMessages,
+    });
+  }
 });
 
 articlesRoutes.get(`/:id`, async (req, res) => {
@@ -88,7 +122,10 @@ articlesRoutes.get(`/:id`, async (req, res) => {
         ),
     );
 
-    res.render(`post`, {article, categories: articleCategories});
+    res.render(`post`, {
+      article,
+      categories: articleCategories,
+    });
   } catch (error) {
     res.status(error.response.status).render(`errors/404`);
   }

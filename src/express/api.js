@@ -47,6 +47,13 @@ class API {
     });
   }
 
+  editArticle(id, data) {
+    return this._load(`/articles/${id}`, {
+      method: `PUT`,
+      data,
+    });
+  }
+
   async _load(url, options) {
     const respose = await this._http.request({url, ...options});
     return respose.data;
