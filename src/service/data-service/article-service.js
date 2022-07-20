@@ -104,6 +104,7 @@ class ArticleService {
         article,
         {where: {id}},
     );
+
     return !!affectedRows;
   }
 

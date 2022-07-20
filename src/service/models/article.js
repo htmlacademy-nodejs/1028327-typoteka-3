@@ -15,6 +15,11 @@ const define = (sequelize) => Article.init({
     type: DataTypes.STRING(250),
     allowNull: false,
   },
+  date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
   text: {
     // eslint-disable-next-line new-cap
     type: DataTypes.STRING(1000),

@@ -112,9 +112,10 @@ const mockArticles = [
 ];
 
 const newArticle = {
-  title: `Как правильно гладить котика`,
-  announce: `Все секреты правильного поглаживания`,
+  title: `Как правильно гладить котика. Все секреты правильного поглаживания.`,
+  announce: `В чем смысл этого материала? В кошках, конечно! Существует немало исследований, в которых ученые пытались понять различные аспекты обращения с домашними животными. Мы остановились на главной проблеме — и объясняем, как правильно гладить котов.`,
   categories: [1, 2],
+  date: `2022-07-19T12:46:09.607Z`,
 };
 
 const createAPI = async () => {
@@ -175,8 +176,8 @@ describe(`API creates an article if data is valid`, () => {
   });
 
   test(`Status code 201`, () => expect(res.statusCode).toBe(HttpCode.CREATED));
-  test(`Article has property "createdAt"`, () =>
-    expect(res.body.hasOwnProperty(`createdAt`)).toEqual(true));
+  test(`Article has property "date"`, () =>
+    expect(res.body.hasOwnProperty(`date`)).toEqual(true));
   test(`Articles count is changed`, () =>
     request(app)
       .get(`/articles`)
@@ -193,11 +194,41 @@ describe(`API refuses to create an article if data is invalid`, () => {
 
   test(`Without any required property response code is 400`, async () => {
     for (const key of Object.keys(newArticle)) {
-      const badOffer = {...newArticle};
-      delete badOffer[key];
+      const badArticle = {...newArticle};
+      delete badArticle[key];
       await request(app)
         .post(`/articles`)
-        .send(badOffer)
+        .send(badArticle)
+        .expect(HttpCode.BAD_REQUEST);
+    }
+  });
+
+  test(`When field type is wrong response code is 400`, async () => {
+    const badArticles = [
+      {...newArticle, title: true},
+      {...newArticle, date: 20},
+      {...newArticle, announce: [1, 2]},
+      {...newArticle, categories: `Котики`},
+    ];
+    for (const badArticle of badArticles) {
+      await request(app)
+        .post(`/articles`)
+        .send(badArticle)
+        .expect(HttpCode.BAD_REQUEST);
+    }
+  });
+
+  test(`When field value is wrong response code is 400`, async () => {
+    const badArticles = [
+      {...newArticle, title: ``},
+      {...newArticle, date: `Mon Aug 20 2012 09:06:56`},
+      {...newArticle, announce: `too short`},
+      {...newArticle, categories: []},
+    ];
+    for (const badArticle of badArticles) {
+      await request(app)
+        .post(`/articles`)
+        .send(badArticle)
         .expect(HttpCode.BAD_REQUEST);
     }
   });
@@ -216,7 +247,7 @@ describe(`API changes existent article`, () => {
   test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
   test(`Article is really changed`, () =>
     request(app).get(`/articles/1`).expect((response) =>
-      expect(response.body.title).toBe(`Как правильно гладить котика`)));
+      expect(response.body.title).toBe(`Как правильно гладить котика. Все секреты правильного поглаживания.`)));
 });
 
 // test case 06
