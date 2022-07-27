@@ -3,6 +3,7 @@
 const defineCategory = require(`./category`);
 const defineComment = require(`./comment`);
 const defineArticle = require(`./article`);
+const defineUser = require(`./user`);
 const defineArticleCategory = require(`./article-category`);
 const Aliase = require(`./aliase`);
 
@@ -10,6 +11,7 @@ const define = (sequelize) => {
   const Category = defineCategory(sequelize);
   const Comment = defineComment(sequelize);
   const Article = defineArticle(sequelize);
+  const User = defineUser(sequelize);
   const ArticleCategory = defineArticleCategory(sequelize);
 
   Article.hasMany(Comment, {
@@ -33,7 +35,33 @@ const define = (sequelize) => {
     as: Aliase.ARTICLES_CATEGORIES,
   });
 
-  return {Category, Comment, Article, ArticleCategory};
+  User.hasMany(Article, {
+    as: Aliase.ARTICLES,
+    foreignKey: `userId`,
+  });
+
+  Article.belongsTo(User, {
+    as: Aliase.USERS,
+    foreignKey: `userId`,
+  });
+
+  User.hasMany(Comment, {
+    as: Aliase.COMMENTS,
+    foreignKey: `userId`,
+  });
+
+  Comment.belongsTo(User, {
+    as: Aliase.USERS,
+    foreignKey: `userId`,
+  });
+
+  return {
+    Category,
+    Comment,
+    Article,
+    ArticleCategory,
+    User,
+  };
 };
 
 module.exports = define;
