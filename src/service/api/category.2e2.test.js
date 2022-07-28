@@ -5,6 +5,7 @@ const request = require(`supertest`);
 const Sequelize = require(`sequelize`);
 const category = require(`./category`);
 const initDB = require(`../lib/init-db`);
+const passwordUtils = require(`../lib/password`);
 const {CategoryService} = require(`../data-service`);
 const {HttpCode} = require(`../../constants`);
 
@@ -15,8 +16,36 @@ const mockCategories = [
   `Музыка`,
 ];
 
+const mockUsers = [
+  {
+    name: `Иван Иванов`,
+    email: `ivanov@example.com`,
+    passwordHash: passwordUtils.hashSync(`ivanov`),
+    avatar: `avatar-1.jpg`,
+  },
+  {
+    name: `Пётр Петров`,
+    email: `petrov@example.com`,
+    passwordHash: passwordUtils.hashSync(`petrov`),
+    avatar: `avatar-2.jpg`,
+  },
+  {
+    name: `Зураби Беридзе`,
+    email: `beridze@example.com`,
+    passwordHash: passwordUtils.hashSync(`beridze`),
+    avatar: `avatar-3.jpg`,
+  },
+  {
+    name: `Ганс Мюллер`,
+    email: `gans@example.com`,
+    passwordHash: passwordUtils.hashSync(`gans`),
+    avatar: `avatar-4.jpg`,
+  },
+];
+
 const mockArticles = [
   {
+    user: `ivanov@example.com`,
     title: `Как начать программировать`,
     createdDate: `2022-04-12 20:59:39`,
     announce: `Это один из лучших рок-музыкантов.`,
@@ -29,6 +58,7 @@ const mockArticles = [
     comments: [],
   },
   {
+    user: `gans@example.com`,
     title: `Ёлки. История деревьев`,
     createdDate: `2022-05-11 23:35:03`,
     announce: `Игры и программирование разные вещи. Не стоит идти в программисты, если вам нравятся только игры.`,
@@ -41,6 +71,7 @@ const mockArticles = [
     comments: [],
   },
   {
+    user: `beridze@example.com`,
     title: `Как перестать беспокоиться и начать жить`,
     createdDate: `2022-03-13 22:50:31`,
     announce: `Как начать действовать? Для начала просто соберитесь. В случае необходимости оставьте доверенность на адвоката, чтобы он мог представлять ваши интересы в суде без вашего присутствия. Простые ежедневные упражнения помогут достичь успеха. Процессор заслуживает особого внимания. Он обязательно понравится геймерам со стажем.`,
@@ -53,6 +84,7 @@ const mockArticles = [
     comments: [],
   },
   {
+    user: `petrov@example.com`,
     title: `Рок — это протест`,
     createdDate: `2022-05-09 18:42:02`,
     announce: `К NFT растет интерес со стороны традиционного арт-рынка и традиционных коллекционеров. Приходи сюда утром в будние дни для неспешных завтраков с видом на просыпающийся город и обязательно заказывай кофе, сваренный на песке.`,
@@ -64,14 +96,17 @@ const mockArticles = [
     ],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Мне кажется или я уже читал это где-то?`,
       },
       {
+        user: `beridze@example.com`,
         text: `Согласен с автором! Совсем немного... Планируете записать видосик на эту тему?`,
       },
     ],
   },
   {
+    user: `gans@example.com`,
     title: `Самый лучший музыкальный альбом этого года`,
     createdDate: `2022-05-08 05:47:55`,
     announce: `Покупка NFT-токена закрепляет за человеком право на владение цифровым объектом в интернете.`,
@@ -94,6 +129,7 @@ beforeAll(async () => {
   await initDB(mockDB, {
     categories: mockCategories,
     articles: mockArticles,
+    users: mockUsers,
   });
   category(app, new CategoryService(mockDB));
 });
