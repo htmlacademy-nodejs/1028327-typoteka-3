@@ -2,39 +2,24 @@
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
-const multer = require(`multer`);
-const {nanoid} = require(`nanoid`);
-const path = require(`path`);
+const upload = require(`../middlewares/upload`);
 const {
   ensureArray,
   prepareErrors,
 } = require(`../../utils`);
-
-const UPLOAD_DIR = `../upload/img/`;
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
-
-const storage = multer.diskStorage({
-  destination: uploadDirAbsolute,
-  filename: (req, file, cb) => {
-    const uniqueName = nanoid(10);
-    const extension = file.originalname.split(`.`).pop();
-    cb(null, `${uniqueName}.${extension}`);
-  },
-});
-
-const upload = multer({storage});
-const articlesRoutes = new Router();
 
 const getShortArticleData = async (articleId) => await Promise.all([
   api.getArticle(articleId),
   api.getCategories(),
 ]);
 
-
 const getFullArticleData = async (articleId) => await Promise.all([
   api.getArticle(articleId, true),
   api.getCategories(true),
 ]);
+
+const articlesRoutes = new Router();
+
 
 articlesRoutes.get(`/category/:id`, (req, res) => res.render(`all-categories`));
 

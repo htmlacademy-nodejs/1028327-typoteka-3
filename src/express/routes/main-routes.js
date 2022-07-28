@@ -2,6 +2,8 @@
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
+const upload = require(`../middlewares/upload`);
+const {prepareErrors} = require(`../../utils`);
 const {
   MAX_LAST_COMMENTS,
   MAX_DISCUSSED_ARTICLES,
@@ -9,6 +11,7 @@ const {
 } = require(`../../constants`);
 
 const mainRoutes = new Router();
+
 
 mainRoutes.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
@@ -41,8 +44,33 @@ mainRoutes.get(`/`, async (req, res) => {
   });
 });
 
+
 mainRoutes.get(`/register`, (req, res) => res.render(`sign-up`));
+
+
+mainRoutes.post(`/register`, upload.single(`avatar`), async (req, res) => {
+  const {body, file} = req;
+
+  const userData = {
+    avatar: file ? file.filename : ``,
+    name: `${body.name} ${body.surname}`,
+    email: body.email,
+    password: body.password,
+    passwordRepeated: body[`repeat-password`],
+  };
+
+  try {
+    await api.createUser(userData);
+    res.redirect(`/login`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    res.render(`sign-up`, {validationMessages});
+  }
+});
+
+
 mainRoutes.get(`/login`, (req, res) => res.render(`login`));
+
 
 mainRoutes.get(`/search`, async (req, res) => {
   const {query} = req.query;
@@ -59,5 +87,6 @@ mainRoutes.get(`/search`, async (req, res) => {
     res.render(`search`, {query, articles: []});
   }
 });
+
 
 module.exports = mainRoutes;
