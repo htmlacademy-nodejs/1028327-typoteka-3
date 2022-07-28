@@ -5,6 +5,7 @@ const request = require(`supertest`);
 const Sequelize = require(`sequelize`);
 const search = require(`./search`);
 const initDB = require(`../lib/init-db`);
+const passwordUtils = require(`../lib/password`);
 const {SearchService} = require(`../data-service`);
 const {HttpCode} = require(`../../constants`);
 
@@ -19,8 +20,36 @@ const mockCategories = [
   `Релокация`,
 ];
 
+const mockUsers = [
+  {
+    name: `Иван Иванов`,
+    email: `ivanov@example.com`,
+    passwordHash: passwordUtils.hashSync(`ivanov`),
+    avatar: `avatar-1.jpg`,
+  },
+  {
+    name: `Пётр Петров`,
+    email: `petrov@example.com`,
+    passwordHash: passwordUtils.hashSync(`petrov`),
+    avatar: `avatar-2.jpg`,
+  },
+  {
+    name: `Зураби Беридзе`,
+    email: `beridze@example.com`,
+    passwordHash: passwordUtils.hashSync(`beridze`),
+    avatar: `avatar-3.jpg`,
+  },
+  {
+    name: `Ганс Мюллер`,
+    email: `gans@example.com`,
+    passwordHash: passwordUtils.hashSync(`gans`),
+    avatar: `avatar-4.jpg`,
+  },
+];
+
 const mockArticles = [
   {
+    user: `ivanov@example.com`,
     title: `Как начать программировать`,
     createdDate: `2022-03-05 12:12:50`,
     announce: `Вы можете достичь всего. Стоит только немного постараться и запастись книгами. Собрать камни бесконечности легко, если вы прирожденный герой. Процессор заслуживает особого внимания. Он обязательно понравится геймерам со стажем.`,
@@ -32,20 +61,25 @@ const mockArticles = [
     ],
     comments: [
       {
+        user: `petrov@example.com`,
         text: `Согласен с автором!`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Это где ж такие красоты? Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Мне кажется или я уже читал это где-то?`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Согласен с автором!`,
       },
       {
+        user: `petrov@example.com`,
         text: `Совсем немного... Согласен с автором! Мне кажется или я уже читал это где-то?`,
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     title: `Борьба с прокрастинацией`,
     createdDate: `2022-04-20 21:51:01`,
     announce: `Игры и программирование разные вещи. Не стоит идти в программисты, если вам нравятся только игры.`,
@@ -58,6 +92,7 @@ const mockArticles = [
     comments: [],
   },
   {
+    user: `beridze@example.com`,
     title: `Лучшие рок-музыканты 20-века`,
     createdDate: `2022-03-03 05:02:49`,
     announce: `Оплатите все штрафы, налоговые задолженности и пени, т.к. невыполненные платежные обязательства могут помешать вашему отъезду. К NFT растет интерес со стороны традиционного арт-рынка и традиционных коллекционеров. Простые ежедневные упражнения помогут достичь успеха. Программировать не настолько сложно, как об этом говорят. Достичь успеха помогут ежедневные повторения.`,
@@ -69,11 +104,13 @@ const mockArticles = [
     ],
     comments: [
       {
+        user: `gans@example.com`,
         text: `Плюсую, но слишком много буквы!`,
       },
     ],
   },
   {
+    user: `gans@example.com`,
     title: `Эмиграция из России в свободный Мир`,
     createdDate: `2022-03-16 22:51:31`,
     announce: `Блюда и музыка такие, что хочется узнать рецепт и прошазамить. Простые ежедневные упражнения помогут достичь успеха. Собрать камни бесконечности легко, если вы прирожденный герой.`,
@@ -85,16 +122,20 @@ const mockArticles = [
     ],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Согласен с автором! Мне кажется или я уже читал это где-то? Планируете записать видосик на эту тему?`,
       },
       {
+        user: `beridze@example.com`,
         text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.`,
       },
       {
+        user: `petrov@example.com`,
         text: `Плюсую, но слишком много буквы! Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Мне кажется или я уже читал это где-то?`,
       }],
   },
   {
+    user: `ivanov@example.com`,
     title: `NFT и крипто-арт: что, где, когда и почему так дорого`,
     createdDate: `2022-05-26 22:37:52`,
     announce: `Оплатите все штрафы, налоговые задолженности и пени, т.к. невыполненные платежные обязательства могут помешать вашему отъезду. Программировать не настолько сложно, как об этом говорят. Освоить вёрстку несложно. Возьмите книгу новую книгу и закрепите все упражнения на практике. Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать. Сейчас большое количество людей в России принимают тяжелое решение: уезжать или нет.`,
@@ -106,6 +147,7 @@ const mockArticles = [
     ],
     comments: [
       {
+        user: `beridze@example.com`,
         text: `Планируете записать видосик на эту тему?`,
       },
     ],
@@ -121,6 +163,7 @@ beforeAll(async () => {
   await initDB(mockDB, {
     categories: mockCategories,
     articles: mockArticles,
+    users: mockUsers,
   });
   search(app, new SearchService(mockDB));
 });

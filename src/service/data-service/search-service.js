@@ -10,8 +10,7 @@ class SearchService {
       SELECT
         id,
         title,
-        created_at AS "createdAt",
-        updated_at AS "updatedAt"
+        date
       FROM articles
       WHERE LOWER(articles.title) LIKE LOWER(?)
       ORDER BY articles.created_at DESC

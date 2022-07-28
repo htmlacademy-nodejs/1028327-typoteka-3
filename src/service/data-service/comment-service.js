@@ -1,9 +1,12 @@
 'use strict';
 
+const Aliase = require(`../models/aliase`);
+
 class CommentService {
   constructor(sequelize) {
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
+    this._User = sequelize.models.User;
   }
 
   create(articleId, comment) {
@@ -30,13 +33,21 @@ class CommentService {
       attributes: [
         `text`,
         `createdAt`,
-        `ArticleId`,
+        `ArticleId`, // TODO: 2022-07-27 / change name field
       ],
       order: [
         [`createdAt`, `DESC`],
       ],
       limit: count,
-      raw: true,
+      include: [{
+        model: this._User,
+        as: Aliase.USER,
+        attributes: [
+          `id`,
+          `name`,
+          `avatar`,
+        ],
+      }],
     });
   }
 }
