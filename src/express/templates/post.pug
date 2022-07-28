@@ -29,10 +29,10 @@ block content
             each comment in article.comments
               li.comments__comment
                 .comments__avatar.avatar
-                  img(src="/img/avatar-1.png" alt="аватар пользователя")
+                  img(src=`/img/${comment.user.avatar}` alt="аватар пользователя")
                 .comments__text
                   .comments__head
-                    p Евгений Петров •
+                    p #{comment.user.name} •
                     +timeLabel(comment.createdAt, "comments__date")
                   p.comments__message=comment.text
 

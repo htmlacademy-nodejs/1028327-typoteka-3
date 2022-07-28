@@ -27,9 +27,10 @@ block content
           span.last__icon.last__icon--cloud
         ul.last__list
           each comment in lastestComments
+            +console(comment)
             li.last__list-item
-              img.last__list-image(src="/img/avatar-small-2.png" width="20" height="20" alt="Аватар пользователя")
-              b.last__list-name Анна Артамонова
+              img.last__list-image(src=`/img/${comment.user.avatar}` width="20" height="20" alt="Аватар пользователя")
+              b.last__list-name=comment.user.name
               a.last__list-link(href=`/articles/${comment.ArticleId}#comments`)=comment.text
 
     section.main-page__list.preview
