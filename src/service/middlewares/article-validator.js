@@ -11,6 +11,7 @@ const ErrorOfferMessage = {
   ANNOUNCE_MAX: `Анонс не может содержать более 250 символов`,
   TEXT_MAX: `Текст публикации не может содержать более 1000 символов`,
   DATE: `Произошла ошибка при выборе даты`,
+  USER_ID: `Некорректный идентификатор пользователя`,
 };
 
 const schema = Joi.object({
@@ -34,6 +35,9 @@ const schema = Joi.object({
     'string.max': ErrorOfferMessage.TEXT_MAX,
   }),
   picture: Joi.string().empty(``),
+  userId: Joi.number().integer().positive().required().messages({
+    'number.base': ErrorOfferMessage.USER_ID,
+  }),
 });
 
 module.exports = (req, res, next) => {
