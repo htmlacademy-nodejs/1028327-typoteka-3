@@ -8,7 +8,7 @@ class ArticleService {
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
-    this._sequelize = sequelize;
+    this._User = sequelize.models.User;
   }
 
   async create(articleData) {
@@ -90,10 +90,35 @@ class ArticleService {
   }
 
   async findOne(id, needComments) {
-    const include = [Aliase.CATEGORIES];
+    const include = [{
+      model: this._Category,
+      as: Aliase.CATEGORIES,
+      attributes: [
+        `id`,
+        `name`,
+      ],
+    }];
 
     if (needComments) {
-      include.push(Aliase.COMMENTS);
+      include.push({
+        model: this._Comment,
+        as: Aliase.COMMENTS,
+        attributes: [
+          `text`,
+          `createdAt`,
+        ],
+        include: [
+          {
+            model: this._User,
+            as: Aliase.USER,
+            attributes: [
+              `id`,
+              `name`,
+              `avatar`,
+            ],
+          },
+        ],
+      });
     }
 
     return this._Article.findByPk(id, {include});
