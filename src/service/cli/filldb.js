@@ -38,25 +38,25 @@ module.exports = {
         name: `Иван Иванов`,
         email: `ivanov@example.com`,
         passwordHash: await passwordUtils.hash(`ivanov`),
-        avatar: `avatar01.jpg`,
+        avatar: `avatar-1.jpg`,
       },
       {
         name: `Пётр Петров`,
         email: `petrov@example.com`,
         passwordHash: await passwordUtils.hash(`petrov`),
-        avatar: `avatar02.jpg`,
+        avatar: `avatar-2.jpg`,
       },
       {
         name: `Зураби Беридзе`,
         email: `beridze@example.com`,
         passwordHash: await passwordUtils.hash(`beridze`),
-        avatar: `avatar03.jpg`,
+        avatar: `avatar-3.jpg`,
       },
       {
         name: `Ганс Мюллер`,
         email: `gans@example.com`,
         passwordHash: await passwordUtils.hash(`gans`),
-        avatar: `avatar04.jpg`,
+        avatar: `avatar-4.jpg`,
       },
     ];
 

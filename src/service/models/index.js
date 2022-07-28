@@ -41,7 +41,7 @@ const define = (sequelize) => {
   });
 
   Article.belongsTo(User, {
-    as: Aliase.USERS,
+    as: Aliase.USER,
     foreignKey: `userId`,
   });
 
@@ -51,7 +51,7 @@ const define = (sequelize) => {
   });
 
   Comment.belongsTo(User, {
-    as: Aliase.USERS,
+    as: Aliase.USER,
     foreignKey: `userId`,
   });
 
