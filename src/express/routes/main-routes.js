@@ -64,12 +64,45 @@ mainRoutes.post(`/register`, upload.single(`avatar`), async (req, res) => {
     res.redirect(`/login`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    res.render(`sign-up`, {validationMessages});
+
+    res.render(`sign-up`, {
+      validationMessages,
+    });
   }
 });
 
 
-mainRoutes.get(`/login`, (req, res) => res.render(`login`));
+mainRoutes.get(`/login`, (_req, res) => res.render(`login`));
+
+
+mainRoutes.post(`/login`, async (req, res) => {
+  const {body} = req;
+
+  const loginData = {
+    email: body.email,
+    password: body.password,
+  };
+
+  try {
+    const user = await api.auth(loginData);
+    req.session.user = user;
+    req.session.save(() => res.redirect(`/`));
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const {user} = req.session;
+
+    res.render(`login`, {
+      user,
+      validationMessages,
+    });
+  }
+});
+
+
+mainRoutes.get(`/logout`, (req, res) => {
+  delete req.session.user;
+  res.redirect(`/`);
+});
 
 
 mainRoutes.get(`/search`, async (req, res) => {
@@ -82,9 +115,15 @@ mainRoutes.get(`/search`, async (req, res) => {
 
   try {
     const articles = await api.search(query);
-    res.render(`search`, {query, articles});
+    res.render(`search`, {
+      query,
+      articles,
+    });
   } catch (error) {
-    res.render(`search`, {query, articles: []});
+    res.render(`search`, {
+      query,
+      articles: [],
+    });
   }
 });
 
