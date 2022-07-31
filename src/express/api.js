@@ -2,13 +2,13 @@
 
 const axios = require(`axios`);
 const {
-  DEFAULT_PORT,
+  REST_API_DEFAULT_PORT,
   HttpMethod,
 } = require(`../constants`);
 
 const TIMEOUT = 1000;
 
-const port = process.env.API_PORT || DEFAULT_PORT;
+const port = process.env.API_PORT || REST_API_DEFAULT_PORT;
 const defaultUrl = `http://localhost:${port}/api/`;
 
 class API {

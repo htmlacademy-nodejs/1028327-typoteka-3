@@ -6,8 +6,8 @@ const express = require(`express`);
 const articlesRoutes = require(`./routes/articles-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
+const {FRONT_DEFAULT_PORT} = require(`../constants`);
 
-const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 const FAVICON_DIR = `public/favicon`;
@@ -27,4 +27,4 @@ app.set(`view engine`, `pug`);
 app.use((req, res) => res.status(400).render(`errors/404`));
 app.use((err, req, res) => res.status(500).render(`errors/500`));
 
-app.listen(DEFAULT_PORT);
+app.listen(FRONT_DEFAULT_PORT);
