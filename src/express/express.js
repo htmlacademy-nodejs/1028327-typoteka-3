@@ -23,6 +23,7 @@ const app = express();
 
 const mySessionStore = new SequelizeStore({
   db: sequelize,
+  tableName: `sessions`,
   expiration: 180000,
   checkExpirationInterval: 60000,
 });
