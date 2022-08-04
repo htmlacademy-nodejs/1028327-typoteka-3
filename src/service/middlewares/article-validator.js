@@ -31,10 +31,10 @@ const schema = Joi.object({
     'string.min': ErrorOfferMessage.ANNOUNCE_MIN,
     'string.max': ErrorOfferMessage.ANNOUNCE_MAX,
   }),
-  text: Joi.string().max(1000).empty(``).messages({
+  text: Joi.string().max(1000).messages({
     'string.max': ErrorOfferMessage.TEXT_MAX,
-  }),
-  picture: Joi.string().empty(``),
+  }).allow(null),
+  picture: Joi.string().allow(null),
   userId: Joi.number().integer().positive().required().messages({
     'number.base': ErrorOfferMessage.USER_ID,
   }),

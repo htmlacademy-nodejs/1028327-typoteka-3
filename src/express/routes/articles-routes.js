@@ -42,15 +42,17 @@ articlesRoutes.get(`/add`, async (req, res) => {
 
 
 articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
+  const {user} = req.session;
   const {body, file} = req;
 
   const articleData = {
-    picture: file ? file.filename : ``,
+    userId: user.id,
+    picture: file ? file.filename : null,
     title: body.title,
     date: body.date,
     categories: ensureArray(body.categories),
     announce: body.announcement,
-    text: body.text,
+    text: body.text ? body.text : null,
   };
 
   try {
@@ -63,6 +65,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
     res.render(`post-edit`, {
       categories,
       validationMessages,
+      user,
     });
   }
 });
@@ -110,16 +113,18 @@ articlesRoutes.get(`/edit/:id`, async (req, res) => {
 
 
 articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
+  const {user} = req.session;
   const {body, file} = req;
   const {id} = req.params;
 
   const articleData = {
-    picture: file ? file.filename : body.photo,
+    userId: user.id,
+    picture: (file && file.filename) || (body.photo || null),
     title: body.title,
     date: body.date,
     categories: ensureArray(body.categories),
     announce: body.announcement,
-    text: body.text,
+    text: body.text ? body.text : null,
   };
 
   try {
@@ -134,17 +139,23 @@ articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
       article,
       categories,
       validationMessages,
+      user,
     });
   }
 });
 
 
 articlesRoutes.post(`/:id/comments`, upload.none(), async (req, res) => {
+  const {user} = req.session;
   const {id} = req.params;
   const {comment} = req.body;
 
   try {
-    await api.createComment(id, {text: comment});
+    await api.createComment(id, {
+      text: comment,
+      userId: user.id,
+    });
+
     res.redirect(`/articles/${id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
@@ -155,6 +166,7 @@ articlesRoutes.post(`/:id/comments`, upload.none(), async (req, res) => {
       article,
       categories,
       validationMessages,
+      user,
     });
   }
 });
