@@ -21,12 +21,23 @@ const getFullArticleData = async (articleId) => await Promise.all([
 const articlesRoutes = new Router();
 
 
-articlesRoutes.get(`/category/:id`, (req, res) => res.render(`all-categories`));
+articlesRoutes.get(`/category/:id`, (req, res) => {
+  const {user} = req.session;
+
+  res.render(`all-categories`, {
+    user,
+  });
+});
 
 
 articlesRoutes.get(`/add`, async (req, res) => {
+  const {user} = req.session;
   const categories = await api.getCategories();
-  res.render(`post-edit`, {categories});
+
+  res.render(`post-edit`, {
+    categories,
+    user,
+  });
 });
 
 
@@ -58,6 +69,7 @@ articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
 
 
 articlesRoutes.get(`/:id`, async (req, res) => {
+  const {user} = req.session;
   const {id} = req.params;
 
   try {
@@ -73,14 +85,18 @@ articlesRoutes.get(`/:id`, async (req, res) => {
       id,
       article,
       categories: articleCategories,
+      user,
     });
   } catch (error) {
-    res.status(error.response.status).render(`errors/404`);
+    res.status(error.response.status).render(`errors/404`, {
+      user,
+    });
   }
 });
 
 
 articlesRoutes.get(`/edit/:id`, async (req, res) => {
+  const {user} = req.session;
   const {id} = req.params;
   const [article, categories] = await getShortArticleData(id);
 
@@ -88,6 +104,7 @@ articlesRoutes.get(`/edit/:id`, async (req, res) => {
     id,
     article,
     categories,
+    user,
   });
 });
 
@@ -141,5 +158,6 @@ articlesRoutes.post(`/:id/comments`, upload.none(), async (req, res) => {
     });
   }
 });
+
 
 module.exports = articlesRoutes;

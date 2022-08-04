@@ -14,6 +14,7 @@ const mainRoutes = new Router();
 
 
 mainRoutes.get(`/`, async (req, res) => {
+  const {user} = req.session;
   let {page = 1} = req.query;
   page = +page;
 
@@ -41,11 +42,20 @@ mainRoutes.get(`/`, async (req, res) => {
     mostDiscussedArticles,
     page,
     totalPages,
+    user,
   });
 });
 
 
-mainRoutes.get(`/register`, (req, res) => res.render(`sign-up`));
+mainRoutes.get(`/register`, (req, res) => {
+  const {user} = req.session;
+
+  if (user) {
+    res.redirect(`/`);
+  } else {
+    res.render(`sign-up`);
+  }
+});
 
 
 mainRoutes.post(`/register`, upload.single(`avatar`), async (req, res) => {
@@ -72,7 +82,15 @@ mainRoutes.post(`/register`, upload.single(`avatar`), async (req, res) => {
 });
 
 
-mainRoutes.get(`/login`, (_req, res) => res.render(`login`));
+mainRoutes.get(`/login`, (req, res) => {
+  const {user} = req.session;
+
+  if (user) {
+    res.redirect(`/`);
+  } else {
+    res.render(`login`);
+  }
+});
 
 
 mainRoutes.post(`/login`, async (req, res) => {
@@ -101,11 +119,12 @@ mainRoutes.post(`/login`, async (req, res) => {
 
 mainRoutes.get(`/logout`, (req, res) => {
   delete req.session.user;
-  res.redirect(`/`);
+  res.redirect(`/login`);
 });
 
 
 mainRoutes.get(`/search`, async (req, res) => {
+  const {user} = req.session;
   const {query} = req.query;
 
   if (!query) {
@@ -118,11 +137,13 @@ mainRoutes.get(`/search`, async (req, res) => {
     res.render(`search`, {
       query,
       articles,
+      user,
     });
   } catch (error) {
     res.render(`search`, {
       query,
       articles: [],
+      user,
     });
   }
 });
