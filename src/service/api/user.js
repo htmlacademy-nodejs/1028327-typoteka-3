@@ -19,6 +19,9 @@ module.exports = (app, service) => {
     const data = req.body;
 
     data.passwordHash = await passwordUtils.hash(data.password);
+    delete data.password;
+    delete data.passwordRepeated;
+
     const result = await service.create(data);
     delete result.passwordHash;
 

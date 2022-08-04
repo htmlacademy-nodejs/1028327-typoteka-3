@@ -2,11 +2,12 @@
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
+const authorAuth = require(`../middlewares/author-auth`);
 
 const myRouter = new Router();
 
 
-myRouter.get(`/`, async (req, res) => {
+myRouter.get(`/`, authorAuth, async (req, res) => {
   const {user} = req.session;
 
   const articles = await api.getArticles();
@@ -23,7 +24,7 @@ myRouter.get(`/`, async (req, res) => {
 });
 
 
-myRouter.get(`/comments`, async (req, res) => {
+myRouter.get(`/comments`, authorAuth, async (req, res) => {
   const {user} = req.session;
   const articles = await api.getArticles();
 
@@ -34,7 +35,7 @@ myRouter.get(`/comments`, async (req, res) => {
 });
 
 
-myRouter.get(`/categories`, (req, res) => {
+myRouter.get(`/categories`, authorAuth, (req, res) => {
   const {user} = req.session;
 
   res.render(`all-categories`, {

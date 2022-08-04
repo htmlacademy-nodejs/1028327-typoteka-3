@@ -3,6 +3,8 @@
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
+const userAuth = require(`../middlewares/user-auth`);
+const authorAuth = require(`../middlewares/author-auth`);
 const {
   ensureArray,
   prepareErrors,
@@ -30,7 +32,7 @@ articlesRoutes.get(`/category/:id`, (req, res) => {
 });
 
 
-articlesRoutes.get(`/add`, async (req, res) => {
+articlesRoutes.get(`/add`, authorAuth, async (req, res) => {
   const {user} = req.session;
   const categories = await api.getCategories();
 
@@ -41,7 +43,7 @@ articlesRoutes.get(`/add`, async (req, res) => {
 });
 
 
-articlesRoutes.post(`/add`, upload.single(`upload`), async (req, res) => {
+articlesRoutes.post(`/add`, authorAuth, upload.single(`upload`), async (req, res) => {
   const {user} = req.session;
   const {body, file} = req;
 
@@ -98,7 +100,7 @@ articlesRoutes.get(`/:id`, async (req, res) => {
 });
 
 
-articlesRoutes.get(`/edit/:id`, async (req, res) => {
+articlesRoutes.get(`/edit/:id`, authorAuth, async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
   const [article, categories] = await getShortArticleData(id);
@@ -112,7 +114,7 @@ articlesRoutes.get(`/edit/:id`, async (req, res) => {
 });
 
 
-articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
+articlesRoutes.post(`/edit/:id`, authorAuth, upload.single(`upload`), async (req, res) => {
   const {user} = req.session;
   const {body, file} = req;
   const {id} = req.params;
@@ -145,7 +147,7 @@ articlesRoutes.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
 });
 
 
-articlesRoutes.post(`/:id/comments`, upload.none(), async (req, res) => {
+articlesRoutes.post(`/:id/comments`, userAuth, upload.none(), async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
   const {comment} = req.body;
