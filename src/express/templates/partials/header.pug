@@ -9,8 +9,12 @@ header.header(class=(error ? "header--error" : null))
       ul.navigation.header__navigation
         li.navigation__item
           a(href="/my") Публикации
+        li.navigation__item
           a(href="/my/categories") Категории
+        li.navigation__item
           a(href="/my/comments") Комментарии
+        li.navigation__item
+          a(href="/logout") Выйти
 
   else
     nav.header__nav
