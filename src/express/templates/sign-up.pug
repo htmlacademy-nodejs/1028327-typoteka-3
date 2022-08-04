@@ -9,6 +9,7 @@ block content
         h2.popup__title Регистрация
         .popup__form.popup__form--active.form.form--register
           form(action="/register" method="POST" enctype="multipart/form-data")
+            input(type="hidden" name="_csrf" value=csrfToken)
             .form__field
               label
                 input(type="email" name="email" placeholder="Электронная почта" required)

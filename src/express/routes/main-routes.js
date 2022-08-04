@@ -1,6 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
+const csrf = require(`csurf`);
 const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
 const {prepareErrors} = require(`../../utils`);
@@ -11,6 +12,7 @@ const {
 } = require(`../../constants`);
 
 const mainRoutes = new Router();
+const csrfProtection = csrf();
 
 
 mainRoutes.get(`/`, async (req, res) => {
@@ -47,53 +49,62 @@ mainRoutes.get(`/`, async (req, res) => {
 });
 
 
-mainRoutes.get(`/register`, (req, res) => {
+mainRoutes.get(`/register`, csrfProtection, (req, res) => {
   const {user} = req.session;
 
   if (user) {
     res.redirect(`/`);
   } else {
-    res.render(`sign-up`);
-  }
-});
-
-
-mainRoutes.post(`/register`, upload.single(`avatar`), async (req, res) => {
-  const {body, file} = req;
-
-  const userData = {
-    avatar: file ? file.filename : ``,
-    name: `${body.name} ${body.surname}`,
-    email: body.email,
-    password: body.password,
-    passwordRepeated: body[`repeat-password`],
-  };
-
-  try {
-    await api.createUser(userData);
-    res.redirect(`/login`);
-  } catch (errors) {
-    const validationMessages = prepareErrors(errors);
-
     res.render(`sign-up`, {
-      validationMessages,
+      csrfToken: req.csrfToken(),
     });
   }
 });
 
 
-mainRoutes.get(`/login`, (req, res) => {
+mainRoutes.post(`/register`,
+    upload.single(`avatar`),
+    csrfProtection,
+    async (req, res) => {
+      const {body, file} = req;
+
+      const userData = {
+        avatar: file ? file.filename : ``,
+        name: `${body.name} ${body.surname}`,
+        email: body.email,
+        password: body.password,
+        passwordRepeated: body[`repeat-password`],
+      };
+
+      try {
+        await api.createUser(userData);
+        res.redirect(`/login`);
+      } catch (errors) {
+        const validationMessages = prepareErrors(errors);
+
+        res.render(`sign-up`, {
+          validationMessages,
+          csrfToken: req.csrfToken(),
+        });
+      }
+    },
+);
+
+
+mainRoutes.get(`/login`, csrfProtection, (req, res) => {
   const {user} = req.session;
 
   if (user) {
     res.redirect(`/`);
   } else {
-    res.render(`login`);
+    res.render(`login`, {
+      csrfToken: req.csrfToken(),
+    });
   }
 });
 
 
-mainRoutes.post(`/login`, async (req, res) => {
+mainRoutes.post(`/login`, csrfProtection, async (req, res) => {
   const {body} = req;
 
   const loginData = {
@@ -112,6 +123,7 @@ mainRoutes.post(`/login`, async (req, res) => {
     res.render(`login`, {
       user,
       validationMessages,
+      csrfToken: req.csrfToken(),
     });
   }
 });
