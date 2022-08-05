@@ -7,7 +7,7 @@ const sequelize = require(`../lib/sequelize`);
 
 const {
   API_PREFIX,
-  DEFAULT_PORT,
+  REST_API_DEFAULT_PORT,
   HttpCode,
   ExitCode,
 } = require(`../../constants`);
@@ -48,7 +48,7 @@ module.exports = {
     await logger.info(`Connection to database established`);
 
     const [customPort] = args;
-    const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
+    const port = Number.parseInt(customPort, 10) || REST_API_DEFAULT_PORT;
 
     try {
       app.listen(port, () => {

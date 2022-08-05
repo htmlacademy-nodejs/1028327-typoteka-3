@@ -247,3 +247,54 @@ describe(`API refuses to create user if data is invalid`, () => {
   });
 });
 
+describe(`API authenticate user if data is valid`, () => {
+  const validAuthData = {
+    email: `ivanov@example.com`,
+    password: `ivanov`,
+  };
+
+  let res;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    res = await request(app)
+      .post(`/user/auth`)
+      .send(validAuthData);
+  });
+
+  test(`Status code is 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`User name is Иван Иванов`, () => expect(res.body.name).toBe(`Иван Иванов`));
+});
+
+describe(`API refuses to authenticate user if data is invalid`, () => {
+  let app;
+
+  beforeAll(async () => {
+    app = await createAPI();
+  });
+
+  test(`If email is incorrect status is 401`, async () => {
+    const badAuthData = {
+      email: `not-exist@example.com`,
+      password: `petrov`,
+    };
+
+    await request(app)
+      .post(`/user/auth`)
+      .send(badAuthData)
+      .expect(HttpCode.UNAUTHORIZED);
+  });
+
+  test(`If password doesn't match status is 401`, async () => {
+    const badAuthData = {
+      email: `petrov@example.com`,
+      password: `ivanov`,
+    };
+
+    await request(app)
+      .post(`/user/auth`)
+      .send(badAuthData)
+      .expect(HttpCode.UNAUTHORIZED);
+  });
+});
+

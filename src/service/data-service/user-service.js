@@ -6,6 +6,16 @@ class UserService {
   }
 
   async create(userData) {
+    const existAdmin = await this._User.findOne({
+      where: {
+        isAdmin: true,
+      },
+    });
+
+    if (!existAdmin) {
+      userData.isAdmin = true;
+    }
+
     const user = await this._User.create(userData);
     return user.get();
   }

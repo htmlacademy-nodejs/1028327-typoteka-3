@@ -2,13 +2,13 @@
 
 const axios = require(`axios`);
 const {
-  DEFAULT_PORT,
+  REST_API_DEFAULT_PORT,
   HttpMethod,
 } = require(`../constants`);
 
 const TIMEOUT = 1000;
 
-const port = process.env.API_PORT || DEFAULT_PORT;
+const port = process.env.API_PORT || REST_API_DEFAULT_PORT;
 const defaultUrl = `http://localhost:${port}/api/`;
 
 class API {
@@ -20,27 +20,52 @@ class API {
   }
 
   getArticles({offset, limit}) {
-    return this._load(`/articles`, {params: {offset, limit}});
+    return this._load(`/articles`, {
+      params: {
+        offset,
+        limit,
+      },
+    });
   }
 
   getArticle(id, comments) {
-    return this._load(`/articles/${id}`, {params: {comments}});
+    return this._load(`/articles/${id}`, {
+      params: {
+        comments,
+      },
+    });
   }
 
   getLatestComments(count) {
-    return this._load(`/comments`, {params: {count}});
+    return this._load(`/comments`, {
+      params: {
+        count,
+      },
+    });
   }
 
   getMostDiscussedArticles(count) {
-    return this._load(`/articles/discussed`, {params: {count}});
+    return this._load(`/articles/discussed`, {
+      params: {
+        count,
+      },
+    });
   }
 
   search(query) {
-    return this._load(`/search`, {params: {query}});
+    return this._load(`/search`, {
+      params: {
+        query,
+      },
+    });
   }
 
   getCategories(count) {
-    return this._load(`/categories`, {params: {count}});
+    return this._load(`/categories`, {
+      params: {
+        count,
+      },
+    });
   }
 
   createArticle(data) {
@@ -66,6 +91,13 @@ class API {
 
   createUser(data) {
     return this._load(`/user`, {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  auth(data) {
+    return this._load(`/user/auth`, {
       method: HttpMethod.POST,
       data,
     });

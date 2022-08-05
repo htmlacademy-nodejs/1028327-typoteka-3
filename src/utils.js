@@ -31,4 +31,6 @@ module.exports.getFormattedDate = (date) =>
 
 module.exports.ensureArray = (value) => Array.isArray(value) ? value : [value];
 
-module.exports.prepareErrors = (errors) => errors.response.data.split(`\n`);
+module.exports.prepareErrors = (errors) => errors.response
+  ? errors.response.data.split(`\n`)
+  : [`Неизвестная ошибка`];
