@@ -13,7 +13,7 @@ class SearchService {
         date
       FROM articles
       WHERE LOWER(articles.title) LIKE LOWER(?)
-      ORDER BY articles.created_at DESC
+      ORDER BY articles.date DESC
     `;
     const replacements = [`%${searchText}%`];
 

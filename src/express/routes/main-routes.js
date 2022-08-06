@@ -8,7 +8,7 @@ const {prepareErrors} = require(`../../utils`);
 const {
   MAX_LAST_COMMENTS,
   MAX_DISCUSSED_ARTICLES,
-  OFFERS_PER_PAGE,
+  ARTICLES_PER_PAGE,
 } = require(`../../constants`);
 
 const mainRoutes = new Router();
@@ -20,8 +20,8 @@ mainRoutes.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
   page = +page;
 
-  const limit = OFFERS_PER_PAGE;
-  const offset = (page - 1) * OFFERS_PER_PAGE;
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
 
   const [
     {count, articles},
@@ -35,7 +35,7 @@ mainRoutes.get(`/`, async (req, res) => {
     api.getMostDiscussedArticles(MAX_DISCUSSED_ARTICLES),
   ]);
 
-  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(`main`, {
     articles,
@@ -143,11 +143,13 @@ mainRoutes.get(`/search`, async (req, res) => {
     res.render(`search`, {
       user,
     });
+
     return;
   }
 
   try {
     const articles = await api.search(query);
+
     res.render(`search`, {
       query,
       articles,
