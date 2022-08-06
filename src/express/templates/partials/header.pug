@@ -1,8 +1,8 @@
-header.header(class=(error ? "header--error" : null))
-  a.header__logo.logo(class=(error ? `header__logo--${error.type}` : null) href="/")
+header.header(class=(error && "header--error"))
+  a.header__logo.logo(class=(error && `header__logo--${error.type}`) href="/")
     img(src="/img/icons/logo.svg" alt="логотип Типотеки")
 
-  if user
+  if user && user.isAdmin
     a.button.button--colored.header__button-new(href="/articles/add") Новая запись
     .header__dropdown
       button.button.button--burger.header__burger Открыть меню
@@ -16,6 +16,16 @@ header.header(class=(error ? "header--error" : null))
         li.navigation__item
           a(href="/logout") Выйти
 
+  else if user
+    nav.header__nav
+      ul.header__nav-list
+        li.header__list-item
+          p=user.name
+        li.header__list-item
+          a.header__exit(href="/logout") Выйти
+    .header__avatar.avatar
+      img(src=`/img/${user.avatar}` alt="аватар пользователя")
+
   else
     nav.header__nav
       ul.header__nav-list
@@ -23,4 +33,5 @@ header.header(class=(error ? "header--error" : null))
           a.header__registration(href="/register") Регистрация
         li.header__list-item
           a.header__enter(href="/login") Вход с паролем
+
   a.header__search.button.button--search(href="/search" aria-label="поиск по сайту")

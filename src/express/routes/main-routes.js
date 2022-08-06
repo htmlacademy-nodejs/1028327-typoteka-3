@@ -140,7 +140,9 @@ mainRoutes.get(`/search`, async (req, res) => {
   const {query} = req.query;
 
   if (!query) {
-    res.render(`search`);
+    res.render(`search`, {
+      user,
+    });
     return;
   }
 
