@@ -1,0 +1,28 @@
+.title {
+  font-family: $fontInter;
+  color: $black-color;
+
+  &--main {
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+  }
+
+  &--big {
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 1.25;
+  }
+
+  &--middle {
+    font-size: 25px;
+    line-height: 1.2;
+    font-weight: bold;
+  }
+
+  &--small {
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 1.33;
+  }
+}

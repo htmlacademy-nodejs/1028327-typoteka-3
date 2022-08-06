@@ -1,0 +1,93 @@
+.flatpickr-calendar {
+  margin-top: 10px;
+  margin-left: -30px;
+  border-radius: 15px;
+  box-shadow: 0 7px 64px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  width: 320px;
+  height: 286px;
+}
+
+.flatpickr-calendar.arrowTop::after,
+.flatpickr-calendar.arrowTop::before {
+  display: none;
+}
+
+.flatpickr-day {
+  font-size: 12px;
+  max-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin-right: 10px;
+}
+
+.flatpickr-day:nth-child(7n+7) {
+  color: #0057ff;
+}
+
+.flatpickr-day.selected {
+  background: #0057ff;
+  border-color: #0057ff;
+}
+
+.flatpickr-day.today {
+  color: #ffffff;
+  background: #a8c9e7;
+  border-color: #a8c9e7;
+}
+
+span.flatpickr-weekday {
+  color: #d0c9d6;
+}
+
+.flatpickr-weekdaycontainer {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    right: 5px;
+    width: 95%;
+    border: 1px dashed #ecebed;
+    bottom: -8px;
+  }
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  appearance: none;
+  font-weight: 600;
+}
+
+.flatpickr-current-month .numInput.cur-year {
+  font-weight: 600;
+}
+
+.flatpickr-months {
+  .flatpickr-prev-month,
+  .flatpickr-next-month {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      width: 10px;
+      height: 16px;
+    }
+  }
+}
+
+.flatpickr-months .flatpickr-prev-month.flatpickr-prev-month {
+  left: 15px;
+  background: #efefef;
+  border-radius: 6px;
+}
+
+.flatpickr-months .flatpickr-next-month.flatpickr-next-month {
+  right: 15px;
+  background: #efefef;
+  border-radius: 6px;
+}

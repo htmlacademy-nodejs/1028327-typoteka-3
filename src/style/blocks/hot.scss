@@ -1,0 +1,64 @@
+.hot {
+  width: 430px;
+}
+
+.hot__name {
+  @include margin-killer;
+  margin-bottom: 32px;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.hot__name--empty {
+  margin-bottom: 17px;
+}
+
+.hot__list {
+  @include list-killer;
+}
+
+.hot__list-item {
+  margin-bottom: 30px;
+}
+
+.hot__list-item--end {
+  margin-bottom: 0;
+}
+
+.hot__list-link {
+  display: block;
+  width: 400px;
+
+  @include margin-killer;
+  line-height: 20px;
+
+  &:hover {
+    color: #2f80ed;
+  }
+}
+
+.hot__link-sup {
+  margin-left: 3px;
+  color: #c50000;
+}
+
+.hot__empty {
+  margin-bottom: 21px;
+}
+
+.hot__list-item--margin {
+  margin-bottom: 40px;
+}
+
+.hot__icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hot__icon--fire {
+  background-image: url("../img/icons/fire.png");
+}

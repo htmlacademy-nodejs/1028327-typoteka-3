@@ -1,0 +1,22 @@
+.logo {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  transition: $transition;
+
+  .logo__image,
+  .logo__name {
+    display: block;
+    margin-right: 20px;
+    font-family: $fontInter;
+    font-weight: bold;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}

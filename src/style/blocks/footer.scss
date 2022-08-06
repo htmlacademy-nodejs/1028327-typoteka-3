@@ -1,0 +1,36 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include main-wrapper;
+  margin-top: auto;
+  padding-top: 10px;
+  padding-bottom: 52px;
+  font-family: $fontInter;
+  font-weight: bold;
+}
+
+.footer__dot {
+  display: block;
+  font-size: 12px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.footer__copyright {
+  display: block;
+  width: 112.35px;
+  height: 50px;
+
+  &:hover {
+    transition: $transition;
+    opacity: 0.3;
+  }
+}
+
+.footer--padding {
+  padding-bottom: 57px;
+}

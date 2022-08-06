@@ -14,6 +14,9 @@
     "test": "npm run eslint && npm run jest",
     "jest": "jest",
     "eslint": "eslint --ext .js src/",
+    "sass": "sass --style=compressed --embed-sources ./src/style/index.scss ./src/express/public/css/style.min.css",
+    "postcss": "postcss ./src/express/public/css/style.min.css --use autoprefixer -m -d ./src/express/public/css",
+    "css": "npm run sass && npm run postcss",
     "prepare": "husky install"
   },
   "repository": {
@@ -25,14 +28,22 @@
   "bugs": {
     "url": "https://github.com/dreadwood/typoteka/issues"
   },
+  "browserslist": [
+    "last 4 version",
+    "IE 11"
+  ],
   "homepage": "https://github.com/dreadwood/typoteka#readme",
   "devDependencies": {
+    "autoprefixer": "10.4.8",
     "eslint": "8.14.0",
     "eslint-config-htmlacademy": "0.6.0",
     "husky": "7.0.4",
     "jest": "28.1.0",
     "nodemon": "2.0.16",
     "pino-pretty": "7.6.1",
+    "postcss": "8.4.14",
+    "postcss-cli": "10.0.0",
+    "sass": "1.54.3",
     "sqlite3": "5.0.8",
     "supertest": "6.2.3"
   },

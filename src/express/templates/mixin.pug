@@ -52,28 +52,6 @@ mixin pagination(page, totalPages, width, prefix)
 
 
 mixin insertErrorMessages(messages, titleMessages)
-  //- TODO: move to css
-  style.
-    .validation {
-      width: auto;
-      padding: 14px 20px 20px;
-      background-color: #ffeded;
-      border-radius: 15px;
-    }
-    .validation__message {
-      padding: 0;
-      margin: 0;
-      font-weight: 700;
-      color: #eb5757;
-    }
-    .validation__error-list {
-      margin: 0;
-      padding: 0 0 0 19px;
-    }
-    .validation__error {
-      margin: 6px 0 0;
-    }
-
   .validation
     if titleMessages
       p.validation__message #{titleMessages}:

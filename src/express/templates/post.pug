@@ -37,11 +37,6 @@ block content
                   p.comments__message=comment.text
 
           if validationMessages
-            //- TODO: move to css
-            style.
-              .comments__validation {
-                margin: 0 40px 34px 40px;
-              }
             .comments__validation
               +insertErrorMessages(validationMessages, "При отправке комментария произошли ошибки")
 

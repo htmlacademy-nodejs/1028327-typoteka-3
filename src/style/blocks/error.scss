@@ -1,0 +1,51 @@
+.error {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  min-height: 245px;
+  margin: 0 auto;
+  padding-top: 138px;
+  text-align: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(50% - 50px);
+    width: 100px;
+    height: 100px;
+    background: url("../img/icons/404.svg") no-repeat top left;
+  }
+
+  &--500 {
+    padding-top: 124px;
+  }
+}
+
+.error__title {
+  margin: 0;
+  margin-bottom: 27px;
+  text-align: center;
+}
+
+.error--500 .error__title {
+  margin-bottom: 0;
+  line-height: 45px;
+}
+
+.error__text {
+  margin: 0;
+  margin-bottom: 80px;
+}
+
+.error__link {
+  display: block;
+  text-align: center;
+
+  &:hover {
+    transition: $transition;
+    opacity: 0.3;
+  }
+}

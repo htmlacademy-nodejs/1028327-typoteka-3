@@ -1,0 +1,75 @@
+.themes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  @include list-killer;
+}
+
+.themes__item {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.themes__item-link {
+  display: block;
+  min-width: 120px;
+  width: auto;
+  height: 50px;
+  padding-top: 12px;
+  padding-bottom: 18px;
+  padding-left: 17px;
+  padding-right: 17px;
+  font-family: $fontInter;
+  font-weight: bold;
+  text-align: center;
+  white-space: pre;
+  border: 2px solid #0057ff;
+  border-radius: 30px;
+
+  &:hover {
+    border: 2px solid #87b0ff;
+    color: rgba(24, 24, 24, 0.7);
+    transition: $transition;
+  }
+}
+
+.themes__link-sup {
+  font-size: 10px;
+}
+
+.themes__remove-btn {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: -7px;
+  width: 22px;
+  height: 22px;
+
+  border: none;
+  background-color: $black-color;
+  border-radius: 50%;
+  background-image: url("../img/icons/close-cross.svg");
+  font-size: 0;
+
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    opacity: 0.7;
+  }
+}
+
+.themes__item-link--padding {
+  padding-left: 27px;
+  padding-right: 25px;
+}
+
+.themes__item-link--active {
+  border: 2px solid #87b0ff;
+  color: rgba(24, 24, 24, 0.7);
+  cursor: auto;
+}

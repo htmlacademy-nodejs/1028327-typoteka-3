@@ -1,0 +1,214 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  line-height: 1.33;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:focus {
+    transition: $transition;
+  }
+
+  &--colored {
+    padding-bottom: 2px;
+    min-height: 50px;
+
+    background-color: #003db3;
+    background-image: linear-gradient(180deg, $blue-color 0%, #003db3 100%);
+    color: $white-color;
+    border-radius: 15px;
+    transition: $transition;
+  }
+
+  &--colored:hover,
+  &--colored:focus {
+    background: $colored-btn-hover-color;
+    box-shadow: 0 0 15px rgba(0, 87, 255, 0.5);
+  }
+
+  &--burger {
+    width: 50px;
+    height: 50px;
+    font-size: 0;
+    border-radius: 50%;
+    background:
+      url("../img/icons/burger.svg") center no-repeat,
+      linear-gradient(180deg, #595959 0%, #141414 100%);
+  }
+
+  &--burger:hover,
+  &--burger:focus {
+    background-image: url("../img/icons/burger.svg"),
+      linear-gradient(to bottom, $light-gray 100%);
+    box-shadow: 0 0 15px #595959;
+  }
+
+  &--burger:active {
+    opacity: 0.5;
+  }
+
+  &--search {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.1);
+    background-image: url("../img/icons/loupe.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &--search:hover,
+  &--search:focus {
+    opacity: 0.7;
+  }
+
+  &--search:active {
+    opacity: 0.5;
+  }
+
+  &--transparent {
+    min-height: 40px;
+    border-radius: 30px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
+    transition: $transition;
+  }
+
+  &--transparent:hover,
+  &--transparent:focus {
+    opacity: 0.7;
+  }
+
+  &--transparent:active {
+    opacity: 0.5;
+  }
+
+  &--backwards {
+    font-family: $fontInter;
+    color: $black-color;
+    font-size: 13px;
+    line-height: 1.54;
+    font-weight: normal;
+
+    &::before {
+      content: "";
+
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+
+      border-radius: 50%;
+      border: 2px solid $black-color;
+      background: url("../img/icons/arrow-left.svg") center no-repeat;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 0.5;
+    }
+
+    &:active {
+      opacity: 0.2;
+    }
+  }
+
+  &--forward {
+    font-family: $fontInter;
+    color: $black-color;
+    font-size: 13px;
+    line-height: 1.54;
+    font-weight: normal;
+
+    &::after {
+      content: "";
+
+      width: 50px;
+      height: 50px;
+      margin-left: 10px;
+
+      border-radius: 50%;
+      border: 2px solid $black-color;
+      background: url("../img/icons/arrow-right.svg") center no-repeat;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 0.5;
+    }
+
+    &:active {
+      opacity: 0.2;
+    }
+  }
+
+  &--popup-close {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid $popup-close-btn-color;
+    background: url("../img/icons/big-close-cross.svg") no-repeat center;
+    opacity: 0.4;
+
+    &:hover,
+    &:focus {
+      opacity: 0.7;
+    }
+
+    &:active {
+      opacity: 0.3;
+    }
+  }
+
+  &--close-item {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: url("../img/icons/cross-white.svg") no-repeat center;
+    background-color: #bdbdbd;
+
+    &:hover,
+    &:focus {
+      background-color: #2f80ed;
+    }
+
+    &:active {
+      opacity: 0.3;
+    }
+  }
+
+  &--category {
+    width: 110px;
+    height: 40px;
+    border-radius: 30px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+
+    &:hover,
+    &:focus {
+      background-color: #000000;
+      color: #f2f2f2;
+    }
+
+    &:active {
+      opacity: 0.3;
+    }
+  }
+
+  &--disabled,
+  &--disabled:hover,
+  &--disabled:focus,
+  &--disabled:active {
+    opacity: 0.2;
+    cursor: text;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,40 @@
+@mixin list-killer {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@mixin margin-killer {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin wrapper {
+  margin: 0 auto;
+  max-width: $wrapper-width;
+  padding: 0 $wrapper-padding;
+}
+
+@mixin rounded-item {
+  border-radius: 15px;
+  background-color: $item-bg-color;
+}
+
+@mixin main-wrapper {
+  width: 1000px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin textarea {
+  display: flex;
+  justify-content: center;
+
+  resize: none;
+  //overflow: hidden;
+
+  border: none;
+  background: none;
+}

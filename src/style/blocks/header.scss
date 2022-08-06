@@ -1,0 +1,139 @@
+.header {
+  //z-index: 21;
+  display: flex;
+
+  @include main-wrapper;
+  min-height: 150px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  align-items: center;
+}
+
+.header__logo {
+  margin-right: auto;
+}
+
+.header__nav-list {
+  display: flex;
+
+  @include list-killer;
+
+  p {
+    margin: 0 2px 0 0;
+    font-family: $fontInter;
+    font-weight: bold;
+    position: relative;
+
+    &::after {
+      content: "•";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      top: -1px;
+      right: -11px;
+    }
+  }
+}
+
+.header__exit,
+.header__registration,
+.header__enter {
+  position: relative;
+  margin-left: 18px;
+  font-family: $fontInter;
+  font-weight: bold;
+
+  &:hover {
+    transition: $transition;
+    opacity: 0.5;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}
+
+.header__name {
+  position: relative;
+  margin-right: 2px;
+
+  &::after {
+    content: "•";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    top: -1px;
+    right: -11px;
+  }
+}
+
+.header__enter {
+  margin-right: 20px;
+}
+
+.header__avatar {
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.header__button-new {
+  margin-left: 0;
+  width: 160px;
+}
+
+.header__dropdown {
+  position: relative;
+
+  &:hover {
+    .header__navigation {
+      display: block;
+    }
+  }
+}
+
+.header__burger {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.header__navigation {
+  position: absolute;
+  z-index: 10;
+  display: none;
+  left: -153px;
+  top: 70px;
+}
+
+.header--error .header__registration,
+.header--error .header__enter,
+.header--error .header__search {
+  display: none;
+}
+
+.header--error .header__logo {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: 15px;
+    right: -43px;
+    width: 40px;
+    height: 20px;
+    font-family: $fontInter;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+  }
+
+  &--404 {
+    &::before {
+      content: "/ 404";
+    }
+  }
+
+  &--500 {
+    &::before {
+      content: "/ 500";
+    }
+  }
+}

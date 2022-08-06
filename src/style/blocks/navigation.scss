@@ -1,0 +1,68 @@
+.navigation {
+  @include list-killer;
+
+  position: relative;
+  width: 250px;
+  border-radius: 15px;
+  background-color: $item-bg-color;
+}
+
+.navigation__item {
+  width: 100%;
+  border: 1px solid transparent;
+  transition: $transition;
+
+  &:first-of-type {
+    position: relative;
+    border-top: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      margin-top: -27px;
+      right: 20%;
+
+      border: 12px solid transparent;
+      border-bottom: 15px solid $item-bg-color;
+      transition: $transition;
+    }
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  & a {
+    display: block;
+    padding: 9px 20px;
+    width: 100%;
+
+    font-weight: 600;
+    line-height: 2;
+
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: $menu-item-hover-color;
+    border-top: 1px solid $menu-item-border-color;
+    border-bottom: 1px solid $menu-item-border-color;
+  }
+
+  &:first-of-type:hover {
+    border-top: none;
+
+    &::before {
+      border-bottom-color: $menu-item-hover-color;
+    }
+  }
+
+  &:last-of-type:hover {
+    border-bottom: none;
+  }
+}
