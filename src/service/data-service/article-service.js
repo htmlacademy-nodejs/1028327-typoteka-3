@@ -90,6 +90,10 @@ class ArticleService {
   }
 
   async findOne(id, needComments) {
+    if (!Number(id)) {
+      return null;
+    }
+
     const include = [{
       model: this._Category,
       as: Aliase.CATEGORIES,
@@ -121,7 +125,15 @@ class ArticleService {
       });
     }
 
-    return this._Article.findByPk(id, {include});
+    return this._Article.findByPk(id, {
+      include,
+      attributes: {
+        exclude: [
+          `createdAt`,
+          `updatedAt`,
+        ],
+      },
+    });
   }
 
   async update(id, article) {
