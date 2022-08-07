@@ -6,6 +6,7 @@ const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
 const userAuth = require(`../middlewares/user-auth`);
 const authorAuth = require(`../middlewares/author-auth`);
+const {ARTICLES_PER_PAGE} = require(`../../constants`);
 const {
   ensureArray,
   prepareErrors,
@@ -25,16 +26,38 @@ const articlesRoutes = new Router();
 const csrfProtection = csrf();
 
 
-articlesRoutes.get(`/category/:id`, (req, res) => {
+articlesRoutes.get(`/category/:id`, async (req, res) => {
+  const {id} = req.params;
   const {user} = req.session;
 
-  res.render(`all-categories`, {
+  let {page = 1} = req.query;
+  page = +page;
+
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
+
+  const [
+    {count, articlesByCategory: articles, category},
+    categories,
+  ] = await Promise.all([
+    api.getArticlesByCategory({id, limit, offset}),
+    api.getCategories(true),
+  ]);
+
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+
+  res.render(`articles-by-category`, {
+    articles,
+    categories,
+    category,
+    page,
+    totalPages,
     user,
   });
 });
 
 
-articlesRoutes.get(`/add`, authorAuth, csrfProtection, async (req, res) => {
+articlesRoutes.get(`/add`, [authorAuth, csrfProtection], async (req, res) => {
   const {user} = req.session;
   const categories = await api.getCategories();
 
@@ -47,9 +70,7 @@ articlesRoutes.get(`/add`, authorAuth, csrfProtection, async (req, res) => {
 
 
 articlesRoutes.post(`/add`,
-    authorAuth,
-    upload.single(`upload`),
-    csrfProtection,
+    [authorAuth, upload.single(`upload`), csrfProtection],
     async (req, res) => {
       const {user} = req.session;
       const {body, file} = req;
@@ -111,8 +132,7 @@ articlesRoutes.get(`/:id`, csrfProtection, async (req, res) => {
 
 
 articlesRoutes.get(`/edit/:id`,
-    authorAuth,
-    csrfProtection,
+    [authorAuth, csrfProtection],
     async (req, res) => {
       const {user} = req.session;
       const {id} = req.params;
@@ -130,9 +150,7 @@ articlesRoutes.get(`/edit/:id`,
 
 
 articlesRoutes.post(`/edit/:id`,
-    authorAuth,
-    upload.single(`upload`),
-    csrfProtection,
+    [authorAuth, upload.single(`upload`), csrfProtection],
     async (req, res) => {
       const {user} = req.session;
       const {body, file} = req;
@@ -169,9 +187,7 @@ articlesRoutes.post(`/edit/:id`,
 
 
 articlesRoutes.post(`/:id/comments`,
-    userAuth,
-    upload.none(),
-    csrfProtection,
+    [userAuth, upload.none(), csrfProtection],
     async (req, res) => {
       const {user} = req.session;
       const {id} = req.params;

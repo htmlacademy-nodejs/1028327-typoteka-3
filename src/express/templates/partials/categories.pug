@@ -1,6 +1,13 @@
 ul.themes
-  each category in categories
+  - var activeId = category && category.id
+  each item in categories
     li.themes__item
-      a.themes__item-link(href=`#${category.id}`)
-        =category.name
-        sup=category.count
+      -
+        var activeCategory = (activeId === item.id)
+        var href = activeCategory || `/articles/category/${item.id}`
+        var activClass = activeCategory && "themes__item-link--active"
+      a.themes__item-link(href=href class=activClass)
+        =item.name
+        sup=item.count
+
+

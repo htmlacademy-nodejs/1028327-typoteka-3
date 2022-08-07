@@ -28,6 +28,15 @@ class API {
     });
   }
 
+  getArticlesByCategory({id, offset, limit}) {
+    return this._load(`/categories/${id}`, {
+      params: {
+        offset,
+        limit,
+      },
+    });
+  }
+
   getArticle(id, comments) {
     return this._load(`/articles/${id}`, {
       params: {
