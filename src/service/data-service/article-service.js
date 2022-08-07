@@ -18,8 +18,20 @@ class ArticleService {
   }
 
   async drop(id) {
-    const deletedRows = await this._Article.destroy({where: {id}});
+    const deletedRows = await this._Article.destroy({
+      where: {id},
+    });
+
     return !!deletedRows;
+  }
+
+  async update(id, article) {
+    const [affectedRows] = await this._Article.update(
+        article,
+        {where: {id}},
+    );
+
+    return !!affectedRows;
   }
 
   async findAll() {
@@ -90,10 +102,6 @@ class ArticleService {
   }
 
   async findOne(id, needComments) {
-    if (!Number(id)) {
-      return null;
-    }
-
     const include = [{
       model: this._Category,
       as: Aliase.CATEGORIES,
@@ -134,15 +142,6 @@ class ArticleService {
         ],
       },
     });
-  }
-
-  async update(id, article) {
-    const [affectedRows] = await this._Article.update(
-        article,
-        {where: {id}},
-    );
-
-    return !!affectedRows;
   }
 
   async findPage({limit, offset}) {

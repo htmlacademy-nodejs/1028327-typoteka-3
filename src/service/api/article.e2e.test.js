@@ -298,12 +298,22 @@ test(`API returns code 404 when change non-existent article`, async () => {
   const app = await createAPI();
 
   return request(app)
-    .put(`/articles/NOEXST`)
+    .put(`/articles/20`)
     .send(newArticle)
     .expect(HttpCode.NOT_FOUND);
 });
 
 // test case 07
+test(`API returns code 400 when send a request invalid route`, async () => {
+  const app = await createAPI();
+
+  return request(app)
+    .put(`/articles/NOEXST`)
+    .send(newArticle)
+    .expect(HttpCode.BAD_REQUEST);
+});
+
+// test case 08
 test(`API returns code 400 when change an invalid article`, async () => {
   const invalidArticle = {
     title: `Это`,
@@ -315,12 +325,12 @@ test(`API returns code 400 when change an invalid article`, async () => {
   const app = await createAPI();
 
   return request(app)
-    .put(`/articles/NOEXST`)
+    .put(`/articles/20`)
     .send(invalidArticle)
     .expect(HttpCode.BAD_REQUEST);
 });
 
-// test case 08
+// test case 09
 describe(`API correctly deletes an article`, () => {
   let app;
   let res;
@@ -336,9 +346,16 @@ describe(`API correctly deletes an article`, () => {
   );
 });
 
-// test case 09
+// test case 10
 test(`API refuses to delete non-existent article`, async () => {
   const app = await createAPI();
 
-  return request(app).delete(`/articles/NOEXST`).expect(HttpCode.NOT_FOUND);
+  return request(app).delete(`/articles/20`).expect(HttpCode.NOT_FOUND);
+});
+
+// test case 11
+test(`API returns 400 when send a invalid request delete`, async () => {
+  const app = await createAPI();
+
+  return request(app).delete(`/articles/NOEXST`).expect(HttpCode.BAD_REQUEST);
 });

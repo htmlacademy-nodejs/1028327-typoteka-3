@@ -215,12 +215,22 @@ test(`API returns 404 when create a comment to non-existent article`, async () =
   const app = await createAPI();
 
   return request(app)
-    .post(`/articles/NOEXST/comments`)
+    .post(`/articles/20/comments`)
     .send({text: `Неважно`})
     .expect(HttpCode.NOT_FOUND);
 });
 
 // test case 04
+test(`API returns 400 when create a comment to invalid route`, async () => {
+  const app = await createAPI();
+
+  return request(app)
+    .post(`/articles/NOEXST/comments`)
+    .send({text: `Неважно`})
+    .expect(HttpCode.BAD_REQUEST);
+});
+
+// test case 05
 test(`API returns code 400 when create a invalid comment`, async () => {
   const app = await createAPI();
 
@@ -230,7 +240,7 @@ test(`API returns code 400 when create a invalid comment`, async () => {
     .expect(HttpCode.BAD_REQUEST);
 });
 
-// test case 05
+// test case 06
 describe(`API correctly deletes a comment`, () => {
   let app;
   let res;
@@ -247,25 +257,34 @@ describe(`API correctly deletes a comment`, () => {
     .expect((response) => expect(response.body.length).toBe(1)));
 });
 
-// test case 06
+// test case 07
 test(`API refuses to delete non-existent comment`, async () => {
   const app = await createAPI();
 
   return request(app)
-    .delete(`/articles/2/comments/NOEXST`)
-    .expect(HttpCode.NOT_FOUND);
-});
-
-// test case 07
-test(`API refuses to delete a comment to non-existent article`, async () => {
-  const app = await createAPI();
-
-  return request(app)
-    .delete(`/articles/NOEXST/comments/1`)
+    .delete(`/articles/2/comments/20`)
     .expect(HttpCode.NOT_FOUND);
 });
 
 // test case 08
+test(`API refuses to delete invalid id comment`, async () => {
+  const app = await createAPI();
+
+  return request(app)
+    .delete(`/articles/2/comments/NOEXST`)
+    .expect(HttpCode.BAD_REQUEST);
+});
+
+// test case 09
+test(`API refuses to delete a comment to invalid id article`, async () => {
+  const app = await createAPI();
+
+  return request(app)
+    .delete(`/articles/NOEXST/comments/1`)
+    .expect(HttpCode.BAD_REQUEST);
+});
+
+// test case 10
 describe(`API returns a list of all comments`, () => {
   let res;
 
@@ -279,7 +298,7 @@ describe(`API returns a list of all comments`, () => {
     expect(res.body.length).toBe(9));
 });
 
-// test case 09
+// test case 11
 describe(`API returns a list of 4 comments`, () => {
   let res;
 
