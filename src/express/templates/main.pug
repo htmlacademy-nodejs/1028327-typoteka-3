@@ -1,4 +1,4 @@
-extends layout.pug
+extends layout
 
 block content
   main.main-page
@@ -6,31 +6,9 @@ block content
     p Это приветственный текст, который владелец блога может выбрать, чтобы описать себя 👏
     section.main-page__theme-list
       h2.visually-hidden Список тем
+      include partials/categories
 
-      include partials/categories.pug
-
-    .main-page__section-flex
-      section.main-page__hot.hot
-        h2.hot__name
-          | Самое обсуждаемое
-          span.hot__icon.hot__icon--fire
-        ul.hot__list
-          each article in mostDiscussedArticles
-            li.hot__list-item
-              a.hot__list-link(href=`/articles/${article.id}`)
-                =article.announce
-                sup.hot__link-sup=article.comments
-
-      section.main-page__last.last
-        h2.last__name
-          | Последние комментарии
-          span.last__icon.last__icon--cloud
-        ul.last__list
-          each comment in lastestComments
-            li.last__list-item
-              img.last__list-image(src=`/img/${comment.user.avatar}` width="20" height="20" alt="Аватар пользователя")
-              b.last__list-name=comment.user.name
-              a.last__list-link(href=`/articles/${comment.ArticleId}#comments`)=comment.text
+    include partials/main-promo
 
     section.main-page__list.preview
       h2.visually-hidden Список превью статей

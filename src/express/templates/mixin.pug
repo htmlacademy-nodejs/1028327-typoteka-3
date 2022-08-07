@@ -58,3 +58,8 @@ mixin insertErrorMessages(messages, titleMessages)
     ul.validation__error-list
       each message of messages
         li.validation__error=message
+
+
+mixin cropString(str)
+  - var sliceStr = str.slice(0, 100)
+  | #{str.length > sliceStr.length ? `${sliceStr}...` : sliceStr}
