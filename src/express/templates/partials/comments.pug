@@ -1,0 +1,39 @@
+section.post__comments.comments
+  if (article.comments.length === 0)
+    h2.comments__title.title.title--middle Комментарии отсутствуют
+
+  else
+    h2.comments__title.title.title--middle Комментарии
+    ul.comments__list
+      each comment in article.comments
+        li.comments__comment
+          .comments__avatar.avatar
+            img(src=`/img/${comment.user.avatar}` alt="аватар пользователя")
+          .comments__text
+            .comments__head
+              p #{comment.user.name} •
+              +timeLabel(comment.createdAt, "comments__date")
+            p.comments__message=comment.text
+
+
+  if user
+    if validationMessages
+      .comments__validation
+        +insertErrorMessages(validationMessages, "При отправке комментария произошли ошибки")
+
+    .comments__footer.comments__footer--user
+      form(action=`/articles/${id}/comments` method="POST" enctype="multipart/form-data")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        .comments__avatar.avatar
+          img(src=`/img/${user.avatar}` alt="аватар пользователя")
+        label
+          textarea(rows="1" name="comment" minlength="20" placeholder="Присоединиться к обсуждению")
+        button.comments__button.button.button--colored(type="submit") Опубликовать
+
+  else
+    .comments__footer.comments__footer--visitor
+      a.comments__button.button.button--colored(href="/login") Войти
+      .comments__registration
+        p.text.text--signature
+          b.title.title--small Регистрация
+          | Чтобы присоединиться к переписке нужно зарегистрироваться

@@ -1,4 +1,4 @@
-extends layout.pug
+extends layout
 
 block content
   main
@@ -13,7 +13,7 @@ block content
             h2.post__title.title.title--main=article.title
 
             .post__themes
-              include partials/categories.pug
+              include partials/categories
 
           if article.picture
             .post__picture
@@ -23,29 +23,4 @@ block content
             p=article.text
 
       .post__wrapper.post__wrapper--comments
-        section.post__comments.comments
-          h2.comments__title.title.title--middle Комментарии
-          ul.comments__list
-            each comment in article.comments
-              li.comments__comment
-                .comments__avatar.avatar
-                  img(src=`/img/${comment.user.avatar}` alt="аватар пользователя")
-                .comments__text
-                  .comments__head
-                    p #{comment.user.name} •
-                    +timeLabel(comment.createdAt, "comments__date")
-                  p.comments__message=comment.text
-
-          if validationMessages
-            .comments__validation
-              +insertErrorMessages(validationMessages, "При отправке комментария произошли ошибки")
-
-          if user
-            .comments__footer.comments__footer--user
-              form(action=`/articles/${id}/comments` method="POST" enctype="multipart/form-data")
-                input(type="hidden" name="_csrf" value=csrfToken)
-                .comments__avatar.avatar
-                  img(src="/img/avatar-2.png" alt="аватар пользователя")
-                label
-                  textarea(rows="1" name="comment" minlength="20" placeholder="Присоединиться к обсуждению")
-                button.comments__button.button.button--colored(type="submit") Опубликовать
+        include partials/comments
