@@ -4,6 +4,7 @@ const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const readContent = require(`../lib/read-content`);
 const generateArticles = require(`../lib/generate-articles`);
+const getArticleCount = require(`../lib/get-article-count`);
 const {getRandomInt} = require(`../../utils`);
 
 const {
@@ -13,7 +14,6 @@ const {
 
 const {
   FilePath,
-  MockParams,
   users,
 } = require(`./data`);
 
@@ -72,19 +72,13 @@ ALTER TABLE articles_categories ENABLE TRIGGER ALL;`;
 module.exports = {
   name: `--fill`,
   async run(args) {
+    const [count] = args;
+    const articleCount = getArticleCount(count);
+
     const titles = await readContent(FilePath.TITLES);
     const sentences = await readContent(FilePath.SENTENCES);
     const categories = await readContent(FilePath.CATEGORIES);
     const commentList = await readContent(FilePath.COMMENTS);
-
-    const [count] = args;
-    const articleCount =
-      Number.parseInt(count, 10) || MockParams.DEFAULT_COUNT;
-
-    if (articleCount > MockParams.MAX_COUNT) {
-      console.error(chalk.red(`Не больше 1000 публикаций`));
-      process.exit(ExitCode.error);
-    }
 
     const articles = generateArticles(
         articleCount,

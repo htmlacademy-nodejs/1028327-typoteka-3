@@ -14,6 +14,7 @@ const MockParams = {
   MONTHS_COUNT: 3,
   MAX_COMMENTS: 4,
   MAX_COMMENT_LENGTH: 3,
+  PROBABILITY_HAS_PICTURE: 0.8,
 };
 
 const CategoryRestrict = {
@@ -21,10 +22,15 @@ const CategoryRestrict = {
   MAX: 3,
 };
 
+const CommentRestrict = {
+  MIN: 0,
+  MAX: 8,
+};
+
 const articlePictures = [
-  `forest@1x.jpg`,
-  `sea@1x.jpg`,
-  `skyscraper@1x.jpg`,
+  `forest@2x.jpg`,
+  `sea@2x.jpg`,
+  `skyscraper@2x.jpg`,
 ];
 
 const users = [
@@ -62,6 +68,7 @@ module.exports = {
   FilePath,
   MockParams,
   CategoryRestrict,
+  CommentRestrict,
   articlePictures,
   users,
 };

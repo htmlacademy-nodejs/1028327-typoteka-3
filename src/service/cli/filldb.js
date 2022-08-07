@@ -6,19 +6,19 @@ const sequelize = require(`../lib/sequelize`);
 const initDatabase = require(`../lib/init-db`);
 const generateArticles = require(`../lib/generate-articles`);
 const passwordUtils = require(`../lib/password`);
+const getArticleCount = require(`../lib/get-article-count`);
 const {ExitCode} = require(`../../constants`);
 const {getRandomValue} = require(`../../utils`);
-
-const {
-  FilePath,
-  MockParams,
-} = require(`./data`);
+const {FilePath} = require(`./data`);
 
 const logger = getLogger({});
 
 module.exports = {
   name: `--filldb`,
   async run(args) {
+    const [count] = args;
+    const articleCount = getArticleCount(count);
+
     try {
       logger.info(`Trying to connect to database...`);
       await sequelize.authenticate();
@@ -59,15 +59,6 @@ module.exports = {
         avatar: `avatar-4.png`,
       },
     ];
-
-    const [count] = args;
-    const articleCount =
-      Number.parseInt(count, 10) || MockParams.DEFAULT_COUNT;
-
-    if (articleCount > MockParams.MAX_COUNT) {
-      logger.error(`Не больше 1000 публикаций`);
-      process.exit(ExitCode.error);
-    }
 
     const articles = generateArticles(
         articleCount,

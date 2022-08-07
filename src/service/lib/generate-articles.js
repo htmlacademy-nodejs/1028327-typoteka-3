@@ -14,7 +14,7 @@ const {
   MockParams,
   articlePictures,
   CategoryRestrict,
-  users,
+  CommentRestrict,
 } = require(`../cli/data`);
 
 const createRandomDate = (monthsCount) => {
@@ -32,8 +32,8 @@ const generateComment = (userId, comments) => ({
       .join(` `),
 });
 
-const generateComments = (userCount, comments) =>
-  Array(userCount).fill({}).map((_, userIndex) =>
+const generateComments = (commentCount, comments) =>
+  Array(commentCount).fill({}).map((_, userIndex) =>
     generateComment(userIndex + 1, comments));
 
 const generateArticle = (titles, categoryList, sentences, commentList) => {
@@ -41,14 +41,21 @@ const generateArticle = (titles, categoryList, sentences, commentList) => {
   const title = getRandomValue(titles);
   const createdDate =
     getFormattedDate(createRandomDate(MockParams.MONTHS_COUNT));
+
   const announce = getRandomValue(sentences);
   const text = shuffle(sentences)
       .slice(0, MockParams.MAX_SENTENCES_TEXT)
       .join(` `);
-  const categoryCount = getRandomInt(CategoryRestrict.MIN, CategoryRestrict.MAX);
+
+  const categoryCount =
+    getRandomInt(CategoryRestrict.MIN, CategoryRestrict.MAX);
+
   const categories = shuffle(categoryList).slice(0, categoryCount);
-  const comments = shuffle(generateComments(users.length, commentList));
-  const picture = getRandomValue(articlePictures);
+  const commentCount = getRandomInt(CommentRestrict.MIN, CommentRestrict.MAX);
+  const comments = shuffle(generateComments(commentCount, commentList));
+  const picture = Math.random() < MockParams.PROBABILITY_HAS_PICTURE
+    ? getRandomValue(articlePictures)
+    : null;
 
   return {
     articleId,
