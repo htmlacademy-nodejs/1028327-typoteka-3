@@ -120,25 +120,214 @@ const mockArticles = [
   },
 ];
 
-const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
+const newCategory = {
+  name: `Выйти из IT`,
+};
 
-const app = express();
-app.use(express.json());
-
-beforeAll(async () => {
+const createAPI = async () => {
+  const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
   await initDB(mockDB, {
     categories: mockCategories,
     articles: mockArticles,
     users: mockUsers,
   });
-  category(app, new CategoryService(mockDB));
-});
 
+  const app = express();
+  app.use(express.json());
+
+  category(app, new CategoryService(mockDB));
+  return app;
+};
+
+// test case 01
 describe(`API returns category list`, () => {
   let res;
 
   beforeAll(async () => {
-    res = await request(app).get(`/categories?count=true`);
+    const app = await createAPI();
+    res = await request(app).get(`/categories`);
+  });
+
+  test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`Returns list of 4 categories`, () =>
+    expect(res.body.length).toBe(4));
+  test(`Category names are "Железо", "Еда", "Искусство", "Музыка"`, () =>
+    expect(res.body.map((it) => it.name)).toEqual(
+        expect.arrayContaining([`Железо`, `Еда`, `Искусство`, `Музыка`]),
+    ));
+});
+
+// test case 02
+describe(`API returns category with count`, () => {
+  let res;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    res = await request(app).get(`/categories`).query({
+      count: true,
+    });
+  });
+
+  test(`Category has property "count"`, () => expect(res.body[0]).toHaveProperty(`count`));
+  test(`First category has 3 articles`, () => expect(res.body[0].count).toBe(3));
+});
+
+// test case 03
+describe(`API creates an category if data is valid`, () => {
+  let app;
+  let res;
+
+  // const newCategory = {
+  //   name: `Выйти из IT`,
+  // };
+
+  beforeAll(async () => {
+    app = await createAPI();
+    res = await request(app).post(`/categories`).send(newCategory);
+  });
+
+  test(`Status code 201`, () => expect(res.statusCode).toBe(HttpCode.CREATED));
+  test(`Categories count is changed`, () =>
+    request(app)
+      .get(`/categories`)
+      .expect((response) => expect(response.body.length).toBe(5)));
+});
+
+// test case 04
+describe(`API refuses to create an category if data is invalid`, () => {
+  let app;
+
+  beforeAll(async () => {
+    app = await createAPI();
+  });
+
+  test(`Without any required property response code is 400`, async () => {
+    const invalidCategory = {
+      name: `ААА`,
+    };
+
+    await request(app)
+      .post(`/categories`)
+      .send(invalidCategory)
+      .expect(HttpCode.BAD_REQUEST);
+  });
+
+  test(`When field type is wrong response code is 400`, async () => {
+    const invalidCategory = {
+      name: false,
+    };
+
+    await request(app)
+      .post(`/categories`)
+      .send(invalidCategory)
+      .expect(HttpCode.BAD_REQUEST);
+  });
+});
+
+// test case 05
+describe(`API changes existent category`, () => {
+  let app;
+  let res;
+
+  beforeAll(async () => {
+    app = await createAPI();
+    res = await request(app).put(`/categories/1`).send(newCategory);
+  });
+
+  test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`Categories is really changed`, () =>
+    request(app).get(`/categories`).expect((response) =>
+      expect(response.body[0].name).toBe(`Выйти из IT`)));
+});
+
+// test case 06
+test(`API returns code 404 when change non-existent category`, async () => {
+  const app = await createAPI();
+
+  return request(app)
+    .put(`/categories/20`)
+    .send(newCategory)
+    .expect(HttpCode.NOT_FOUND);
+});
+
+// test case 07
+test(`API returns code 400 when send a request invalid route`, async () => {
+  const app = await createAPI();
+
+  return request(app)
+    .put(`/categories/NOEXST`)
+    .send(newCategory)
+    .expect(HttpCode.BAD_REQUEST);
+});
+
+// test case 08
+describe(`API refuses when change an invalid category`, () => {
+  let app;
+
+  beforeAll(async () => {
+    app = await createAPI();
+  });
+
+  test(`Without any required property response code is 400`, async () => {
+    const invalidCategory = {
+      name: `ААА`,
+    };
+
+    await request(app)
+      .put(`/categories/1`)
+      .send(invalidCategory)
+      .expect(HttpCode.BAD_REQUEST);
+  });
+
+  test(`When field type is wrong response code is 400`, async () => {
+    const invalidCategory = {
+      name: false,
+    };
+
+    await request(app)
+      .put(`/categories/1`)
+      .send(invalidCategory)
+      .expect(HttpCode.BAD_REQUEST);
+  });
+});
+
+// test case 09
+describe(`API correctly deletes a category`, () => {
+  let app;
+  let res;
+
+  beforeAll(async () => {
+    app = await createAPI();
+    res = await request(app).delete(`/categories/1`);
+  });
+
+  test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
+  test(`Category count is 4 now`, () => request(app).get(`/categories`)
+      .expect((response) => expect(response.body.length).toBe(3)),
+  );
+});
+
+// test case 10
+test(`API refuses to delete non-existent category`, async () => {
+  const app = await createAPI();
+
+  return request(app).delete(`/categories/20`).expect(HttpCode.NOT_FOUND);
+});
+
+// test case 11
+test(`API returns 400 when send a invalid request delete`, async () => {
+  const app = await createAPI();
+
+  return request(app).delete(`/categories/NOEXST`).expect(HttpCode.BAD_REQUEST);
+});
+
+// test case 12
+describe(`API returns category list`, () => {
+  let res;
+
+  beforeAll(async () => {
+    const app = await createAPI();
+    res = await request(app).get(`/categories`);
   });
 
   test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
