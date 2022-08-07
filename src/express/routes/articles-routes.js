@@ -38,7 +38,7 @@ articlesRoutes.get(`/add`, authorAuth, csrfProtection, async (req, res) => {
   const {user} = req.session;
   const categories = await api.getCategories();
 
-  res.render(`post-edit`, {
+  res.render(`article-edit`, {
     categories,
     user,
     csrfToken: req.csrfToken(),
@@ -71,7 +71,7 @@ articlesRoutes.post(`/add`,
         const validationMessages = prepareErrors(errors);
         const categories = await api.getCategories();
 
-        res.render(`post-edit`, {
+        res.render(`article-edit`, {
           categories,
           validationMessages,
           user,
@@ -95,7 +95,7 @@ articlesRoutes.get(`/:id`, csrfProtection, async (req, res) => {
         ),
     );
 
-    res.render(`post`, {
+    res.render(`article`, {
       id,
       article,
       categories: articleCategories,
@@ -118,7 +118,7 @@ articlesRoutes.get(`/edit/:id`,
       const {id} = req.params;
       const [article, categories] = await getShortArticleData(id);
 
-      res.render(`post-edit`, {
+      res.render(`article-edit`, {
         id,
         article,
         categories,
@@ -155,7 +155,7 @@ articlesRoutes.post(`/edit/:id`,
         const validationMessages = prepareErrors(errors);
         const [article, categories] = await getShortArticleData(id);
 
-        res.render(`post-edit`, {
+        res.render(`article-edit`, {
           id,
           article,
           categories,
@@ -188,7 +188,7 @@ articlesRoutes.post(`/:id/comments`,
         const validationMessages = prepareErrors(errors);
         const [article, categories] = await getFullArticleData(id);
 
-        res.render(`post`, {
+        res.render(`article`, {
           id,
           article,
           categories,
