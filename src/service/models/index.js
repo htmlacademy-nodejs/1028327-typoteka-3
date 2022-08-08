@@ -29,6 +29,7 @@ const define = (sequelize) => {
   Category.belongsToMany(Article, {
     as: Aliase.ARTICLES,
     through: ArticleCategory,
+    onDelete: `RESTRICT`,
   });
 
   Category.hasMany(ArticleCategory, {

@@ -77,6 +77,26 @@ class API {
     });
   }
 
+  createCategory(data) {
+    return this._load(`/categories`, {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  editCategory(id, data) {
+    return this._load(`/categories/${id}`, {
+      method: HttpMethod.PUT,
+      data,
+    });
+  }
+
+  removeCategory(id) {
+    return this._load(`/categories/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,

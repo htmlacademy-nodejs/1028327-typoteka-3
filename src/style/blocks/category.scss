@@ -53,12 +53,16 @@
   }
 }
 
+.category__add-validation {
+  margin: 20px;
+}
+
 .category__list {
   @include list-killer;
 }
 
 .category__list-item {
-  display: flex;
+  // display: flex;
   position: relative;
   min-height: 80px;
   padding-left: 35px;
@@ -90,6 +94,10 @@
       transition: all 0.3s;
     }
   }
+}
+
+.category__list-validation {
+  margin-top: 20px;
 }
 
 .category__button {

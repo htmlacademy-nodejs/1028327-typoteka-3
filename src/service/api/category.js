@@ -32,7 +32,7 @@ module.exports = (app, service) => {
 
         if (!updatedCategory) {
           res.status(HttpCode.NOT_FOUND)
-        .send(`Not found article with id ${categoryId}`);
+            .send(`Not found article with id ${categoryId}`);
           return;
         }
 
@@ -43,15 +43,22 @@ module.exports = (app, service) => {
 
   route.delete(`/:categoryId`, routeParamsValidator, async (req, res) => {
     const {categoryId} = req.params;
-    const category = await service.drop(categoryId);
 
-    if (!category) {
-      res.status(HttpCode.NOT_FOUND)
-        .send(`Not found article with id ${categoryId}`);
-      return;
+    try {
+      const category = await service.drop(categoryId);
+
+      if (!category) {
+        res.status(HttpCode.NOT_FOUND)
+          .send(`Not found article with id ${categoryId}`);
+        return;
+      }
+
+      res.status(HttpCode.OK).json(category);
+    } catch (error) {
+      res.status(HttpCode.INTERNAL_SERVER_ERROR).send({
+        error: `Категория не может быть удалена, если ей принадлежит хотя бы одна публикация`,
+      });
     }
-
-    res.status(HttpCode.OK).json(category);
   });
 
 
