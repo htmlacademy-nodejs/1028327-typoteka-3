@@ -1,22 +1,29 @@
 extends layout
 
 block content
+  +console(categories)
   main.main-page
     h1.visually-hidden Главная страница личного блога Типотека
     p Это приветственный текст, который владелец блога может выбрать, чтобы описать себя 👏
-    section.main-page__theme-list
-      h2.visually-hidden Список тем
-      include partials/categories
 
-    include partials/main-promo
+    if articles.length === 0
+      .main-page__empty-wrapper
+        p.main-page__empty-text Здесь пока пусто!
 
-    section.main-page__list.preview
-      h2.visually-hidden Список превью статей
-      ul.preview__list
-        each article in articles
-          +smallCard(article)
+    else
+      section.main-page__theme-list
+        h2.visually-hidden Список тем
+        include partials/categories
 
-    .preview__toggle-wrapper
-      .preview__pagination
-        if totalPages > 1
-          +pagination(page, totalPages, 2, `?`)
+      include partials/main-promo
+
+      section.main-page__list.preview
+        h2.visually-hidden Список превью статей
+        ul.preview__list
+          each article in articles
+            +smallCard(article)
+
+      .preview__toggle-wrapper
+        .preview__pagination
+          if totalPages > 1
+            +pagination(page, totalPages, 2, `?`)
