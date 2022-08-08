@@ -25,6 +25,7 @@
 }
 
 .comments__date {
+  flex-shrink: 0;
   color: $date-color;
 }
 
@@ -138,7 +139,12 @@
   p {
     margin: 0 5px 0 0;
     font-weight: bold;
+    word-break: break-word;
   }
+}
+
+.comments__message {
+  word-break: break-word;
 }
 
 .comments__validation {

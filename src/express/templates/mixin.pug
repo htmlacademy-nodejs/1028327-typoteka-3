@@ -62,7 +62,7 @@ mixin smallCard(article)
           a.preview__breadcrumbs-link(href=`#${category.id}`)=category.name
     if article.picture
       .preview__background
-        img(src=`/img/${article.picture}` width=460 height=240 alt="")
+        img.preview__background-image(src=`/img/${article.picture}` width=460 height=240 alt="")
     +timeLabel(article.createdAt, "preview__time")
     h3.preview__name
       a.preview__name-link(href=`/articles/${article.id}`)=article.title

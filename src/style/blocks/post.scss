@@ -26,6 +26,7 @@
 
 .post__title {
   @include margin-killer;
+  word-break: break-word;
 }
 
 .post__backwards {
@@ -66,10 +67,12 @@
     font-size: 25px;
     line-height: 1.2;
     font-weight: 700;
+    word-break: break-word;
   }
 
   & p {
     margin-top: 0;
     margin-bottom: 28px;
+    word-break: break-word;
   }
 }

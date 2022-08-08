@@ -37,6 +37,7 @@
   margin-bottom: 10px;
   font-size: 13px;
   line-height: 20px;
+  word-break: break-word;
 }
 
 .last__list-link {
@@ -46,6 +47,7 @@
   @include margin-killer;
   font-size: 15px;
   line-height: 20px;
+  word-break: break-word;
 
   &:hover {
     color: #2f80ed;
