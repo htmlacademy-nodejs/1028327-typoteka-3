@@ -6,7 +6,7 @@
       ul.hot__list
         each article in mostDiscussedArticles
           li.hot__list-item
-            a.hot__list-link(href=`/articles/${article.id}#commets`)
+            a.hot__list-link(href=`/articles/${article.id}#comments`)
               =article.announce
               sup.hot__link-sup=article.comments
     else

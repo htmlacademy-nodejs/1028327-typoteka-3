@@ -14,6 +14,9 @@ section.post__comments.comments
               p #{comment.user.name} •
               +timeLabel(comment.createdAt, "comments__date")
             p.comments__message=comment.text
+          if user && user.isAdmin
+            a.comments____button.button.button--close-item(href=`/articles/comments/${comment.id}?articleId=${article.id}`)
+              span.visually-hidden Удалить комментарий
 
 
   if user

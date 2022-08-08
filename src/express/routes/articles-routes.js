@@ -219,10 +219,16 @@ articlesRoutes.post(`/:id/comments`,
 
 articlesRoutes.get(`/comments/:commentId`, authorAuth, async (req, res) => {
   const {commentId} = req.params;
+  const {articleId} = req.query;
 
   try {
     await api.removeComment(commentId);
-    res.redirect(`/my/comments`);
+
+    if (articleId) {
+      res.redirect(`/articles/${articleId}#comments`);
+    } else {
+      res.redirect(`/my/comments`);
+    }
   } catch (error) {
     res.status(error.response.status).send(error.response.statusText);
   }
