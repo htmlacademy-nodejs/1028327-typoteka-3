@@ -304,7 +304,7 @@ describe(`API returns a list of 4 comments`, () => {
 
   beforeAll(async () => {
     const app = await createAPI();
-    res = await request(app).get(`/comments?count=4`);
+    res = await request(app).get(`/comments?limit=4`);
   });
 
   test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));

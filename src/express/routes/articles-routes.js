@@ -217,4 +217,16 @@ articlesRoutes.post(`/:id/comments`,
 );
 
 
+articlesRoutes.get(`/comments/:commentId`, authorAuth, async (req, res) => {
+  const {commentId} = req.params;
+
+  try {
+    await api.removeComment(commentId);
+    res.redirect(`/my/comments`);
+  } catch (error) {
+    res.status(error.response.status).send(error.response.statusText);
+  }
+});
+
+
 module.exports = articlesRoutes;

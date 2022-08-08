@@ -6,7 +6,7 @@ section.post__comments.comments
     h2.comments__title.title.title--middle Комментарии
     ul.comments__list
       each comment in article.comments
-        li.comments__comment
+        li.comments__comment(id=`comment-${comment.id}`)
           .comments__avatar.avatar
             img(src=`/img/${comment.user.avatar}` alt="аватар пользователя")
           .comments__text

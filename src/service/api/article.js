@@ -24,8 +24,8 @@ module.exports = (app, service) => {
 
 
   route.get(`/discussed`, async (req, res) => {
-    const {count} = req.query;
-    const articles = await service.findDiscussed(count);
+    const {limit} = req.query;
+    const articles = await service.findDiscussed(limit);
     res.status(HttpCode.OK).json(articles);
   });
 

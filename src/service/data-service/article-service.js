@@ -71,7 +71,7 @@ class ArticleService {
     return articles.map((article) => article.get());
   }
 
-  async findDiscussed(count) {
+  async findDiscussed(limit) {
     return await this._Article.findAll({
       attributes: [
         `announce`,
@@ -95,7 +95,7 @@ class ArticleService {
       group: [
         `Article.id`,
       ],
-      limit: count,
+      limit,
       subQuery: false,
       raw: true,
     });
@@ -116,6 +116,7 @@ class ArticleService {
         model: this._Comment,
         as: Aliase.COMMENTS,
         attributes: [
+          `id`,
           `text`,
           `createdAt`,
         ],
@@ -124,7 +125,6 @@ class ArticleService {
             model: this._User,
             as: Aliase.USER,
             attributes: [
-              `id`,
               `name`,
               `avatar`,
             ],

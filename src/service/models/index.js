@@ -19,7 +19,10 @@ const define = (sequelize) => {
     onDelete: `cascade`,
   });
 
-  Comment.belongsTo(Article);
+  Comment.belongsTo(Article, {
+    as: Aliase.ARTICLE,
+    foreignKey: `articleId`,
+  });
 
   Article.belongsToMany(Category, {
     as: Aliase.CATEGORIES,
@@ -29,7 +32,7 @@ const define = (sequelize) => {
   Category.belongsToMany(Article, {
     as: Aliase.ARTICLES,
     through: ArticleCategory,
-    onDelete: `RESTRICT`,
+    onDelete: `restrict`,
   });
 
   Category.hasMany(ArticleCategory, {

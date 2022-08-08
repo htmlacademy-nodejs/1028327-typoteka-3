@@ -28,27 +28,43 @@ class CommentService {
     });
   }
 
-  findLatest(count) {
-    return this._Comment.findAll({
+  findLatest(limit) {
+    const otions = {
       attributes: [
+        `id`,
         `text`,
         `createdAt`,
-        `ArticleId`, // TODO: 2022-07-27 / change name field
+        `ArticleId`,
       ],
       order: [
         [`createdAt`, `DESC`],
       ],
-      limit: count,
-      include: [{
-        model: this._User,
-        as: Aliase.USER,
+      include: [
+        {
+          model: this._User,
+          as: Aliase.USER,
+          attributes: [
+            `id`,
+            `name`,
+            `avatar`,
+          ],
+        },
+      ],
+    };
+
+    if (limit) {
+      otions.limit = limit;
+    } else {
+      otions.include.push({
+        model: this._Article,
+        as: Aliase.ARTICLE,
         attributes: [
-          `id`,
-          `name`,
-          `avatar`,
+          `title`,
         ],
-      }],
-    });
+      });
+    }
+
+    return this._Comment.findAll(otions);
   }
 }
 

@@ -29,10 +29,10 @@ myRouter.get(`/`, authorAuth, async (req, res) => {
 
 myRouter.get(`/comments`, authorAuth, async (req, res) => {
   const {user} = req.session;
-  const articles = await api.getArticles();
+  const comments = await api.getLatestComments();
 
-  res.render(`comments`, {
-    articles,
+  res.render(`all-comments`, {
+    comments,
     user,
   });
 });

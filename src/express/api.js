@@ -37,6 +37,14 @@ class API {
     });
   }
 
+  getMostDiscussedArticles(limit) {
+    return this._load(`/articles/discussed`, {
+      params: {
+        limit,
+      },
+    });
+  }
+
   getArticle(id, comments) {
     return this._load(`/articles/${id}`, {
       params: {
@@ -45,19 +53,17 @@ class API {
     });
   }
 
-  getLatestComments(count) {
-    return this._load(`/comments`, {
-      params: {
-        count,
-      },
+  createArticle(data) {
+    return this._load(`/articles`, {
+      method: HttpMethod.POST,
+      data,
     });
   }
 
-  getMostDiscussedArticles(count) {
-    return this._load(`/articles/discussed`, {
-      params: {
-        count,
-      },
+  editArticle(id, data) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.PUT,
+      data,
     });
   }
 
@@ -66,6 +72,27 @@ class API {
       params: {
         query,
       },
+    });
+  }
+
+  getLatestComments(limit) {
+    return this._load(`/comments`, {
+      params: {
+        limit,
+      },
+    });
+  }
+
+  createComment(id, data) {
+    return this._load(`/articles/${id}/comments`, {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  removeComment(id) {
+    return this._load(`/articles/comments/${id}`, {
+      method: HttpMethod.DELETE,
     });
   }
 
@@ -94,27 +121,6 @@ class API {
   removeCategory(id) {
     return this._load(`/categories/${id}`, {
       method: HttpMethod.DELETE,
-    });
-  }
-
-  createArticle(data) {
-    return this._load(`/articles`, {
-      method: HttpMethod.POST,
-      data,
-    });
-  }
-
-  editArticle(id, data) {
-    return this._load(`/articles/${id}`, {
-      method: HttpMethod.PUT,
-      data,
-    });
-  }
-
-  createComment(id, data) {
-    return this._load(`/articles/${id}/comments`, {
-      method: HttpMethod.POST,
-      data,
     });
   }
 

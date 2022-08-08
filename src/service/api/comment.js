@@ -34,15 +34,15 @@ module.exports = (app, articleService, commentService) => {
   );
 
 
-  route.delete(`/:articleId/comments/:commentId`,
-      [routeParamsValidator, articleExist(articleService)],
+  route.delete(`/comments/:commentId`,
+      routeParamsValidator,
       async (req, res) => {
         const {commentId} = req.params;
         const deleted = await commentService.drop(commentId);
 
         if (!deleted) {
           res.status(HttpCode.NOT_FOUND)
-          .send(`Not found comment with id ${commentId}`);
+            .send(`Not found comment with id ${commentId}`);
           return;
         }
 
@@ -52,8 +52,8 @@ module.exports = (app, articleService, commentService) => {
 
 
   app.get(`/comments`, async (req, res) => {
-    const {count} = req.query;
-    const comments = await commentService.findLatest(count);
+    const {limit} = req.query;
+    const comments = await commentService.findLatest(limit);
 
     res.status(HttpCode.OK).json(comments);
   });
