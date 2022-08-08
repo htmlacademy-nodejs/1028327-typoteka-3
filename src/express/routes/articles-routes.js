@@ -37,7 +37,7 @@ articlesRoutes.get(`/category/:id`, async (req, res) => {
   const offset = (page - 1) * ARTICLES_PER_PAGE;
 
   const [
-    {count, articlesByCategory: articles, category},
+    {count, articlesByCategory, category},
     categories,
   ] = await Promise.all([
     api.getArticlesByCategory({id, limit, offset}),
@@ -47,9 +47,9 @@ articlesRoutes.get(`/category/:id`, async (req, res) => {
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(`articles-by-category`, {
-    articles,
+    articles: articlesByCategory,
     categories,
-    category,
+    activeCategory: category,
     page,
     totalPages,
     user,

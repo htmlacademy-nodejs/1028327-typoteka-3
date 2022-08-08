@@ -1,13 +1,14 @@
 ul.themes
-  - var activeId = category && category.id
-  each item in categories
-    li.themes__item
-      -
-        var activeCategory = (activeId === item.id)
-        var href = activeCategory || `/articles/category/${item.id}`
-        var activClass = activeCategory && "themes__item-link--active"
-      a.themes__item-link(href=href class=activClass)
-        =item.name
-        sup=item.count
+  - var activeId = activeCategory && activeCategory.id
+  each category in categories
+    if category.count > 0
+      - var isActive = (activeId === category.id)
+      - var href = isActive || `/articles/category/${category.id}`
+      - var activClass = isActive && "themes__item-link--active"
+
+      li.themes__item
+        a.themes__item-link(href=href class=activClass)
+          =category.name
+          sup=category.count
 
 
