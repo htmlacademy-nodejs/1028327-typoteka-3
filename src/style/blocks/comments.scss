@@ -31,6 +31,7 @@
 .comments__avatar {
   margin-right: 13px;
   align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .comments__text {
@@ -49,7 +50,8 @@
   }
 }
 
-.comments____button {
+.comments__button-delete {
+  align-self: center;
   margin-left: 20px;
   flex-shrink: 0;
 }

@@ -16,6 +16,7 @@ const define = (sequelize) => {
 
   Article.hasMany(Comment, {
     as: Aliase.COMMENTS,
+    foreignKey: `articleId`,
     onDelete: `cascade`,
   });
 

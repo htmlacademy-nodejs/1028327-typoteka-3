@@ -75,14 +75,14 @@ class CategoryService {
 
   async findPage({categoryId, limit, offset}) {
     const articlesIdByCategory = await this._ArticleCategory.findAll({
-      attributes: [`ArticleId`],
+      attributes: [`articleId`],
       where: {
         CategoryId: categoryId,
       },
       raw: true,
     });
 
-    const articlesId = articlesIdByCategory.map((articleIdItem) => articleIdItem.ArticleId);
+    const articlesId = articlesIdByCategory.map((articleIdItem) => articleIdItem.articleId);
 
     const {count, rows} = await this._Article.findAndCountAll({
       limit,

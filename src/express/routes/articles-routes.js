@@ -186,6 +186,18 @@ articlesRoutes.post(`/edit/:id`,
 );
 
 
+articlesRoutes.get(`/delete/:articleId`, userAuth, async (req, res) => {
+  const {articleId} = req.params;
+
+  try {
+    await api.removeArticle(articleId);
+    res.redirect(`/my`);
+  } catch (error) {
+    res.status(error.response.status).send(error.response.statusText);
+  }
+});
+
+
 articlesRoutes.post(`/:id/comments`,
     [userAuth, upload.none(), csrfProtection],
     async (req, res) => {

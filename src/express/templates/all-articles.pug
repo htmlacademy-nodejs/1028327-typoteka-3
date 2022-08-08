@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  main.main-page.main-page--padding
+    section.main-page__notes.notes
+      h1.notes__title Мои записи
+      ul.notes__list
+        each article in articles
+          li.notes__list-item
+            +timeLabel(article.date, "notes__item-time")
+            a.notes__item-text(href=`/articles/${article.id}`)=article.title
+            a.notes__button.button.button--close-item(href=`/articles/delete/${article.id}`)
+              span.visually-hidden Удалить публикацию

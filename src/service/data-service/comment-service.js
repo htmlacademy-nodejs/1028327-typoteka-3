@@ -11,7 +11,7 @@ class CommentService {
 
   create(articleId, comment) {
     return this._Comment.create({
-      ArticleId: articleId,
+      articleId,
       ...comment,
     });
   }
@@ -23,7 +23,7 @@ class CommentService {
 
   findAll(articleId) {
     return this._Comment.findAll({
-      where: {ArticleId: articleId},
+      where: {articleId},
       raw: true,
     });
   }
@@ -34,7 +34,7 @@ class CommentService {
         `id`,
         `text`,
         `createdAt`,
-        `ArticleId`,
+        `articleId`,
       ],
       order: [
         [`createdAt`, `DESC`],

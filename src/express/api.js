@@ -19,7 +19,7 @@ class API {
     });
   }
 
-  getArticles({offset, limit}) {
+  getArticles({offset, limit} = {}) {
     return this._load(`/articles`, {
       params: {
         offset,
@@ -64,6 +64,12 @@ class API {
     return this._load(`/articles/${id}`, {
       method: HttpMethod.PUT,
       data,
+    });
+  }
+
+  removeArticle(id) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.DELETE,
     });
   }
 

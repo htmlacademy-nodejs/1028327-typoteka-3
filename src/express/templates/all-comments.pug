@@ -11,7 +11,7 @@ block content
               img.publication__list-image(src=`/img/${comment.user.avatar}` width="20" height="20" alt="Аватар пользователя")
               b.publication__list-name=comment.user.name
               +timeLabel(comment.createdAt, "publication__item-time")
-            a.publication__item-text(href=`/articles/${comment.ArticleId}#comment-${comment.id}`)=comment.text
+            a.publication__item-text(href=`/articles/${comment.articleId}#comment-${comment.id}`)=comment.text
             p.publication__text-strong=comment.article.title
             a.publication__button.button.button--close-item(href=`/articles/comments/${comment.id}`)
               span.visually-hidden Удалить комментарий

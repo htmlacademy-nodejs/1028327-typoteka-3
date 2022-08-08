@@ -14,14 +14,9 @@ myRouter.get(`/`, authorAuth, async (req, res) => {
   const {user} = req.session;
 
   const articles = await api.getArticles();
-  const comments = articles.reduce((acc, article) => {
-    acc = [...acc, ...article.comments];
-    return acc;
-  }, []);
 
-  res.render(`my`, {
+  res.render(`all-articles`, {
     articles,
-    comments,
     user,
   });
 });
