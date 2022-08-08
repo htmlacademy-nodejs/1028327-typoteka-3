@@ -1,0 +1,22 @@
+.empty {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 140px;
+    left: calc(50% - 50px);
+    width: 100px;
+    height: 100px;
+    background: url("../img/icons/notes.svg") no-repeat top left;
+  }
+}
+
+.empty__text {
+  margin: 0;
+  padding-top: 245px;
+  font-family: $fontInter;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+}
