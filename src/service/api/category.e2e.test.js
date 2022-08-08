@@ -177,10 +177,6 @@ describe(`API creates an category if data is valid`, () => {
   let app;
   let res;
 
-  // const newCategory = {
-  //   name: `Выйти из IT`,
-  // };
-
   beforeAll(async () => {
     app = await createAPI();
     res = await request(app).post(`/categories`).send(newCategory);
@@ -298,12 +294,13 @@ describe(`API correctly deletes a category`, () => {
 
   beforeAll(async () => {
     app = await createAPI();
-    res = await request(app).delete(`/categories/1`);
+    res = await request(app).post(`/categories`).send(newCategory);
+    res = await request(app).delete(`/categories/5`);
   });
 
   test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
   test(`Category count is 4 now`, () => request(app).get(`/categories`)
-      .expect((response) => expect(response.body.length).toBe(3)),
+      .expect((response) => expect(response.body.length).toBe(4)),
   );
 });
 

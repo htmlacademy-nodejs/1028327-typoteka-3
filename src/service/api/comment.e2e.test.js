@@ -248,7 +248,7 @@ describe(`API correctly deletes a comment`, () => {
   beforeAll(async () => {
     app = await createAPI();
     res = await request(app)
-      .delete(`/articles/2/comments/1`);
+      .delete(`/articles/comments/1`);
   });
 
   test(`Status code 200`, () => expect(res.statusCode).toBe(HttpCode.OK));
@@ -262,7 +262,7 @@ test(`API refuses to delete non-existent comment`, async () => {
   const app = await createAPI();
 
   return request(app)
-    .delete(`/articles/2/comments/20`)
+    .delete(`/articles/comments/20`)
     .expect(HttpCode.NOT_FOUND);
 });
 
@@ -271,20 +271,11 @@ test(`API refuses to delete invalid id comment`, async () => {
   const app = await createAPI();
 
   return request(app)
-    .delete(`/articles/2/comments/NOEXST`)
+    .delete(`/articles/comments/NOEXST`)
     .expect(HttpCode.BAD_REQUEST);
 });
 
 // test case 09
-test(`API refuses to delete a comment to invalid id article`, async () => {
-  const app = await createAPI();
-
-  return request(app)
-    .delete(`/articles/NOEXST/comments/1`)
-    .expect(HttpCode.BAD_REQUEST);
-});
-
-// test case 10
 describe(`API returns a list of all comments`, () => {
   let res;
 
@@ -298,7 +289,7 @@ describe(`API returns a list of all comments`, () => {
     expect(res.body.length).toBe(9));
 });
 
-// test case 11
+// test case 10
 describe(`API returns a list of 4 comments`, () => {
   let res;
 
