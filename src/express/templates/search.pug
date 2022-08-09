@@ -1,4 +1,4 @@
-extends layout.pug
+extends layout
 
 block content
   main
@@ -15,7 +15,7 @@ block content
           if (articles && !noResults)
             each article in articles
               .search__result
-                +timeLabel(article.createdAt, "search__date")
+                +timeLabel(article.date, "search__date")
                 - var title = article.title.replace(new RegExp(query, 'ig'), '<b>$&</b>')
                 a.search__link(href=`/articles/${article.id}`) !{title}
 

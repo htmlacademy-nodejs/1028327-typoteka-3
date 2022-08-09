@@ -1,4 +1,4 @@
-extends layout.pug
+extends layout
 
 block content
   main
@@ -19,11 +19,6 @@ block content
               button.new-publication__button.button.button--colored(type="submit") Опубликовать
 
             if validationMessages
-              //- TODO: move to css
-              style.
-                .new-publication__validation {
-                  margin-top: 20px;
-                }
               .new-publication__validation
                 +insertErrorMessages(validationMessages, `При ${id ? "изменении" : "создании"} публикации произошли ошибки`)
 

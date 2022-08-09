@@ -4,11 +4,14 @@ const {Router} = require(`express`);
 const csrf = require(`csurf`);
 const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
-const {prepareErrors} = require(`../../utils`);
+const {
+  prepareErrors,
+  cropStr,
+} = require(`../../utils`);
 const {
   MAX_LAST_COMMENTS,
   MAX_DISCUSSED_ARTICLES,
-  OFFERS_PER_PAGE,
+  ARTICLES_PER_PAGE,
 } = require(`../../constants`);
 
 const mainRoutes = new Router();
@@ -20,8 +23,8 @@ mainRoutes.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
   page = +page;
 
-  const limit = OFFERS_PER_PAGE;
-  const offset = (page - 1) * OFFERS_PER_PAGE;
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
 
   const [
     {count, articles},
@@ -35,7 +38,13 @@ mainRoutes.get(`/`, async (req, res) => {
     api.getMostDiscussedArticles(MAX_DISCUSSED_ARTICLES),
   ]);
 
-  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
+  lastestComments.forEach((comment) =>
+    (comment.text = cropStr(comment.text)));
+
+  mostDiscussedArticles.forEach((article) =>
+    (article.announce = cropStr(article.announce)));
+
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(`main`, {
     articles,
@@ -63,8 +72,7 @@ mainRoutes.get(`/register`, csrfProtection, (req, res) => {
 
 
 mainRoutes.post(`/register`,
-    upload.single(`avatar`),
-    csrfProtection,
+    [upload.single(`avatar`), csrfProtection],
     async (req, res) => {
       const {body, file} = req;
 
@@ -140,12 +148,16 @@ mainRoutes.get(`/search`, async (req, res) => {
   const {query} = req.query;
 
   if (!query) {
-    res.render(`search`);
+    res.render(`search`, {
+      user,
+    });
+
     return;
   }
 
   try {
     const articles = await api.search(query);
+
     res.render(`search`, {
       query,
       articles,

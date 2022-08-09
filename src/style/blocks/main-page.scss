@@ -1,0 +1,69 @@
+.main-page {
+  @include main-wrapper;
+  padding-top: 75px;
+}
+
+.main-page--padding {
+  padding-top: 0;
+}
+
+.main-page > p {
+  @include margin-killer;
+
+  width: 710px;
+  margin-bottom: 75px;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 1.25;
+}
+
+.main-page__theme-list {
+  margin-bottom: 40px;
+}
+
+.main-page__section-flex {
+  display: flex;
+  justify-content: space-between;
+  width: 940px;
+  min-height: 420px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.main-page__section-flex--short {
+  min-height: auto;
+}
+
+.main-page__empty-wrapper {
+  position: relative;
+  width: 940px;
+  height: 440px;
+  margin-bottom: 39px;
+  background: #efefef;
+  border-radius: 30px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 140px;
+    left: 420px;
+    width: 100px;
+    height: 100px;
+    background: url("../img/icons/notes.svg") no-repeat top left;
+  }
+}
+
+.main-page__empty-text {
+  margin: 0;
+  padding-top: 245px;
+  font-family: $fontInter;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+}

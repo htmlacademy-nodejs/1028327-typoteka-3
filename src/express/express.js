@@ -8,7 +8,10 @@ const sequelize = require(`../service/lib/sequelize`);
 const articlesRoutes = require(`./routes/articles-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
-const {FRONT_DEFAULT_PORT} = require(`../constants`);
+const {
+  FRONT_DEFAULT_PORT,
+  HttpCode,
+} = require(`../constants`);
 
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
@@ -50,7 +53,7 @@ app.use(express.static(path.resolve(__dirname, FAVICON_DIR)));
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);
 
-app.use((_req, res) => res.status(400).render(`errors/404`));
-app.use((_err, _req, res) => res.status(500).render(`errors/500`));
+app.use((_req, res) => res.status(HttpCode.NOT_FOUND).render(`errors/404`));
+app.use((_err, _req, res) => res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`));
 
 app.listen(FRONT_DEFAULT_PORT);

@@ -1,9 +1,3 @@
-mixin retinaImage(img, alt=null, width=null, height=null)
-  - var path = img.split("@").shift();
-  - var format = img.split(".").pop();
-  img(src=`${path}@1x.${format}` srcset=`${path}@2x.${format} 2x` alt=alt width=width height=height)
-
-
 mixin console(data)
   script
     if data
@@ -52,31 +46,29 @@ mixin pagination(page, totalPages, width, prefix)
 
 
 mixin insertErrorMessages(messages, titleMessages)
-  //- TODO: move to css
-  style.
-    .validation {
-      width: auto;
-      padding: 14px 20px 20px;
-      background-color: #ffeded;
-      border-radius: 15px;
-    }
-    .validation__message {
-      padding: 0;
-      margin: 0;
-      font-weight: 700;
-      color: #eb5757;
-    }
-    .validation__error-list {
-      margin: 0;
-      padding: 0 0 0 19px;
-    }
-    .validation__error {
-      margin: 6px 0 0;
-    }
-
   .validation
     if titleMessages
       p.validation__message #{titleMessages}:
     ul.validation__error-list
       each message of messages
         li.validation__error=message
+
+
+mixin smallCard(article)
+  li.preview__item(class=(!article.picture && "preview__item--noimage"))
+    ul.preview__breadcrumbs
+      each category in article.categories
+        li.preview__breadcrumbs-item
+          a.preview__breadcrumbs-link(href=`#${category.id}`)=category.name
+    if article.picture
+      .preview__background
+        img.preview__background-image(src=`/img/${article.picture}` width=460 height=240 alt="")
+    +timeLabel(article.createdAt, "preview__time")
+    h3.preview__name
+      a.preview__name-link(href=`/articles/${article.id}`)=article.title
+    p.preview__text=article.announce
+    if article.comments.length > 0
+      a.preview__comment(href=`/articles/${article.id}#comments`)
+        | Комментарии
+        span.preview__cloud
+        b.preview__comment-count=article.comments.length

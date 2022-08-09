@@ -19,10 +19,27 @@ class API {
     });
   }
 
-  getArticles({offset, limit}) {
+  getArticles({offset, limit} = {}) {
     return this._load(`/articles`, {
       params: {
         offset,
+        limit,
+      },
+    });
+  }
+
+  getArticlesByCategory({id, offset, limit}) {
+    return this._load(`/categories/${id}`, {
+      params: {
+        offset,
+        limit,
+      },
+    });
+  }
+
+  getMostDiscussedArticles(limit) {
+    return this._load(`/articles/discussed`, {
+      params: {
         limit,
       },
     });
@@ -32,38 +49,6 @@ class API {
     return this._load(`/articles/${id}`, {
       params: {
         comments,
-      },
-    });
-  }
-
-  getLatestComments(count) {
-    return this._load(`/comments`, {
-      params: {
-        count,
-      },
-    });
-  }
-
-  getMostDiscussedArticles(count) {
-    return this._load(`/articles/discussed`, {
-      params: {
-        count,
-      },
-    });
-  }
-
-  search(query) {
-    return this._load(`/search`, {
-      params: {
-        query,
-      },
-    });
-  }
-
-  getCategories(count) {
-    return this._load(`/categories`, {
-      params: {
-        count,
       },
     });
   }
@@ -82,10 +67,66 @@ class API {
     });
   }
 
+  removeArticle(id) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  search(query) {
+    return this._load(`/search`, {
+      params: {
+        query,
+      },
+    });
+  }
+
+  getLatestComments(limit) {
+    return this._load(`/comments`, {
+      params: {
+        limit,
+      },
+    });
+  }
+
   createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
       data,
+    });
+  }
+
+  removeComment(id) {
+    return this._load(`/articles/comments/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  getCategories(count) {
+    return this._load(`/categories`, {
+      params: {
+        count,
+      },
+    });
+  }
+
+  createCategory(data) {
+    return this._load(`/categories`, {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  editCategory(id, data) {
+    return this._load(`/categories/${id}`, {
+      method: HttpMethod.PUT,
+      data,
+    });
+  }
+
+  removeCategory(id) {
+    return this._load(`/categories/${id}`, {
+      method: HttpMethod.DELETE,
     });
   }
 

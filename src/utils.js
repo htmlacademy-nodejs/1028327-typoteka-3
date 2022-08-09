@@ -34,3 +34,6 @@ module.exports.ensureArray = (value) => Array.isArray(value) ? value : [value];
 module.exports.prepareErrors = (errors) => errors.response
   ? errors.response.data.split(`\n`)
   : [`Неизвестная ошибка`];
+
+module.exports.cropStr = (str) =>
+  str.length > 100 ? `${str.slice(0, 100)}...` : str;

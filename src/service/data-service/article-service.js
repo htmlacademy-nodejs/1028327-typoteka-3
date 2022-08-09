@@ -18,8 +18,20 @@ class ArticleService {
   }
 
   async drop(id) {
-    const deletedRows = await this._Article.destroy({where: {id}});
+    const deletedRows = await this._Article.destroy({
+      where: {id},
+    });
+
     return !!deletedRows;
+  }
+
+  async update(id, article) {
+    const [affectedRows] = await this._Article.update(
+        article,
+        {where: {id}},
+    );
+
+    return !!affectedRows;
   }
 
   async findAll() {
@@ -59,7 +71,7 @@ class ArticleService {
     return articles.map((article) => article.get());
   }
 
-  async findDiscussed(count) {
+  async findDiscussed(limit) {
     return await this._Article.findAll({
       attributes: [
         `announce`,
@@ -83,7 +95,7 @@ class ArticleService {
       group: [
         `Article.id`,
       ],
-      limit: count,
+      limit,
       subQuery: false,
       raw: true,
     });
@@ -104,6 +116,7 @@ class ArticleService {
         model: this._Comment,
         as: Aliase.COMMENTS,
         attributes: [
+          `id`,
           `text`,
           `createdAt`,
         ],
@@ -112,7 +125,6 @@ class ArticleService {
             model: this._User,
             as: Aliase.USER,
             attributes: [
-              `id`,
               `name`,
               `avatar`,
             ],
@@ -121,16 +133,15 @@ class ArticleService {
       });
     }
 
-    return this._Article.findByPk(id, {include});
-  }
-
-  async update(id, article) {
-    const [affectedRows] = await this._Article.update(
-        article,
-        {where: {id}},
-    );
-
-    return !!affectedRows;
+    return this._Article.findByPk(id, {
+      include,
+      attributes: {
+        exclude: [
+          `createdAt`,
+          `updatedAt`,
+        ],
+      },
+    });
   }
 
   async findPage({limit, offset}) {

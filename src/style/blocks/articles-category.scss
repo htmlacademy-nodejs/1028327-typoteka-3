@@ -1,0 +1,22 @@
+.articles-category {
+  width: 1000px;
+  margin: 0 auto;
+  margin-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.articles-category h1 {
+  margin: 0;
+  margin-bottom: 60px;
+  font-family: $fontInter;
+  font-weight: 500;
+  font-size: 60px;
+  line-height: 60px;
+  color: $black-color;
+}
+
+.articles-category__theme-list {
+  margin-bottom: 50px;
+  margin-left: -5px;
+}

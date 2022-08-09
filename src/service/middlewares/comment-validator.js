@@ -19,7 +19,9 @@ const schema = Joi.object({
 
 module.exports = (req, res, next) => {
   const comment = req.body;
-  const {error} = schema.validate(comment, {abortEarly: false});
+  const {error} = schema.validate(comment, {
+    abortEarly: false,
+  });
 
   if (error) {
     res.status(HttpCode.BAD_REQUEST).send(

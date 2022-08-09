@@ -1,0 +1,23 @@
+.link {
+  font-weight: bold;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    opacity: 0.5;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}
+
+.link--text {
+  font-weight: normal;
+
+  &:hover,
+  &:focus {
+    color: $text-hover-color;
+    opacity: 1;
+  }
+}

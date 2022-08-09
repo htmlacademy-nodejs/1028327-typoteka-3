@@ -1,0 +1,9 @@
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: url("../img/icons/smile.svg") no-repeat center;
+  background-color: $item-bg-color;
+  font-size: 0;
+  overflow: hidden;
+}

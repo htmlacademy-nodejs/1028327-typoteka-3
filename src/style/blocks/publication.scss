@@ -1,0 +1,99 @@
+.publication {
+  width: 940px;
+  min-height: 610px;
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.publication__title {
+  @include margin-killer;
+  margin-bottom: 40px;
+  font-size: 40px;
+  line-height: 50px;
+  font-weight: 500;
+}
+
+.publication__list {
+  @include list-killer;
+}
+
+.publication__list-item {
+  position: relative;
+  padding-right: 30px;
+  margin-bottom: 19px;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.publication__list-item--last {
+  margin-bottom: 0;
+}
+
+.publication__header {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.publication__list-image {
+  display: block;
+  flex-shrink: 0;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.publication__list-name {
+  position: relative;
+  margin-right: 19px;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 20px;
+  word-break: break-word;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 9px;
+    right: -12px;
+    width: 4px;
+    height: 4px;
+    background-color: #000000;
+    border-radius: 50%;
+  }
+}
+
+.publication__item-time {
+  display: block;
+  flex-shrink: 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: #000000;
+}
+
+.publication__item-text {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 20px;
+  word-break: break-word;
+}
+
+.publication__text-strong {
+  @include margin-killer;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 20px;
+  word-break: break-word;
+}
+
+.publication__button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

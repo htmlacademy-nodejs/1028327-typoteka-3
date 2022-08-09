@@ -1,0 +1,152 @@
+.comments {
+  @include rounded-item;
+  padding: 0;
+}
+
+.comments__title {
+  margin: 0;
+  padding: 30px 40px 20px;
+}
+
+.comments__list {
+  width: 100%;
+
+  @include list-killer;
+  padding: 0 40px 34px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.comments__comment {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.comments__date {
+  flex-shrink: 0;
+  color: $date-color;
+}
+
+.comments__avatar {
+  margin-right: 13px;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.comments__text {
+  max-width: 656px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-right: auto;
+
+  & p {
+    @include margin-killer;
+
+    &:not(:first-of-type) {
+      margin-top: 5px;
+    }
+  }
+}
+
+.comments__button-delete {
+  align-self: center;
+  margin-left: 20px;
+  flex-shrink: 0;
+}
+
+.comments__footer {
+  padding: 20px 40px 30px;
+  background: linear-gradient(180deg, #eaf7fa 0%, rgba(234, 247, 250, 0) 100%);
+}
+
+.comments__footer--user {
+  & form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  & label {
+    flex-grow: 1;
+  }
+
+  & textarea,
+  & .comments__textarea-wrapper {
+    width: 497px;
+    padding: 10px;
+
+    font-size: 21px;
+    line-height: 25px;
+  }
+
+  & textarea {
+    @include textarea;
+
+    &::placeholder {
+      font-family: $fontInter;
+      font-size: 21px;
+      line-height: 25px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.comments__footer--visitor {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.comments__registration {
+  margin-left: 20px;
+  width: 548px;
+
+  & p {
+    @include margin-killer;
+    font-size: 13px;
+  }
+
+  & b {
+    display: block;
+  }
+}
+
+.comments__button {
+  width: 160px;
+  align-self: flex-end;
+}
+
+.comments__error {
+  margin: 0;
+  padding-top: 22px;
+  padding-left: 60px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  color: #eb5757;
+}
+
+.comments__head {
+  display: flex;
+
+  p {
+    margin: 0 5px 0 0;
+    font-weight: bold;
+    word-break: break-word;
+  }
+}
+
+.comments__message {
+  word-break: break-word;
+}
+
+.comments__validation {
+  margin: 0 40px 34px 40px;
+}

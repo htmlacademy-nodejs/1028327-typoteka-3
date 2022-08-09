@@ -1,59 +1,28 @@
-extends layout.pug
+extends layout
 
 block content
   main.main-page
     h1.visually-hidden Главная страница личного блога Типотека
-    p Это приветственный текст, который владелец блога может выбрать, чтобы описать себя 👏
-    section.main-page__theme-list
-      h2.visually-hidden Список тем
+    p Я ни на что не жалуюсь и мне все нравится, несмотря на то, что я здесь никогда не был и не знаю ничего об этих местах 🏔
 
-      include partials/categories.pug
+    if articles.length === 0
+      .main-page__empty-wrapper
+        p.main-page__empty-text Здесь пока пусто!
 
-    .main-page__section-flex
-      section.main-page__hot.hot
-        h2.hot__name
-          | Самое обсуждаемое
-          span.hot__icon.hot__icon--fire
-        ul.hot__list
-          each article in mostDiscussedArticles
-            li.hot__list-item
-              a.hot__list-link(href=`/articles/${article.id}`)
-                =article.announce
-                sup.hot__link-sup=article.comments
+    else
+      section.main-page__theme-list
+        h2.visually-hidden Список тем
+        include partials/categories
 
-      section.main-page__last.last
-        h2.last__name
-          | Последние комментарии
-          span.last__icon.last__icon--cloud
-        ul.last__list
-          each comment in lastestComments
-            li.last__list-item
-              img.last__list-image(src=`/img/${comment.user.avatar}` width="20" height="20" alt="Аватар пользователя")
-              b.last__list-name=comment.user.name
-              a.last__list-link(href=`/articles/${comment.ArticleId}#comments`)=comment.text
+      include partials/main-promo
 
-    section.main-page__list.preview
-      h2.visually-hidden Список превью статей
-      ul.preview__list
-        each article in articles
-          li.preview__item
-            ul.preview__breadcrumbs
-              each category in article.categories
-                li.preview__breadcrumbs-item
-                  a.preview__breadcrumbs-link(href=`#${category.id}`)=category.name
-            .preview__background
-              +retinaImage("/img/skyscraper@1x.jpg", "Фотография небоскреба", width=460, height=240)
-            +timeLabel(article.createdAt, "preview__time")
-            h3.preview__name
-              a.preview__name-link(href=`/articles/${article.id}`)=article.title
-            p.preview__text=article.announce
-            if article.comments.length > 0
-              a.preview__comment(href=`/articles/${article.id}#comments`)
-                | Комментарии
-                span.preview__cloud
-                b.preview__comment-count=article.comments.length
+      section.main-page__list.preview
+        h2.visually-hidden Список превью статей
+        ul.preview__list
+          each article in articles
+            +smallCard(article)
 
-    .preview__toggle-wrapper
-      .preview__pagination
-        if totalPages > 1
-          +pagination(page, totalPages, 2, `?`)
+      .preview__toggle-wrapper
+        .preview__pagination
+          if totalPages > 1
+            +pagination(page, totalPages, 2, `?`)
