@@ -1,9 +1,11 @@
 'use strict';
 
 const express = require(`express`);
+const http = require(`http`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
+const socket = require(`../lib/socket`);
 
 const {
   API_PREFIX,
@@ -15,6 +17,11 @@ const {
 const logger = getLogger({name: `api`});
 
 const app = express();
+const server = http.createServer(app);
+
+const io = socket(server);
+app.locals.socketio = io;
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -51,7 +58,7 @@ module.exports = {
     const port = Number.parseInt(customPort, 10) || REST_API_DEFAULT_PORT;
 
     try {
-      app.listen(port, () => {
+      server.listen(port, () => {
         logger.info(`Listening to connections on ${port}`);
       });
     } catch (err) {

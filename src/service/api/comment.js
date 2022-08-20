@@ -1,10 +1,15 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {HttpCode} = require(`../../constants`);
 const articleExist = require(`../middlewares/article-exist`);
 const commentValidator = require(`../middlewares/comment-validator`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
+const {
+  HttpCode,
+  MAX_LAST_COMMENTS,
+  MAX_DISCUSSED_ARTICLES,
+} = require(`../../constants`);
+
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -25,9 +30,18 @@ module.exports = (app, articleService, commentService) => {
 
   route.post(`/:articleId/comments`,
       [routeParamsValidator, articleExist(articleService), commentValidator],
-      (req, res) => {
+      async (req, res) => {
         const {articleId} = req.params;
-        commentService.create(articleId, req.body);
+        await commentService.create(articleId, req.body);
+
+        const lastestComments = await commentService.findLatest(MAX_LAST_COMMENTS);
+        const mostDiscussed = await articleService.findDiscussed(MAX_DISCUSSED_ARTICLES);
+
+        const io = req.app.locals.socketio;
+        io.emit(`comment:create`, {
+          lastestComments,
+          mostDiscussed,
+        });
 
         res.status(HttpCode.CREATED).send(`Created`);
       },
