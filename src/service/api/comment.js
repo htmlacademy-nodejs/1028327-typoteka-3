@@ -11,6 +11,18 @@ const {
   MAX_DISCUSSED_ARTICLES,
 } = require(`../../constants`);
 
+const getPromoBlockData = async (articleService, commentService) => {
+  const [
+    mostDiscussed,
+    lastestComments,
+  ] = await Promise.all([
+    articleService.findDiscussed(MAX_DISCUSSED_ARTICLES),
+    commentService.findLatest(MAX_LAST_COMMENTS),
+  ]);
+
+  return adaptToClient(mostDiscussed, lastestComments);
+};
+
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -38,20 +50,12 @@ module.exports = (app, articleService, commentService) => {
         const [
           mostDiscussed,
           lastestComments,
-        ] = await Promise.all([
-          articleService.findDiscussed(MAX_DISCUSSED_ARTICLES),
-          commentService.findLatest(MAX_LAST_COMMENTS),
-        ]);
-
-        const [
-          adaptedArticles,
-          adaptedComments,
-        ] = adaptToClient(mostDiscussed, lastestComments);
+        ] = await getPromoBlockData(articleService, commentService);
 
         const io = req.app.locals.socketio;
         io.emit(`comment:update`, {
-          mostDiscussed: adaptedArticles,
-          lastestComments: adaptedComments,
+          mostDiscussed,
+          lastestComments,
         });
 
         res.status(HttpCode.CREATED).send(`Created`);
@@ -74,20 +78,12 @@ module.exports = (app, articleService, commentService) => {
         const [
           mostDiscussed,
           lastestComments,
-        ] = await Promise.all([
-          articleService.findDiscussed(MAX_DISCUSSED_ARTICLES),
-          commentService.findLatest(MAX_LAST_COMMENTS),
-        ]);
-
-        const [
-          adaptedArticles,
-          adaptedComments,
-        ] = adaptToClient(mostDiscussed, lastestComments);
+        ] = await getPromoBlockData(articleService, commentService);
 
         const io = req.app.locals.socketio;
         io.emit(`comment:update`, {
-          mostDiscussed: adaptedArticles,
-          lastestComments: adaptedComments,
+          mostDiscussed,
+          lastestComments,
         });
 
         res.status(HttpCode.OK).send(`Deleted`);
