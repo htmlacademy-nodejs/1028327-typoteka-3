@@ -4,10 +4,8 @@ const {Router} = require(`express`);
 const csrf = require(`csurf`);
 const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
-const {
-  prepareErrors,
-  cropStr,
-} = require(`../../utils`);
+const {adaptToClient} = require(`../../service/lib/adapt-to-client`);
+const {prepareErrors} = require(`../../utils`);
 const {
   MAX_LAST_COMMENTS,
   MAX_DISCUSSED_ARTICLES,
@@ -38,19 +36,18 @@ mainRoutes.get(`/`, async (req, res) => {
     api.getMostDiscussedArticles(MAX_DISCUSSED_ARTICLES),
   ]);
 
-  lastestComments.forEach((comment) =>
-    (comment.text = cropStr(comment.text)));
-
-  mostDiscussedArticles.forEach((article) =>
-    (article.announce = cropStr(article.announce)));
+  const [
+    adaptedArticles,
+    adaptedComments,
+  ] = adaptToClient(mostDiscussedArticles, lastestComments);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(`main`, {
     articles,
     categories,
-    lastestComments,
-    mostDiscussedArticles,
+    mostDiscussedArticles: adaptedArticles,
+    lastestComments: adaptedComments,
     page,
     totalPages,
     user,

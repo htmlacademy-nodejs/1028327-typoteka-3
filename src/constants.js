@@ -11,6 +11,7 @@ module.exports.FRONT_DEFAULT_PORT = 8080;
 module.exports.MAX_LAST_COMMENTS = 4;
 module.exports.MAX_DISCUSSED_ARTICLES = 4;
 module.exports.ARTICLES_PER_PAGE = 8;
+module.exports.MAX_LETTERS_PROMO_TEXT = 100;
 
 module.exports.ExitCode = {
   error: 1,

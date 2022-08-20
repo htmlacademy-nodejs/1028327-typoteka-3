@@ -60,7 +60,7 @@
     updateMostDiscussed(mainPromoBlock, data.mostDiscussed);
   };
 
-  socket.addEventListener(`comment:create`, (data) => {
+  socket.addEventListener(`comment:update`, (data) => {
     upadatePromoBlock(data);
   });
 })();

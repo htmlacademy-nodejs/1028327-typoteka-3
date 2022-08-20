@@ -50,6 +50,8 @@ class CommentService {
           ],
         },
       ],
+      raw: true,
+      nest: true,
     };
 
     if (limit) {

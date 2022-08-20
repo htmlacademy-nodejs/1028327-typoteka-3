@@ -4,6 +4,7 @@ const {Router} = require(`express`);
 const articleExist = require(`../middlewares/article-exist`);
 const commentValidator = require(`../middlewares/comment-validator`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
+const {adaptToClient} = require(`../lib/adapt-to-client`);
 const {
   HttpCode,
   MAX_LAST_COMMENTS,
@@ -34,13 +35,23 @@ module.exports = (app, articleService, commentService) => {
         const {articleId} = req.params;
         await commentService.create(articleId, req.body);
 
-        const lastestComments = await commentService.findLatest(MAX_LAST_COMMENTS);
-        const mostDiscussed = await articleService.findDiscussed(MAX_DISCUSSED_ARTICLES);
+        const [
+          mostDiscussed,
+          lastestComments,
+        ] = await Promise.all([
+          articleService.findDiscussed(MAX_DISCUSSED_ARTICLES),
+          commentService.findLatest(MAX_LAST_COMMENTS),
+        ]);
+
+        const [
+          adaptedArticles,
+          adaptedComments,
+        ] = adaptToClient(mostDiscussed, lastestComments);
 
         const io = req.app.locals.socketio;
-        io.emit(`comment:create`, {
-          lastestComments,
-          mostDiscussed,
+        io.emit(`comment:update`, {
+          mostDiscussed: adaptedArticles,
+          lastestComments: adaptedComments,
         });
 
         res.status(HttpCode.CREATED).send(`Created`);
