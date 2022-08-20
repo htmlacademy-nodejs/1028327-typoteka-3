@@ -71,6 +71,25 @@ module.exports = (app, articleService, commentService) => {
           return;
         }
 
+        const [
+          mostDiscussed,
+          lastestComments,
+        ] = await Promise.all([
+          articleService.findDiscussed(MAX_DISCUSSED_ARTICLES),
+          commentService.findLatest(MAX_LAST_COMMENTS),
+        ]);
+
+        const [
+          adaptedArticles,
+          adaptedComments,
+        ] = adaptToClient(mostDiscussed, lastestComments);
+
+        const io = req.app.locals.socketio;
+        io.emit(`comment:update`, {
+          mostDiscussed: adaptedArticles,
+          lastestComments: adaptedComments,
+        });
+
         res.status(HttpCode.OK).send(`Deleted`);
       },
   );

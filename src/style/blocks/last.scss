@@ -11,6 +11,10 @@
 
 .last__list {
   @include list-killer;
+
+  &:empty + .last__empty {
+    display: block;
+  }
 }
 
 .last__list-item {
@@ -52,6 +56,10 @@
   &:hover {
     color: #2f80ed;
   }
+}
+
+.last__empty {
+  display: none;
 }
 
 .last__icon {

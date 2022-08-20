@@ -88,6 +88,12 @@ class ArticleService {
           attributes: [],
         },
       ],
+      having: Sequelize.where(
+          Sequelize.fn(`COUNT`, Sequelize.col(`comments.id`)),
+          {
+            [Sequelize.Op.gt]: 0,
+          },
+      ),
       order: [
         [Sequelize.literal(`comments`), `DESC`],
         [`createdAt`, `DESC`],

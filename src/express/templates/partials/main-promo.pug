@@ -1,6 +1,6 @@
 .main-page__section-flex.main-page__section-flex--short
   section.main-page__hot.hot
-    h2.hot__name(class=(!mostDiscussedArticles && "hot__name--empty"))
+    h2.hot__name
       | Самое обсуждаемое #[span.hot__icon.hot__icon--fire]
     ul.hot__list
       if mostDiscussedArticles
@@ -9,8 +9,7 @@
             a.hot__list-link(href=`/articles/${article.id}#comments`)
               span=article.announce
               sup.hot__link-sup=article.comments
-      else
-        li.hot__empty Здесь пока ничего нет...
+    p.hot__empty Здесь пока ничего нет...
 
   section.main-page__last.last
     h2.last__name
@@ -22,5 +21,4 @@
             img.last__list-image(src=`/img/${comment.user.avatar}` width="20" height="20" alt="Аватар пользователя")
             b.last__list-name=comment.user.name
             a.last__list-link(href=`/articles/${comment.articleId}#comment-${comment.id}`)=comment.text
-      else
-        li.last__empty Здесь пока ничего нет...
+    p.last__empty Здесь пока ничего нет...
