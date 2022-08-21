@@ -1,68 +1,10 @@
 // eslint-disable-next-line
 'use strict';
 
-// логика выбора даты в календаре
-
-let calendar = document.querySelector('.calendar');
-if (calendar) {
-  let dates = calendar.querySelector('.calendar__dates');
-  let selectedDate = dates.querySelector('.calendar__date--selected');
-
-  let changeDateHandler = (evt) => { // переключает класс выбранной даты
-    if (evt.target.classList.contains('calendar__date')) {
-      let date = evt.target;
-      if (!date.classList.contains('calendar__date--disabled')) {
-        if (selectedDate) {
-          selectedDate.classList.remove('calendar__date--selected');
-        }
-        date.classList.add('calendar__date--selected');
-        selectedDate = date;
-      }
-    }
-  };
-
-  if (dates) {
-    dates.addEventListener('click', changeDateHandler);
-  }
-}
-
-// переключение формы по табу
-let popup = document.querySelector('.popup');
-if (popup) {
-  let tabs = popup.querySelectorAll('.popup__tab');
-
-  if (tabs) {
-    let tabForms = popup.querySelectorAll('.popup__form');
-    let activeTab = popup.querySelector('.popup__tab--active');
-    let activeForm = popup.querySelector('.popup__form--active');
-    for (let i = 0; i < tabs.length; i++) {
-      let tab = tabs[i];
-      let form = tabForms[i];
-      tab.addEventListener('click', (evt) => {
-        if (evt.target.classList.contains('popup__tab-switcher') && evt.currentTarget !== activeTab) {
-          activeTab.classList.remove('popup__tab--active');
-          tab.classList.add('popup__tab--active');
-          activeTab = tab;
-          activeForm.classList.remove('popup__form--active');
-          activeForm.classList.add('popup__form--hidden');
-          form.classList.add('popup__form--active');
-          form.classList.remove('popup__form--hidden');
-          activeForm = form;
-        }
-      });
-    }
-  }
-}
-
-// меняет высоту поля textarea в блоке comments в зависимости от количества введенных в него строк.
-
-// let comments = document.querySelector('.post__comments');
-// let publication = document.querySelector('.new-publication');
-// let textarea = null;
-
-// if (comments || publication) {
-//   textarea = document.querySelectorAll('textarea');
-// }
+/**
+ * Autosize lib.
+ * https://github.com/jackmoore/autosize
+ */
 const map = (typeof Map === 'function') ? new Map() : (function () {
   const keys = [];
   const values = [];
@@ -322,8 +264,54 @@ if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'functio
   };
 }
 
-// if (textarea) {
-//   textarea.forEach(element => {
-//     autosize(element);
-//   });
-// }
+
+/**
+ * меняет высоту поля textarea в блоке comments в зависимости
+ * от количества введенных в него строк.
+ */
+(() => {
+  const comments = document.querySelector('.post__comments');
+  const publication = document.querySelector('.new-publication');
+  // let textarea = null;
+
+  if (!comments && !publication) {
+    return;
+  }
+
+  const textarea = document.querySelectorAll('textarea');
+
+  if (textarea.length) {
+    textarea.forEach(element => autosize(element));
+  }
+})();
+
+
+/**
+ * отображет выбранное фото пользователя при заполнении формы регистрации
+ */
+(() => {
+  const signUpAvatarContainer = document.querySelector('.js-preview-container');
+
+  if (!signUpAvatarContainer) {
+    return;
+  }
+
+  const signUpFieldAvatarInput = signUpAvatarContainer.querySelector('.js-file-field');
+  const signUpAvatar = signUpAvatarContainer.querySelector('.js-preview');
+
+  const readFilePhoto = (file) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      const image = document.createElement('img');
+      image.src = reader.result;
+      signUpAvatar.innerHTML = '';
+      signUpAvatar.appendChild(image);
+    });
+    reader.readAsDataURL(file);
+  };
+
+  signUpFieldAvatarInput.addEventListener('change', () => {
+    const file = signUpFieldAvatarInput.files[0];
+    readFilePhoto(file);
+  });
+})();
