@@ -118,8 +118,7 @@ mainRoutes.post(`/login`, csrfProtection, async (req, res) => {
   };
 
   try {
-    const user = await api.auth(loginData);
-    req.session.user = user;
+    req.session.user = await api.auth(loginData);
     req.session.save(() => res.redirect(`/`));
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
