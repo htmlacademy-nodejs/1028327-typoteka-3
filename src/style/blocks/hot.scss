@@ -33,10 +33,13 @@
 
   @include margin-killer;
   line-height: 20px;
-  word-break: break-word;
 
   &:hover {
     color: #2f80ed;
+  }
+
+  span {
+    word-break: break-word;
   }
 }
 

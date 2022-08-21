@@ -28,10 +28,10 @@ block content
             if validationMessages
               .form__validation-error
                 +insertErrorMessages(validationMessages, "При регистрации произошли ошибки")
-            .form__image-loader
-              .form__avatar.avatar
+            .form__image-loader.js-preview-container
+              .form__avatar.avatar.js-preview
                 img(src="/img/icons/smile.svg" alt="аватар пользователя")
               label
-                input.visually-hidden(type="file" name="avatar")
+                input.visually-hidden.js-file-field(type="file" name="avatar")
                 | Загрузить фото профиля
             button.form__submit-btn.form__submit-btn--register.button.button--colored(type="submit") Зарегистрироваться
