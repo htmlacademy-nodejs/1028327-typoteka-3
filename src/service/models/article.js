@@ -1,5 +1,8 @@
 'use strict';
 
+const MAX_LETTERS_ANNOUNCE = 250;
+const MAX_LETTERS_TEXT = 1000;
+
 const {DataTypes, Model} = require(`sequelize`);
 
 class Article extends Model {}
@@ -12,7 +15,7 @@ const define = (sequelize) => Article.init({
   picture: DataTypes.STRING,
   announce: {
     // eslint-disable-next-line new-cap
-    type: DataTypes.STRING(250),
+    type: DataTypes.STRING(MAX_LETTERS_ANNOUNCE),
     allowNull: false,
   },
   date: {
@@ -22,7 +25,7 @@ const define = (sequelize) => Article.init({
   },
   text: {
     // eslint-disable-next-line new-cap
-    type: DataTypes.STRING(1000),
+    type: DataTypes.STRING(MAX_LETTERS_TEXT),
   },
 }, {
   sequelize,
