@@ -1,87 +1,87 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+/******/  // The module cache
+/******/  var installedModules = {};
 /******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/  // The require function
+/******/  function __webpack_require__(moduleId) {
 /******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
+/******/    // Check if module is in cache
+/******/    if(installedModules[moduleId]) {
+/******/      return installedModules[moduleId].exports;
+/******/    }
+/******/    // Create a new module (and put it into the cache)
+/******/    var module = installedModules[moduleId] = {
+/******/      i: moduleId,
+/******/      l: false,
+/******/      exports: {}
+/******/    };
 /******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/    // Execute the module function
+/******/    modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
+/******/    // Flag the module as loaded
+/******/    module.l = true;
 /******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/    // Return the exports of the module
+/******/    return module.exports;
+/******/  }
 /******/
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./source/js/libs/vendor.js");
+/******/  // expose the modules object (__webpack_modules__)
+/******/  __webpack_require__.m = modules;
+/******/
+/******/  // expose the module cache
+/******/  __webpack_require__.c = installedModules;
+/******/
+/******/  // define getter function for harmony exports
+/******/  __webpack_require__.d = function(exports, name, getter) {
+/******/    if(!__webpack_require__.o(exports, name)) {
+/******/      Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/    }
+/******/  };
+/******/
+/******/  // define __esModule on exports
+/******/  __webpack_require__.r = function(exports) {
+/******/    if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/      Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/    }
+/******/    Object.defineProperty(exports, '__esModule', { value: true });
+/******/  };
+/******/
+/******/  // create a fake namespace object
+/******/  // mode & 1: value is a module id, require it
+/******/  // mode & 2: merge all properties of value into the ns
+/******/  // mode & 4: return value when already ns object
+/******/  // mode & 8|1: behave like require
+/******/  __webpack_require__.t = function(value, mode) {
+/******/    if(mode & 1) value = __webpack_require__(value);
+/******/    if(mode & 8) return value;
+/******/    if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/    var ns = Object.create(null);
+/******/    __webpack_require__.r(ns);
+/******/    Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/    if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/    return ns;
+/******/  };
+/******/
+/******/  // getDefaultExport function for compatibility with non-harmony modules
+/******/  __webpack_require__.n = function(module) {
+/******/    var getter = module && module.__esModule ?
+/******/      function getDefault() { return module['default']; } :
+/******/      function getModuleExports() { return module; };
+/******/    __webpack_require__.d(getter, 'a', getter);
+/******/    return getter;
+/******/  };
+/******/
+/******/  // Object.prototype.hasOwnProperty.call
+/******/  __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/  // __webpack_public_path__
+/******/  __webpack_require__.p = "";
+/******/
+/******/
+/******/  // Load entry module and return exports
+/******/  return __webpack_require__(__webpack_require__.s = "./source/js/libs/vendor.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -116,7 +116,7 @@ eval("(function (global, factory) {\n   true ? factory(exports) :\n  undefined;\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flatpickr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flatpickr */ \"./node_modules/flatpickr/dist/flatpickr.js\");\n/* harmony import */ var flatpickr__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flatpickr__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flatpickr/dist/l10n/ru.js */ \"./node_modules/flatpickr/dist/l10n/ru.js\");\n/* harmony import */ var flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1__);\n// eslint-disable-next-line\n\n\nvar dateInput = document.querySelector(\".new-publication__date-form input\");\n\nif (dateInput) {\n  flatpickr__WEBPACK_IMPORTED_MODULE_0___default()(dateInput, {\n    // eslint-disable-next-line\n    dateFormat: \"Y-m-d\",\n    'defaultDate': \"2020-10-21\",\n    'locale': flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1__[\"Russian\"]\n  });\n}\n\nvar imageLoader = document.querySelector(\".form__image-loader input\");\nvar imageNameInput = document.querySelector(\"#image-name-field\");\nvar body = document.querySelector(\"body\");\n\nvar getScrollbarWidth = function getScrollbarWidth() {\n  var outer = document.createElement(\"div\");\n  outer.style.visibility = \"hidden\";\n  outer.style.overflow = \"scroll\";\n  outer.style.msOverflowStyle = \"scrollbar\";\n  body.appendChild(outer);\n  var inner = document.createElement(\"div\");\n  outer.appendChild(inner);\n  var scrollbarWidth = outer.offsetWidth - inner.offsetWidth;\n  outer.parentNode.removeChild(outer);\n  return scrollbarWidth;\n}; // Устанавливайте класс js-body-fixed на body там где хотите блокировать scroll\n\n\nvar disableScrolling = function disableScrolling() {\n  if (!body.classList.contains('js-body-fixed')) {\n    return;\n  }\n\n  var scrollWidth = getScrollbarWidth();\n  body.setAttribute('style', 'padding-right: ' + scrollWidth + 'px;');\n  body.classList.add('body-fixed');\n}; // eslint-disable-next-line\n\n\nvar enableScrolling = function enableScrolling() {\n  body.removeAttribute(\"style\");\n  body.classList.remove(\"body-fixed\");\n};\n\ndisableScrolling();\n\nvar reverseString = function reverseString(str) {\n  return str.split(\"\").reverse().join(\"\");\n};\n\nvar clearString = function clearString(str) {\n  var newString = reverseString(str);\n\n  if (newString.indexOf('\\\\') === -1) {\n    return reverseString(newString);\n  } else {\n    var number = newString.indexOf('\\\\');\n    return reverseString(newString.slice(0, number));\n  }\n};\n\nif (imageLoader && imageNameInput) {\n  imageLoader.addEventListener(\"change\", function (evt) {\n    evt.preventDefault();\n    imageNameInput.value = clearString(imageLoader.value);\n  });\n}\n\n//# sourceURL=webpack:///./source/js/libs/vendor.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flatpickr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flatpickr */ \"./node_modules/flatpickr/dist/flatpickr.js\");\n/* harmony import */ var flatpickr__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flatpickr__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flatpickr/dist/l10n/ru.js */ \"./node_modules/flatpickr/dist/l10n/ru.js\");\n/* harmony import */ var flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1__);\n// eslint-disable-next-line\n\n\nvar dateInput = document.querySelector(\".new-publication__date-form input\");\n\nif (dateInput) {\n  flatpickr__WEBPACK_IMPORTED_MODULE_0___default()(dateInput, {\n    // eslint-disable-next-line\n    dateFormat: \"Y-m-d\",\n    'locale': flatpickr_dist_l10n_ru_js__WEBPACK_IMPORTED_MODULE_1__[\"Russian\"]\n  });\n}\n\nvar imageLoader = document.querySelector(\".form__image-loader input\");\nvar imageNameInput = document.querySelector(\"#image-name-field\");\nvar body = document.querySelector(\"body\");\n\nvar getScrollbarWidth = function getScrollbarWidth() {\n  var outer = document.createElement(\"div\");\n  outer.style.visibility = \"hidden\";\n  outer.style.overflow = \"scroll\";\n  outer.style.msOverflowStyle = \"scrollbar\";\n  body.appendChild(outer);\n  var inner = document.createElement(\"div\");\n  outer.appendChild(inner);\n  var scrollbarWidth = outer.offsetWidth - inner.offsetWidth;\n  outer.parentNode.removeChild(outer);\n  return scrollbarWidth;\n}; // Устанавливайте класс js-body-fixed на body там где хотите блокировать scroll\n\n\nvar disableScrolling = function disableScrolling() {\n  if (!body.classList.contains('js-body-fixed')) {\n    return;\n  }\n\n  var scrollWidth = getScrollbarWidth();\n  body.setAttribute('style', 'padding-right: ' + scrollWidth + 'px;');\n  body.classList.add('body-fixed');\n}; // eslint-disable-next-line\n\n\nvar enableScrolling = function enableScrolling() {\n  body.removeAttribute(\"style\");\n  body.classList.remove(\"body-fixed\");\n};\n\ndisableScrolling();\n\nvar reverseString = function reverseString(str) {\n  return str.split(\"\").reverse().join(\"\");\n};\n\nvar clearString = function clearString(str) {\n  var newString = reverseString(str);\n\n  if (newString.indexOf('\\\\') === -1) {\n    return reverseString(newString);\n  } else {\n    var number = newString.indexOf('\\\\');\n    return reverseString(newString.slice(0, number));\n  }\n};\n\nif (imageLoader && imageNameInput) {\n  imageLoader.addEventListener(\"change\", function (evt) {\n    evt.preventDefault();\n    imageNameInput.value = clearString(imageLoader.value);\n  });\n}\n\n//# sourceURL=webpack:///./source/js/libs/vendor.js?");
 
 /***/ })
 
