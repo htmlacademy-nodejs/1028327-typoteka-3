@@ -70,19 +70,20 @@ class CategoryService {
         `id`,
         `name`,
       ],
+      raw: true,
     });
   }
 
   async findPage({categoryId, limit, offset}) {
     const articlesIdByCategory = await this._ArticleCategory.findAll({
-      attributes: [`articleId`],
+      attributes: [`ArticleId`],
       where: {
         CategoryId: categoryId,
       },
       raw: true,
     });
 
-    const articlesId = articlesIdByCategory.map((articleIdItem) => articleIdItem.articleId);
+    const articlesId = articlesIdByCategory.map((articleIdItem) => articleIdItem.ArticleId);
 
     const {count, rows} = await this._Article.findAndCountAll({
       limit,

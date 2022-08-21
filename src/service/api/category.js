@@ -24,6 +24,25 @@ module.exports = (app, service) => {
   });
 
 
+  route.get(`/:categoryId`, async (req, res) => {
+    const {categoryId} = req.params;
+    const {limit, offset} = req.query;
+
+    const category = await service.findOne(categoryId);
+
+    const {
+      count,
+      articlesByCategory,
+    } = await service.findPage({categoryId, limit, offset});
+
+    res.status(HttpCode.OK).json({
+      category,
+      count,
+      articlesByCategory,
+    });
+  });
+
+
   route.put(`/:categoryId`,
       [routeParamsValidator, categoryValidator],
       async (req, res) => {
@@ -59,24 +78,5 @@ module.exports = (app, service) => {
         error: `Категория не может быть удалена, если ей принадлежит хотя бы одна публикация`,
       });
     }
-  });
-
-
-  route.get(`/:categoryId`, async (req, res) => {
-    const {categoryId} = req.params;
-    const {limit, offset} = req.query;
-
-    const category = await service.findOne(categoryId);
-
-    const {
-      count,
-      articlesByCategory,
-    } = await service.findPage({categoryId, limit, offset});
-
-    res.status(HttpCode.OK).json({
-      category,
-      count,
-      articlesByCategory,
-    });
   });
 };

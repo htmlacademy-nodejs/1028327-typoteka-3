@@ -4,17 +4,19 @@
 
 .hot__name {
   @include margin-killer;
-  margin-bottom: 32px;
+  margin-bottom: 17px;
   font-size: 20px;
   line-height: 20px;
 }
 
-.hot__name--empty {
-  margin-bottom: 17px;
-}
-
 .hot__list {
   @include list-killer;
+  &:not(:empty) {
+    margin-top: 32px;
+  }
+  &:empty + .hot__empty {
+    display: block;
+  }
 }
 
 .hot__list-item {
@@ -49,6 +51,10 @@
 
 .hot__list-item--margin {
   margin-bottom: 40px;
+}
+
+.hot__empty {
+  display: none;
 }
 
 .hot__icon {

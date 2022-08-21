@@ -1,10 +1,28 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {HttpCode} = require(`../../constants`);
 const articleExist = require(`../middlewares/article-exist`);
 const commentValidator = require(`../middlewares/comment-validator`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
+const {adaptToClient} = require(`../lib/adapt-to-client`);
+const {
+  HttpCode,
+  MAX_LAST_COMMENTS,
+  MAX_DISCUSSED_ARTICLES,
+} = require(`../../constants`);
+
+const getPromoBlockData = async (articleService, commentService) => {
+  const [
+    mostDiscussed,
+    lastestComments,
+  ] = await Promise.all([
+    articleService.findDiscussed(MAX_DISCUSSED_ARTICLES),
+    commentService.findLatest(MAX_LAST_COMMENTS),
+  ]);
+
+  return adaptToClient(mostDiscussed, lastestComments);
+};
+
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -25,9 +43,20 @@ module.exports = (app, articleService, commentService) => {
 
   route.post(`/:articleId/comments`,
       [routeParamsValidator, articleExist(articleService), commentValidator],
-      (req, res) => {
+      async (req, res) => {
         const {articleId} = req.params;
-        commentService.create(articleId, req.body);
+        await commentService.create(articleId, req.body);
+
+        const [
+          mostDiscussed,
+          lastestComments,
+        ] = await getPromoBlockData(articleService, commentService);
+
+        const io = req.app.locals.socketio;
+        io.emit(`comment:update`, {
+          mostDiscussed,
+          lastestComments,
+        });
 
         res.status(HttpCode.CREATED).send(`Created`);
       },
@@ -45,6 +74,17 @@ module.exports = (app, articleService, commentService) => {
             .send(`Not found comment with id ${commentId}`);
           return;
         }
+
+        const [
+          mostDiscussed,
+          lastestComments,
+        ] = await getPromoBlockData(articleService, commentService);
+
+        const io = req.app.locals.socketio;
+        io.emit(`comment:update`, {
+          mostDiscussed,
+          lastestComments,
+        });
 
         res.status(HttpCode.OK).send(`Deleted`);
       },

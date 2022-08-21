@@ -12,6 +12,9 @@ const {
   CommentService,
 } = require(`../data-service`);
 
+const http = require(`http`);
+const socket = require(`../lib/socket`);
+
 const mockCategories = [
   `Без рамки`,
   `Железо`,
@@ -165,6 +168,11 @@ const createAPI = async () => {
 
   const app = express();
   app.use(express.json());
+
+  const server = http.createServer(app);
+  const io = socket(server);
+  app.locals.socketio = io;
+
 
   comment(app, new ArticleService(mockDB), new CommentService(mockDB));
   return app;

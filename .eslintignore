@@ -1,2 +1,4 @@
 # Статика для клиента
-**/public/js**
+**/public/js/main.js
+**/public/js/vendor.js
+**/public/js/socket.io.min.js
